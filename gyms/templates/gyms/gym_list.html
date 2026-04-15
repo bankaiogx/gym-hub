@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>All Gyms - Gym Hub UK</title>
+</head>
+<body>
+    <h1>All Gyms</h1>
+
+    {% if gyms %}
+        <ul>
+            {% for gym in gyms %}
+                <li>
+                    <h2>{{ gym.name }}</h2>
+                    <p><strong>City:</strong> {{ gym.city }}</p>
+                    <p><strong>Description:</strong> {{ gym.description }}</p>
+                    <p><strong>Price Range:</strong> {{ gym.get_price_range_display }}</p>
+                </li>
+            {% endfor %}
+        </ul>
+    {% else %}
+        <p>No gyms added yet.</p>
+    {% endif %}
+
+    <a href="{% url 'home' %}">Back to Home</a>
+</body>
+</html>
