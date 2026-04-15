@@ -96,7 +96,7 @@ class Review(models.Model):
                 name='unique_review_per_user_per_gym'
             ),
             models.CheckConstraint(
-                check=models.Q(rating__gte=1) & models.Q(rating__lte=5),
+                condition=models.Q(rating__gte=1) & models.Q(rating__lte=5),
                 name='review_rating_between_1_and_5'
             ),
         ]
