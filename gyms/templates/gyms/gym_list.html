@@ -12,7 +12,7 @@
         <ul>
             {% for gym in gyms %}
                 <li>
-                    <h2>{{ gym.name }}</h2>
+                    <h2><a href="{% url 'gym_detail' gym.slug %}">{{ gym.name }}</a></h2>
                     <p><strong>City:</strong> {{ gym.city }}</p>
                     <p><strong>Description:</strong> {{ gym.description }}</p>
                     <p><strong>Price Range:</strong> {{ gym.get_price_range_display }}</p>
