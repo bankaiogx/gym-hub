@@ -1,3 +1,154 @@
 from django.db import models
+from django.contrib.auth.models import User
+from django.utils.text import slugify
 
-# Create your models here.
+
+class Amenity(models.Model):
+    name = models.CharField(max_length=100, unique=True)
+
+    class Meta:
+        ordering = ['name']
+        verbose_name_plural = 'Amenities'
+
+    def __str__(self):
+        return self.name
+
+
+class Gym(models.Model):
+    PRICE_CHOICES = [
+        ('budget', 'Budget'),
+        ('mid', 'Mid-range'),
+        ('premium', 'Premium'),
+    ]
+
+    owner = models.ForeignKey(
+        User,
+        on_delete=models.CASCADE,
+        related_name='gyms'
+    )
+    name = models.CharField(max_length=150)
+    slug = models.SlugField(max_length=160, unique=True, blank=True)
+    city = models.CharField(max_length=100)
+    address = models.CharField(max_length=255)
+    postcode = models.CharField(max_length=20, blank=True)
+    description = models.TextField()
+    price_range = models.CharField(
+        max_length=20,
+        choices=PRICE_CHOICES,
+        default='mid'
+    )
+    opening_hours = models.CharField(max_length=255, blank=True)
+    amenities = models.ManyToManyField(
+        'Amenity',
+        through='GymAmenity',
+        related_name='gyms',
+        blank=True
+    )
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
+
+    class Meta:
+        ordering = ['name']
+        constraints = [
+            models.UniqueConstraint(
+                fields=['owner', 'name', 'address'],
+                name='unique_gym_per_owner_name_address'
+            )
+        ]
+
+    def save(self, *args, **kwargs):
+        if not self.slug:
+            base_slug = slugify(f"{self.name}-{self.city}")
+            slug = base_slug
+            counter = 1
+            while Gym.objects.filter(slug=slug).exclude(pk=self.pk).exists():
+                slug = f"{base_slug}-{counter}"
+                counter += 1
+            self.slug = slug
+        super().save(*args, **kwargs)
+
+    def __str__(self):
+        return self.name
+
+
+class Review(models.Model):
+    gym = models.ForeignKey(
+        Gym,
+        on_delete=models.CASCADE,
+        related_name='reviews'
+    )
+    user = models.ForeignKey(
+        User,
+        on_delete=models.CASCADE,
+        related_name='reviews'
+    )
+    rating = models.PositiveSmallIntegerField()
+    title = models.CharField(max_length=120)
+    content = models.TextField()
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
+
+    class Meta:
+        ordering = ['-created_at']
+        constraints = [
+            models.UniqueConstraint(
+                fields=['gym', 'user'],
+                name='unique_review_per_user_per_gym'
+            ),
+            models.CheckConstraint(
+                check=models.Q(rating__gte=1) & models.Q(rating__lte=5),
+                name='review_rating_between_1_and_5'
+            ),
+        ]
+
+    def __str__(self):
+        return f"{self.title} - {self.gym.name}"
+
+
+class Favourite(models.Model):
+    user = models.ForeignKey(
+        User,
+        on_delete=models.CASCADE,
+        related_name='favourites'
+    )
+    gym = models.ForeignKey(
+        Gym,
+        on_delete=models.CASCADE,
+        related_name='favourited_by'
+    )
+    created_at = models.DateTimeField(auto_now_add=True)
+
+    class Meta:
+        ordering = ['-created_at']
+        constraints = [
+            models.UniqueConstraint(
+                fields=['user', 'gym'],
+                name='unique_favourite_per_user_per_gym'
+            )
+        ]
+
+    def __str__(self):
+        return f"{self.user.username} -> {self.gym.name}"
+
+
+class GymAmenity(models.Model):
+    gym = models.ForeignKey(
+        Gym,
+        on_delete=models.CASCADE
+    )
+    amenity = models.ForeignKey(
+        Amenity,
+        on_delete=models.CASCADE
+    )
+
+    class Meta:
+        ordering = ['gym__name', 'amenity__name']
+        constraints = [
+            models.UniqueConstraint(
+                fields=['gym', 'amenity'],
+                name='unique_amenity_per_gym'
+            )
+        ]
+
+    def __str__(self):
+        return f"{self.gym.name} - {self.amenity.name}"
