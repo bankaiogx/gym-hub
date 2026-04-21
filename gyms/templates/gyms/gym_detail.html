@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{{ gym.name }} - Gym Hub UK</title>
+</head>
+<body>
+    <h1>{{ gym.name }}</h1>
+
+    <p><strong>City:</strong> {{ gym.city }}</p>
+    <p><strong>Address:</strong> {{ gym.address }}</p>
+    <p><strong>Description:</strong> {{ gym.description }}</p>
+    <p><strong>Price Range:</strong> {{ gym.get_price_range_display }}</p>
+    <p><strong>Opening Hours:</strong> {{ gym.opening_hours }}</p>
+    <p><strong>Created by:</strong> {{ gym.owner.username }}</p>
+
+    <a href="{% url 'gym_list' %}">Back to all gyms</a>
+</body>
+</html>
