@@ -59,14 +59,6 @@
                     {% endfor %}
                 </select>
 
-                <label class="form-label mt-4" for="rating-filter">Minimum rating</label>
-                <select class="form-select" id="rating-filter" name="rating" aria-label="Filter by minimum rating">
-                    <option value="">Any rating</option>
-                    {% for rating in rating_choices %}
-                        <option value="{{ rating }}"{% if min_rating == rating|stringformat:'s' %} selected{% endif %}>{{ rating }}+ stars</option>
-                    {% endfor %}
-                </select>
-
                 <label class="form-label mt-4" for="sort-filter">Sort by</label>
                 <select class="form-select" id="sort-filter" name="sort" aria-label="Sort gyms">
                     {% for value, label in sort_choices %}
@@ -90,40 +82,17 @@
                         </label>
                     {% endfor %}
                 </div>
-                <label class="bookmark-filter mt-4" for="bookmarked-filter">
-                    <input
-                        id="bookmarked-filter"
-                        type="checkbox"
-                        name="bookmarked"
-                        value="1"
-                        {% if bookmarked_only %}checked{% endif %}
-                    >
-                    <span>Bookmarked gyms only</span>
-                </label>
-                <label class="bookmark-filter mt-3" for="submitted-filter">
-                    <input
-                        id="submitted-filter"
-                        type="checkbox"
-                        name="submitted"
-                        value="1"
-                        {% if submitted_only %}checked{% endif %}
-                    >
-                    <span>My submitted gyms only</span>
-                </label>
-                {% if not user.is_authenticated %}
-                    <p class="text-secondary small mt-2 mb-0">Log in to filter by your bookmarks or submissions.</p>
-                {% endif %}
                 <div class="d-flex gap-2 mt-4">
                     <button class="btn btn-primary flex-fill" type="submit">Apply filters</button>
                     {% if active_filter_count %}
-                        <a class="btn btn-outline-secondary" href="{% url 'gym_list' %}{% if query %}?q={{ query|urlencode }}{% endif %}">Reset filters</a>
+                        <a class="btn btn-outline-secondary" href="{% url 'gym_list' %}{% if query %}?q={{ query|urlencode }}{% endif %}">Clear filters</a>
                     {% endif %}
                 </div>
             </div>
         </div>
         <button class="btn btn-primary search-submit-button" type="submit">Search</button>
         {% if query or active_filter_count %}
-            <a class="btn btn-outline-secondary search-clear-button" href="{% url 'gym_list' %}">Clear</a>
+            <a class="btn btn-outline-secondary search-clear-button" href="{% url 'gym_list' %}">Clear filters</a>
         {% endif %}
     </div>
 </form>
@@ -137,8 +106,8 @@
         <div class="card-body p-5 text-center">
             {% if query or active_filter_count %}
                 <h2 class="h4 mb-3">No gyms found</h2>
-                <p class="text-secondary mb-4">No gyms match your search and filters. Try another name, city, postcode, address, price range, amenity, rating, or bookmark filter.</p>
-                <a class="btn btn-outline-secondary" href="{% url 'gym_list' %}">Clear Search</a>
+                <p class="text-secondary mb-4">No gyms match your search and filters. Try another name, city, postcode, address, price range, or amenity.</p>
+                <a class="btn btn-outline-secondary" href="{% url 'gym_list' %}">Clear filters</a>
             {% else %}
                 <h2 class="h4 mb-3">No gyms added yet</h2>
                 <p class="text-secondary mb-4">Start the directory by adding the first gym.</p>

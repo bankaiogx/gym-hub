@@ -93,20 +93,15 @@ def my_submitted_gyms(request):
 def gym_list(request):
     query = request.GET.get('q', '').strip()
     price = request.GET.get('price', '').strip()
-    min_rating = request.GET.get('rating', '').strip()
-    sort = request.GET.get('sort', 'az').strip()
-    bookmarked_only = request.GET.get('bookmarked') == '1'
-    submitted_only = request.GET.get('submitted') == '1'
+    sort = request.GET.get('sort', 'newest').strip()
     selected_amenity_ids = request.GET.getlist('amenities')
     sort_choices = [
         ('newest', 'Newest'),
-        ('highest_rated', 'Highest rated'),
-        ('most_bookmarked', 'Most bookmarked'),
         ('az', 'A-Z'),
     ]
     valid_sort_values = {value for value, label in sort_choices}
     if sort not in valid_sort_values:
-        sort = 'az'
+        sort = 'newest'
 
     gyms = gym_card_queryset(request)
 
@@ -125,27 +120,8 @@ def gym_list(request):
     if selected_amenity_ids:
         gyms = gyms.filter(amenities__id__in=selected_amenity_ids).distinct()
 
-    if min_rating:
-        gyms = gyms.filter(average_rating__gte=min_rating)
-
-    if bookmarked_only:
-        if request.user.is_authenticated:
-            gyms = gyms.filter(favourites__user=request.user)
-        else:
-            gyms = gyms.none()
-
-    if submitted_only:
-        if request.user.is_authenticated:
-            gyms = gyms.filter(owner=request.user)
-        else:
-            gyms = gyms.none()
-
     if sort == 'newest':
         gyms = gyms.order_by('-created_at', 'name')
-    elif sort == 'highest_rated':
-        gyms = gyms.order_by('-average_rating', 'name')
-    elif sort == 'most_bookmarked':
-        gyms = gyms.order_by('-bookmark_count', 'name')
     else:
         gyms = gyms.order_by('name')
 
@@ -156,21 +132,14 @@ def gym_list(request):
             'gyms': gyms,
             'query': query,
             'price': price,
-            'min_rating': min_rating,
             'sort': sort,
-            'bookmarked_only': bookmarked_only,
-            'submitted_only': submitted_only,
             'amenities': Amenity.objects.all(),
             'selected_amenity_ids': selected_amenity_ids,
             'active_filter_count': (
                 len(selected_amenity_ids)
                 + (1 if price else 0)
-                + (1 if min_rating else 0)
-                + (1 if bookmarked_only else 0)
-                + (1 if submitted_only else 0)
             ),
             'price_choices': Gym.PRICE_CHOICES,
-            'rating_choices': [5, 4, 3, 2, 1],
             'sort_choices': sort_choices,
         },
     )
