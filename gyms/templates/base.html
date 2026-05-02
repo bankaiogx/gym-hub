@@ -13,34 +13,205 @@
     >
     <style>
         :root {
-            --gymxp-page-bg: linear-gradient(180deg, #f3f4f6 0%, #ffffff 50%, #e5e7eb 100%);
-            --gymxp-foreground: #111827;
-            --gymxp-muted: #4b5563;
-            --gymxp-card-bg: rgba(255, 255, 255, 0.6);
-            --gymxp-card-border: rgba(255, 255, 255, 0.4);
-            --gymxp-card-shadow: 0 8px 40px rgba(0, 0, 0, 0.1);
-            --gymxp-card-shadow-hover: 0 12px 48px rgba(0, 0, 0, 0.14);
-            --gymxp-card-radius: 1.8rem;
-            --gymxp-card-blur: blur(40px);
-            --gymxp-title-gradient: linear-gradient(90deg, #000000, #374151, #6b7280);
-            --gymxp-pill-bg: rgba(0, 0, 0, 0.88);
+            --gymxp-bg-0: #000000;
+            --gymxp-bg-1: #06080C;
+            --gymxp-surface: #0E1116;
+            --gymxp-surface-raised: #12161D;
+            --gymxp-surface-inset: #171B22;
+            --gymxp-surface-secondary: #11151B;
+            --gymxp-foreground: #F5F7FA;
+            --gymxp-muted: #A9B3BF;
+            --gymxp-faint: #767F8B;
+            --gymxp-accent: #C88637;
+            --gymxp-accent-strong: #FF8A2A;
+            --gymxp-accent-soft: rgba(200, 134, 55, 0.18);
+            --gymxp-accent-border: rgba(255, 138, 42, 0.55);
+            --gymxp-glass-bg: rgba(8, 9, 12, 0.78);
+            --gymxp-glass-raised: rgba(12, 14, 18, 0.84);
+            --gymxp-glass-subtle: rgba(10, 11, 14, 0.64);
+            --gymxp-border: rgba(255, 255, 255, 0.10);
+            --gymxp-border-soft: rgba(255, 255, 255, 0.05);
+            --gymxp-border-strong: rgba(255, 255, 255, 0.14);
+            --gymxp-inner-highlight: rgba(255, 255, 255, 0.07);
+            --gymxp-card-shadow: 0 16px 26px rgba(0, 0, 0, 0.48);
+            --gymxp-card-shadow-hover: 0 18px 32px rgba(0, 0, 0, 0.58);
+            --gymxp-card-radius: 28px;
+            --gymxp-stage-radius: 30px;
+            --gymxp-chip-radius: 12px;
+            --gymxp-card-blur: blur(34px);
+            --gymxp-nav-blur: blur(18px);
+            --gymxp-title-gradient: linear-gradient(90deg, #F5F7FA, #A9B3BF, #C88637);
+            --gymxp-pill-bg: rgba(23, 27, 34, 0.88);
             --gymxp-pill-radius: 999px;
-            --gymxp-transition: 0.3s ease;
+            --gymxp-space-card: 16px;
+            --gymxp-space-card-lg: 20px;
+            --gymxp-space-section: 24px;
+            --gymxp-transition: 200ms ease;
         }
 
         body {
             background:
-                linear-gradient(180deg, rgba(243, 244, 246, 0.92) 0%, rgba(255, 255, 255, 0.96) 48%, rgba(229, 231, 235, 0.94) 100%),
+                radial-gradient(circle at 18% 0%, rgba(200, 134, 55, 0.18), transparent 28rem),
+                linear-gradient(180deg, rgba(0, 0, 0, 0.92) 0%, rgba(6, 8, 12, 0.96) 44%, rgba(0, 0, 0, 0.98) 100%),
                 url("{% static 'gyms/images/gymxp-hypertrophy-bg.jpg' %}") center top / cover fixed;
             color: var(--gymxp-foreground);
+            font-family: "Avenir Next", "Helvetica Neue", Arial, sans-serif;
             min-height: 100vh;
         }
 
+        a {
+            color: var(--gymxp-accent);
+        }
+
+        h1,
+        h2,
+        h3,
+        h4,
+        h5,
+        h6 {
+            color: var(--gymxp-foreground);
+            font-weight: 900;
+        }
+
+        .text-secondary {
+            color: var(--gymxp-muted) !important;
+        }
+
+        .text-primary {
+            color: var(--gymxp-accent) !important;
+        }
+
+        .navbar {
+            background: rgba(5, 6, 8, 0.74) !important;
+            backdrop-filter: var(--gymxp-nav-blur);
+            border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+            box-shadow: 0 18px 32px rgba(0, 0, 0, 0.55);
+            min-height: 68px;
+        }
+
+        .navbar-brand {
+            color: var(--gymxp-foreground) !important;
+            font-weight: 900;
+            letter-spacing: 0.02em;
+        }
+
+        .btn {
+            border-radius: 18px;
+            font-weight: 900;
+            letter-spacing: 0.02em;
+            min-height: 44px;
+            padding-inline: 1rem;
+        }
+
+        .btn-primary {
+            background: var(--gymxp-accent-soft) !important;
+            border-color: var(--gymxp-accent-border) !important;
+            box-shadow: inset 0 1px 0 var(--gymxp-inner-highlight);
+            color: var(--gymxp-foreground) !important;
+        }
+
+        .btn-primary:hover,
+        .btn-primary:focus {
+            background: rgba(255, 138, 42, 0.28) !important;
+            border-color: rgba(255, 138, 42, 0.72) !important;
+        }
+
+        .btn-light {
+            background: #f3f4f6 !important;
+            border-color: rgba(255, 255, 255, 0.18) !important;
+            color: #05070b !important;
+        }
+
+        .btn-outline-light,
+        .btn-outline-secondary {
+            background: rgba(255, 255, 255, 0.06);
+            border-color: var(--gymxp-border);
+            color: var(--gymxp-foreground);
+        }
+
+        .btn-outline-light:hover,
+        .btn-outline-secondary:hover {
+            background: rgba(255, 255, 255, 0.12);
+            border-color: var(--gymxp-border-strong);
+            color: var(--gymxp-foreground);
+        }
+
+        .badge,
+        .text-bg-primary {
+            background: var(--gymxp-accent-soft) !important;
+            border: 1px solid rgba(255, 138, 42, 0.35);
+            color: var(--gymxp-foreground) !important;
+            font-weight: 900;
+            letter-spacing: 0.08em;
+        }
+
+        .card {
+            background: var(--gymxp-glass-bg);
+            backdrop-filter: var(--gymxp-card-blur);
+            border: 1px solid var(--gymxp-border);
+            border-radius: var(--gymxp-card-radius);
+            box-shadow: var(--gymxp-card-shadow);
+            color: var(--gymxp-foreground);
+        }
+
+        .card.border-0 {
+            border: 1px solid var(--gymxp-border) !important;
+        }
+
+        .card.rounded-4 {
+            border-radius: var(--gymxp-card-radius) !important;
+        }
+
+        .card.shadow-sm {
+            box-shadow: var(--gymxp-card-shadow) !important;
+        }
+
+        .bg-light {
+            background: var(--gymxp-surface-inset) !important;
+            border: 1px solid var(--gymxp-border-soft);
+            color: var(--gymxp-foreground);
+        }
+
+        .border {
+            border-color: var(--gymxp-border) !important;
+        }
+
+        .form-control,
+        .form-select {
+            background: rgba(255, 255, 255, 0.035);
+            border: 1px solid rgba(255, 255, 255, 0.06);
+            border-radius: 16px;
+            color: var(--gymxp-foreground);
+            font-weight: 700;
+        }
+
+        .form-control:focus,
+        .form-select:focus {
+            background: rgba(255, 255, 255, 0.055);
+            border-color: rgba(255, 138, 42, 0.55);
+            box-shadow: 0 0 0 0.2rem rgba(255, 138, 42, 0.16);
+            color: var(--gymxp-foreground);
+        }
+
+        .form-control::placeholder {
+            color: rgba(245, 247, 250, 0.38);
+        }
+
+        label {
+            color: var(--gymxp-muted);
+            font-weight: 800;
+        }
+
+        main > .container {
+            max-width: 1040px;
+        }
+
         .hero-card {
-            background: #030712;
+            background: var(--gymxp-surface);
             color: #fff;
-            border: 0;
-            box-shadow: 0 1.5rem 4rem rgba(3, 7, 18, 0.28);
+            border-color: var(--gymxp-border-soft);
+            border-radius: var(--gymxp-stage-radius);
+            box-shadow: 0 18px 32px rgba(0, 0, 0, 0.58);
         }
 
         .home-hero {
@@ -59,7 +230,9 @@
         }
 
         .home-hero::after {
-            background: linear-gradient(90deg, rgba(3, 7, 18, 0.92) 0%, rgba(3, 7, 18, 0.72) 42%, rgba(3, 7, 18, 0.28) 100%);
+            background:
+                linear-gradient(90deg, rgba(0, 0, 0, 0.92) 0%, rgba(6, 8, 12, 0.74) 44%, rgba(6, 8, 12, 0.30) 100%),
+                linear-gradient(180deg, rgba(255, 255, 255, 0.08), rgba(255, 255, 255, 0.00));
             content: "";
             inset: 0;
             position: absolute;
@@ -71,8 +244,8 @@
         }
 
         .gym-card {
-            background: var(--gymxp-card-bg);
-            border: 1px solid var(--gymxp-card-border);
+            background: var(--gymxp-glass-bg);
+            border: 1px solid var(--gymxp-border);
             border-radius: var(--gymxp-card-radius);
             backdrop-filter: var(--gymxp-card-blur);
             box-shadow: var(--gymxp-card-shadow);
@@ -82,14 +255,22 @@
 
         .gym-card-media {
             aspect-ratio: 16 / 7;
-            background: #111827;
+            background: var(--gymxp-surface-inset);
             overflow: hidden;
+            position: relative;
         }
 
         .gym-card-media img {
             height: 100%;
             object-fit: cover;
             width: 100%;
+        }
+
+        .gym-card-media::after {
+            background: linear-gradient(180deg, rgba(0, 0, 0, 0.02), rgba(0, 0, 0, 0.42));
+            content: "";
+            inset: 0;
+            position: absolute;
         }
 
         .gym-card:hover {
@@ -107,7 +288,7 @@
 
         .gym-card .card-title a {
             color: var(--gymxp-foreground);
-            font-weight: 800;
+            font-weight: 900;
             text-decoration: none;
         }
 
@@ -125,7 +306,9 @@
             display: inline-flex;
             border-radius: var(--gymxp-pill-radius);
             background: var(--gymxp-pill-bg);
-            color: #fff;
+            border: 1px solid var(--gymxp-border-soft);
+            color: var(--gymxp-foreground);
+            font-weight: 800;
             padding: 0.35rem 0.8rem;
             font-size: 0.9rem;
         }
@@ -137,13 +320,13 @@
         }
 
         .rating-star {
-            color: #d1d5db;
+            color: rgba(245, 247, 250, 0.24);
             font-size: 1.15rem;
             line-height: 1;
         }
 
         .rating-star-filled {
-            color: #f59e0b;
+            color: var(--gymxp-accent-strong);
         }
 
         .rating-text {
@@ -153,10 +336,12 @@
         }
 
         .home-feature-card {
-            background: rgba(255, 255, 255, 0.76);
-            border: 1px solid rgba(255, 255, 255, 0.62);
+            background: var(--gymxp-glass-bg);
+            backdrop-filter: var(--gymxp-card-blur);
+            border: 1px solid var(--gymxp-border);
             border-radius: var(--gymxp-card-radius);
             box-shadow: var(--gymxp-card-shadow);
+            color: var(--gymxp-foreground);
             overflow: hidden;
         }
 
