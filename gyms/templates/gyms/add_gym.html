@@ -25,7 +25,7 @@
                             autocomplete="off"
                         >
                         <p class="text-secondary small mt-2 mb-0">
-                            Pick a Google suggestion to auto-fill the name, address, city, postcode, and map location.
+                            Pick a UK Google suggestion to auto-fill the name, address, city, postcode, and map location.
                         </p>
                     </div>
 
@@ -40,6 +40,12 @@
                     <div id="google-maps-error" class="bg-light rounded-4 p-3 mb-4" hidden>
                         <p class="mb-0 text-secondary">
                             Google autocomplete could not load. Check that billing is active, Maps JavaScript API and Places API are enabled, and this localhost URL is allowed on the API key.
+                        </p>
+                    </div>
+
+                    <div id="google-maps-country-error" class="bg-light rounded-4 p-3 mb-4" hidden>
+                        <p class="mb-0 text-secondary">
+                            Please choose a UK address from the Google suggestions.
                         </p>
                     </div>
 
@@ -76,6 +82,22 @@
         if (errorPanel) errorPanel.hidden = false;
     }
 
+    function showCountryError() {
+        const errorPanel = document.getElementById("google-maps-country-error");
+        if (errorPanel) errorPanel.hidden = false;
+    }
+
+    function hideCountryError() {
+        const errorPanel = document.getElementById("google-maps-country-error");
+        if (errorPanel) errorPanel.hidden = true;
+    }
+
+    function placeIsInUk(place) {
+        return place.address_components.some((component) => {
+            return component.types.includes("country") && component.short_name === "GB";
+        });
+    }
+
     window.gm_authFailure = showGoogleMapsError;
 
     window.initAutocomplete = function () {
@@ -86,12 +108,19 @@
         }
 
         const autocomplete = new google.maps.places.Autocomplete(input, {
+            componentRestrictions: { country: "gb" },
             fields: ["name", "formatted_address", "geometry", "place_id", "address_components"]
         });
 
         autocomplete.addListener("place_changed", function () {
             const place = autocomplete.getPlace();
             if (!place.geometry) return;
+            if (!placeIsInUk(place)) {
+                showCountryError();
+                return;
+            }
+
+            hideCountryError();
 
             document.getElementById("id_name").value = place.name || "";
             document.getElementById("id_address").value = place.formatted_address || "";
