@@ -36,7 +36,9 @@
                         Log in to bookmark
                     </a>
                 {% endif %}
-                <p class="bookmark-count">{{ gym.bookmark_count }} bookmark{{ gym.bookmark_count|pluralize }}</p>
+                {% if gym.bookmark_count %}
+                    <p class="bookmark-count">{{ gym.bookmark_count }} bookmark{{ gym.bookmark_count|pluralize }}</p>
+                {% endif %}
             </div>
         </div>
         <p class="mb-2"><strong>City:</strong> {{ gym.city }}</p>

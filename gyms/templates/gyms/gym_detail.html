@@ -40,7 +40,9 @@
                                     Log in to bookmark
                                 </a>
                             {% endif %}
-                            <p class="bookmark-count">{{ bookmark_count }} bookmark{{ bookmark_count|pluralize }}</p>
+                            {% if bookmark_count %}
+                                <p class="bookmark-count">{{ bookmark_count }} bookmark{{ bookmark_count|pluralize }}</p>
+                            {% endif %}
                         </div>
                     </div>
                 </div>
