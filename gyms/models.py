@@ -72,6 +72,14 @@ class Gym(models.Model):
 
 
 class Review(models.Model):
+    RATING_CHOICES = [
+        (1, '1'),
+        (2, '2'),
+        (3, '3'),
+        (4, '4'),
+        (5, '5'),
+    ]
+
     gym = models.ForeignKey(
         Gym,
         on_delete=models.CASCADE,
@@ -82,19 +90,13 @@ class Review(models.Model):
         on_delete=models.CASCADE,
         related_name='reviews'
     )
-    rating = models.PositiveSmallIntegerField()
-    title = models.CharField(max_length=120)
-    content = models.TextField()
+    rating = models.PositiveSmallIntegerField(choices=RATING_CHOICES)
+    comment = models.TextField()
     created_at = models.DateTimeField(auto_now_add=True)
-    updated_at = models.DateTimeField(auto_now=True)
 
     class Meta:
         ordering = ['-created_at']
         constraints = [
-            models.UniqueConstraint(
-                fields=['gym', 'user'],
-                name='unique_review_per_user_per_gym'
-            ),
             models.CheckConstraint(
                 condition=models.Q(rating__gte=1) & models.Q(rating__lte=5),
                 name='review_rating_between_1_and_5'
@@ -102,7 +104,7 @@ class Review(models.Model):
         ]
 
     def __str__(self):
-        return f"{self.title} - {self.gym.name}"
+        return f"{self.gym.name} review by {self.user.username}"
 
 
 class Favourite(models.Model):

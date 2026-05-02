@@ -1,7 +1,7 @@
 from django.contrib.auth.decorators import login_required
 from django.shortcuts import get_object_or_404, redirect, render
 
-from .forms import GymForm
+from .forms import GymForm, ReviewForm
 from .models import Gym
 
 
@@ -16,7 +16,17 @@ def gym_list(request):
 
 def gym_detail(request, slug):
     gym = get_object_or_404(Gym, slug=slug)
-    return render(request, 'gyms/gym_detail.html', {'gym': gym})
+    reviews = gym.reviews.select_related('user')
+    review_form = ReviewForm() if request.user.is_authenticated else None
+    return render(
+        request,
+        'gyms/gym_detail.html',
+        {
+            'gym': gym,
+            'reviews': reviews,
+            'review_form': review_form,
+        },
+    )
 
 
 @login_required
@@ -32,3 +42,30 @@ def add_gym(request):
         form = GymForm()
 
     return render(request, 'gyms/add_gym.html', {'form': form})
+
+
+@login_required
+def add_review(request, slug):
+    gym = get_object_or_404(Gym, slug=slug)
+
+    if request.method != 'POST':
+        return redirect('gym_detail', slug=gym.slug)
+
+    form = ReviewForm(request.POST)
+    if form.is_valid():
+        review = form.save(commit=False)
+        review.gym = gym
+        review.user = request.user
+        review.save()
+        return redirect('gym_detail', slug=gym.slug)
+
+    reviews = gym.reviews.select_related('user')
+    return render(
+        request,
+        'gyms/gym_detail.html',
+        {
+            'gym': gym,
+            'reviews': reviews,
+            'review_form': form,
+        },
+    )
