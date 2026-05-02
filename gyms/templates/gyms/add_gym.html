@@ -3,6 +3,7 @@
 {% block title %}Add Gym - Gym Hub UK{% endblock %}
 
 {% block content %}
+<!-- Add gym form card. -->
 <div class="row justify-content-center">
     <div class="col-lg-8 col-xl-7">
         <div class="card border-0 shadow-sm rounded-4 add-gym-card">
@@ -13,8 +14,10 @@
                     <p class="text-secondary mb-0">Share a gym with the community by filling in the details below.</p>
                 </div>
 
+                <!-- enctype is needed so uploaded gym images are saved. -->
                 <form method="POST" enctype="multipart/form-data">
                     {% csrf_token %}
+                    <!-- Google Places search can auto-fill the form fields below. -->
                     <div class="mb-4">
                         <label class="form-label" for="autocomplete">Search gym or address</label>
                         <input
@@ -26,6 +29,7 @@
                         >
                     </div>
 
+                    <!-- Show helpful messages if Google autocomplete cannot run. -->
                     {% if not google_maps_api_key %}
                         <div class="bg-light rounded-4 p-3 mb-4">
                             <p class="mb-0 text-secondary">
@@ -46,6 +50,7 @@
                         </p>
                     </div>
 
+                    <!-- Render normal form fields from GymForm. -->
                     {% for field in form.visible_fields %}
                         <p>
                             <label for="{{ field.id_for_label }}">
@@ -64,6 +69,7 @@
                         </p>
                     {% endfor %}
 
+                    <!-- Hidden fields store Google place data such as coordinates. -->
                     {% for field in form.hidden_fields %}
                         {{ field }}
                     {% endfor %}
@@ -78,6 +84,7 @@
 
 {% block extra_scripts %}
 {% if google_maps_api_key %}
+<!-- Google Places autocomplete fills gym details after a UK result is chosen. -->
 <script>
     function showGoogleMapsError() {
         const errorPanel = document.getElementById("google-maps-error");
