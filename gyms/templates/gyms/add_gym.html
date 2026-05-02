@@ -13,33 +13,10 @@
                     <p class="text-secondary mb-0">Share a gym with the community by filling in the details below.</p>
                 </div>
 
-                <form method="post" novalidate>
+                <form method="POST">
                     {% csrf_token %}
-                    {% for field in form %}
-                        <div class="mb-3">
-                            <label class="form-label" for="{{ field.id_for_label }}">{{ field.label }}</label>
-                            {{ field }}
-                            {% if field.help_text %}
-                                <div class="form-text">{{ field.help_text }}</div>
-                            {% endif %}
-                            {% for error in field.errors %}
-                                <div class="text-danger small mt-1">{{ error }}</div>
-                            {% endfor %}
-                        </div>
-                    {% endfor %}
-
-                    {% if form.non_field_errors %}
-                        <div class="alert alert-danger">
-                            {% for error in form.non_field_errors %}
-                                <div>{{ error }}</div>
-                            {% endfor %}
-                        </div>
-                    {% endif %}
-
-                    <div class="d-flex flex-column flex-sm-row gap-3 mt-4">
-                        <button class="btn btn-primary" type="submit">Add Gym</button>
-                        <a class="btn btn-outline-secondary" href="{% url 'gym_list' %}">Back to all gyms</a>
-                    </div>
+                    {{ form.as_p }}
+                    <button class="btn btn-primary">Add Gym</button>
                 </form>
             </div>
         </div>
