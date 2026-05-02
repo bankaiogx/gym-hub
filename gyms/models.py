@@ -17,6 +17,15 @@ class Amenity(models.Model):
 
 
 class Gym(models.Model):
+    STATUS_PENDING = 'pending'
+    STATUS_APPROVED = 'approved'
+    STATUS_REJECTED = 'rejected'
+    STATUS_CHOICES = [
+        (STATUS_PENDING, 'Pending'),
+        (STATUS_APPROVED, 'Approved'),
+        (STATUS_REJECTED, 'Rejected'),
+    ]
+
     PRICE_CHOICES = [
         ('budget', 'Budget'),
         ('mid', 'Mid-range'),
@@ -38,7 +47,7 @@ class Gym(models.Model):
     google_place_id = models.CharField(max_length=255, blank=True)
     google_rating = models.FloatField(null=True, blank=True)
     opening_hours_text = models.TextField(blank=True)
-    image = models.FileField(upload_to='gym_images/', blank=True)
+    image = models.ImageField(upload_to='gym_images/', blank=True, null=True)
     image_url = models.URLField(max_length=1000, blank=True)
     website = models.URLField(max_length=500, blank=True)
     phone_number = models.CharField(max_length=50, blank=True)
@@ -57,6 +66,19 @@ class Gym(models.Model):
     )
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
+    status = models.CharField(
+        max_length=20,
+        choices=STATUS_CHOICES,
+        default=STATUS_PENDING,
+    )
+    approved_at = models.DateTimeField(null=True, blank=True)
+    approved_by = models.ForeignKey(
+        User,
+        on_delete=models.SET_NULL,
+        null=True,
+        blank=True,
+        related_name='approved_gyms'
+    )
 
     class Meta:
         ordering = ['name']

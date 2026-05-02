@@ -36,6 +36,13 @@
 
     <main>
         <div class="container mt-5">
+            {% if messages %}
+                <div class="messages mb-4">
+                    {% for message in messages %}
+                        <div class="bg-light rounded-4 p-3">{{ message }}</div>
+                    {% endfor %}
+                </div>
+            {% endif %}
             {% block content %}{% endblock %}
         </div>
     </main>

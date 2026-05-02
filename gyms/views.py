@@ -1,8 +1,9 @@
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth import login, logout
 from django.conf import settings
+from django.contrib import messages
 from django.db.models import Avg, BooleanField, Count, Exists, OuterRef, Q, Value
-from django.http import HttpResponseForbidden
+from django.http import Http404, HttpResponseForbidden
 from django.shortcuts import get_object_or_404, redirect, render
 from django.utils.http import url_has_allowed_host_and_scheme
 from django.views.decorators.http import require_http_methods, require_POST
@@ -47,11 +48,14 @@ def account_dashboard(request):
     )
 
 
-def gym_card_queryset(request):
+def gym_card_queryset(request, public_only=True):
     gyms = Gym.objects.prefetch_related('amenities').annotate(
         average_rating=Avg('reviews__rating'),
         bookmark_count=Count('favourites', distinct=True),
     )
+
+    if public_only and not request.user.is_staff:
+        gyms = gyms.filter(status=Gym.STATUS_APPROVED)
 
     if request.user.is_authenticated:
         return gyms.annotate(
@@ -65,6 +69,15 @@ def gym_card_queryset(request):
     )
 
 
+def user_can_view_gym(user, gym):
+    if gym.status == Gym.STATUS_APPROVED:
+        return True
+
+    return user.is_authenticated and (
+        user.is_staff or gym.owner_id == user.id
+    )
+
+
 @login_required
 def my_bookmarks(request):
     gyms = gym_card_queryset(request).filter(favourites__user=request.user)
@@ -73,7 +86,7 @@ def my_bookmarks(request):
 
 @login_required
 def my_submitted_gyms(request):
-    gyms = gym_card_queryset(request).filter(owner=request.user)
+    gyms = gym_card_queryset(request, public_only=False).filter(owner=request.user)
     return render(request, 'gyms/my_submitted_gyms.html', {'gyms': gyms})
 
 
@@ -165,6 +178,13 @@ def gym_list(request):
 
 def gym_detail(request, slug):
     gym = get_object_or_404(Gym.objects.prefetch_related('amenities'), slug=slug)
+    can_view_moderation_status = (
+        request.user.is_authenticated
+        and (request.user.is_staff or gym.owner_id == request.user.id)
+    )
+    if not user_can_view_gym(request.user, gym):
+        raise Http404('Gym not found')
+
     reviews = gym.reviews.select_related('user')
     average_rating = gym.reviews.aggregate(Avg('rating'))['rating__avg']
     bookmark_count = gym.favourites.count()
@@ -189,6 +209,7 @@ def gym_detail(request, slug):
             'is_bookmarked': is_bookmarked,
             'review_form': review_form,
             'user_review': user_review,
+            'show_moderation_status': can_view_moderation_status,
             'google_maps_api_key': settings.GOOGLE_MAPS_API_KEY,
         },
     )
@@ -203,6 +224,10 @@ def add_gym(request):
             gym.owner = request.user
             gym.save()
             form.save_m2m()
+            messages.success(
+                request,
+                'Your gym has been submitted and is awaiting approval.'
+            )
             return redirect('gym_detail', slug=gym.slug)
     else:
         form = GymForm()
@@ -221,6 +246,8 @@ def add_gym(request):
 @require_POST
 def add_review(request, slug):
     gym = get_object_or_404(Gym, slug=slug)
+    if not user_can_view_gym(request.user, gym):
+        raise Http404('Gym not found')
 
     if gym.reviews.filter(user=request.user).exists():
         return redirect('gym_detail', slug=gym.slug)
@@ -246,6 +273,9 @@ def add_review(request, slug):
             'is_bookmarked': gym.favourites.filter(user=request.user).exists(),
             'review_form': form,
             'user_review': None,
+            'show_moderation_status': (
+                request.user.is_staff or gym.owner_id == request.user.id
+            ),
             'google_maps_api_key': settings.GOOGLE_MAPS_API_KEY,
         },
     )
@@ -256,6 +286,8 @@ def edit_review(request, review_id):
     review = get_object_or_404(Review, pk=review_id)
     if review.user != request.user:
         return HttpResponseForbidden('You can only edit your own reviews.')
+    if not user_can_view_gym(request.user, review.gym):
+        raise Http404('Gym not found')
 
     if request.method == 'POST':
         form = ReviewForm(request.POST, instance=review)
@@ -282,6 +314,8 @@ def delete_review(request, review_id):
     review = get_object_or_404(Review, pk=review_id)
     if review.user != request.user:
         return HttpResponseForbidden('You can only delete your own reviews.')
+    if not user_can_view_gym(request.user, review.gym):
+        raise Http404('Gym not found')
 
     gym_slug = review.gym.slug
     review.delete()
@@ -292,6 +326,9 @@ def delete_review(request, review_id):
 @require_POST
 def toggle_bookmark(request, slug):
     gym = get_object_or_404(Gym, slug=slug)
+    if not user_can_view_gym(request.user, gym):
+        raise Http404('Gym not found')
+
     bookmark, created = Favourite.objects.get_or_create(
         gym=gym,
         user=request.user,
