@@ -130,7 +130,7 @@
 
                 <div class="mt-4">
                     <h2 class="h5">Description</h2>
-                    <p class="text-secondary mb-0">{{ gym.description }}</p>
+                    <p class="text-secondary mb-0">{{ gym.description|default:'No description provided yet.' }}</p>
                 </div>
 
                 <div class="mt-5">

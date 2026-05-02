@@ -51,7 +51,12 @@
 
                     {% for field in form.visible_fields %}
                         <p>
-                            {{ field.label_tag }}
+                            <label for="{{ field.id_for_label }}">
+                                {{ field.label }}
+                                {% if field.field.required %}
+                                    <span class="required-marker" aria-label="required">*</span>
+                                {% endif %}
+                            </label>
                             {{ field }}
                             {% if field.help_text %}
                                 <span class="form-text">{{ field.help_text }}</span>

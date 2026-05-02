@@ -39,7 +39,7 @@ class Gym(models.Model):
     image_url = models.URLField(max_length=1000, blank=True)
     website = models.URLField(max_length=500, blank=True)
     phone_number = models.CharField(max_length=50, blank=True)
-    description = models.TextField()
+    description = models.TextField(blank=True)
     price_range = models.CharField(
         max_length=20,
         choices=PRICE_CHOICES,
