@@ -49,6 +49,7 @@ def account_dashboard(request):
 
 
 def gym_card_queryset(request, public_only=True):
+    # Shared queryset for pages that display gym cards.
     gyms = Gym.objects.prefetch_related('amenities').annotate(
         average_rating=Avg('reviews__rating'),
         bookmark_count=Count('favourites', distinct=True),
@@ -70,6 +71,7 @@ def gym_card_queryset(request, public_only=True):
 
 
 def user_can_view_gym(user, gym):
+    # Pending/rejected gyms are private to the submitter and staff.
     if gym.status == Gym.STATUS_APPROVED:
         return True
 
@@ -91,6 +93,7 @@ def my_submitted_gyms(request):
 
 
 def gym_list(request):
+    # Filters come from GET parameters so searches can be bookmarked/shared.
     query = request.GET.get('q', '').strip()
     price = request.GET.get('price', '').strip()
     sort = request.GET.get('sort', 'newest').strip()
@@ -105,6 +108,7 @@ def gym_list(request):
 
     gyms = gym_card_queryset(request)
 
+    # Search across the main text fields used in gym listings.
     if query:
         gyms = gyms.filter(
             Q(name__icontains=query)
@@ -147,6 +151,7 @@ def gym_list(request):
 
 def gym_detail(request, slug):
     gym = get_object_or_404(Gym.objects.prefetch_related('amenities'), slug=slug)
+    # Only allowed users can view gyms still waiting for approval.
     can_view_moderation_status = (
         request.user.is_authenticated
         and (request.user.is_staff or gym.owner_id == request.user.id)
@@ -161,6 +166,7 @@ def gym_detail(request, slug):
     user_review = None
     review_form = None
 
+    # Logged-in users can bookmark and review from the detail page.
     if request.user.is_authenticated:
         is_bookmarked = gym.favourites.filter(user=request.user).exists()
         user_review = reviews.filter(user=request.user).first()
@@ -189,6 +195,7 @@ def add_gym(request):
     if request.method == 'POST':
         form = GymForm(request.POST, request.FILES)
         if form.is_valid():
+            # New submissions are linked to the current user and await approval.
             gym = form.save(commit=False)
             gym.owner = request.user
             gym.save()
@@ -218,6 +225,7 @@ def add_review(request, slug):
     if not user_can_view_gym(request.user, gym):
         raise Http404('Gym not found')
 
+    # The model also enforces one review per user per gym.
     if gym.reviews.filter(user=request.user).exists():
         return redirect('gym_detail', slug=gym.slug)
 
@@ -298,6 +306,7 @@ def toggle_bookmark(request, slug):
     if not user_can_view_gym(request.user, gym):
         raise Http404('Gym not found')
 
+    # Toggle behaviour: create if missing, delete if it already exists.
     bookmark, created = Favourite.objects.get_or_create(
         gym=gym,
         user=request.user,
