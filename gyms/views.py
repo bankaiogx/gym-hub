@@ -16,6 +16,8 @@ def home(request):
 def gym_list(request):
     query = request.GET.get('q', '').strip()
     price = request.GET.get('price', '').strip()
+    min_rating = request.GET.get('rating', '').strip()
+    bookmarked_only = request.GET.get('bookmarked') == '1'
     selected_amenity_ids = request.GET.getlist('amenities')
     gyms = Gym.objects.prefetch_related('amenities').annotate(
         average_rating=Avg('reviews__rating'),
@@ -37,6 +39,8 @@ def gym_list(request):
         gyms = gyms.filter(
             Q(name__icontains=query)
             | Q(city__icontains=query)
+            | Q(postcode__icontains=query)
+            | Q(address__icontains=query)
             | Q(description__icontains=query)
         )
 
@@ -46,6 +50,15 @@ def gym_list(request):
     if selected_amenity_ids:
         gyms = gyms.filter(amenities__id__in=selected_amenity_ids).distinct()
 
+    if min_rating:
+        gyms = gyms.filter(average_rating__gte=min_rating)
+
+    if bookmarked_only:
+        if request.user.is_authenticated:
+            gyms = gyms.filter(favourites__user=request.user)
+        else:
+            gyms = gyms.none()
+
     return render(
         request,
         'gyms/gym_list.html',
@@ -53,10 +66,18 @@ def gym_list(request):
             'gyms': gyms,
             'query': query,
             'price': price,
+            'min_rating': min_rating,
+            'bookmarked_only': bookmarked_only,
             'amenities': Amenity.objects.all(),
             'selected_amenity_ids': selected_amenity_ids,
-            'active_filter_count': len(selected_amenity_ids) + (1 if price else 0),
+            'active_filter_count': (
+                len(selected_amenity_ids)
+                + (1 if price else 0)
+                + (1 if min_rating else 0)
+                + (1 if bookmarked_only else 0)
+            ),
             'price_choices': Gym.PRICE_CHOICES,
+            'rating_choices': [5, 4, 3, 2, 1],
         },
     )
 

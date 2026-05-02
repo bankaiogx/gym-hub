@@ -301,6 +301,27 @@
             padding: 0.1rem 0.4rem;
         }
 
+        .bookmark-filter {
+            align-items: center;
+            background: rgba(255, 255, 255, 0.045);
+            border: 1px solid var(--gymxp-border);
+            border-radius: 16px;
+            color: var(--gymxp-foreground);
+            cursor: pointer;
+            display: flex;
+            gap: 0.55rem;
+            padding: 0.65rem 0.8rem;
+        }
+
+        .bookmark-filter input {
+            accent-color: var(--gymxp-accent);
+        }
+
+        .bookmark-filter:has(input:checked) {
+            background: var(--gymxp-accent-soft);
+            border-color: var(--gymxp-accent-border);
+        }
+
         label {
             color: var(--gymxp-muted);
             font-weight: 800;
