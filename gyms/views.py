@@ -46,6 +46,36 @@ def account_dashboard(request):
     )
 
 
+def gym_card_queryset(request):
+    gyms = Gym.objects.prefetch_related('amenities').annotate(
+        average_rating=Avg('reviews__rating'),
+        bookmark_count=Count('favourites', distinct=True),
+    )
+
+    if request.user.is_authenticated:
+        return gyms.annotate(
+            is_bookmarked=Exists(
+                Favourite.objects.filter(gym=OuterRef('pk'), user=request.user)
+            )
+        )
+
+    return gyms.annotate(
+        is_bookmarked=Value(False, output_field=BooleanField())
+    )
+
+
+@login_required
+def my_bookmarks(request):
+    gyms = gym_card_queryset(request).filter(favourites__user=request.user)
+    return render(request, 'gyms/my_bookmarks.html', {'gyms': gyms})
+
+
+@login_required
+def my_submitted_gyms(request):
+    gyms = gym_card_queryset(request).filter(owner=request.user)
+    return render(request, 'gyms/my_submitted_gyms.html', {'gyms': gyms})
+
+
 def gym_list(request):
     query = request.GET.get('q', '').strip()
     price = request.GET.get('price', '').strip()
@@ -64,21 +94,7 @@ def gym_list(request):
     if sort not in valid_sort_values:
         sort = 'az'
 
-    gyms = Gym.objects.prefetch_related('amenities').annotate(
-        average_rating=Avg('reviews__rating'),
-        bookmark_count=Count('favourites', distinct=True),
-    )
-
-    if request.user.is_authenticated:
-        gyms = gyms.annotate(
-            is_bookmarked=Exists(
-                Favourite.objects.filter(gym=OuterRef('pk'), user=request.user)
-            )
-        )
-    else:
-        gyms = gyms.annotate(
-            is_bookmarked=Value(False, output_field=BooleanField())
-        )
+    gyms = gym_card_queryset(request)
 
     if query:
         gyms = gyms.filter(
