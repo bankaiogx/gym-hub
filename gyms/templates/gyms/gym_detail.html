@@ -5,10 +5,12 @@
 {% block title %}{{ gym.name }} - Gym Hub UK{% endblock %}
 
 {% block content %}
+<!-- Main gym profile card. -->
 <div class="row justify-content-center">
     <div class="col-lg-8">
         <div class="card border-0 shadow-sm rounded-4">
             <div class="card-body p-4 p-lg-5">
+                <!-- Gym title, moderation badge, price, and bookmark action. -->
                 <div class="d-flex flex-column flex-md-row justify-content-between align-items-md-start gap-3 mb-4">
                     <div>
                         <p class="text-uppercase text-primary fw-semibold small mb-2">Gym Profile</p>
@@ -47,6 +49,7 @@
                     </div>
                 </div>
 
+                <!-- Prefer uploaded image, then Google image, then fallback image. -->
                 <div class="gym-detail-photo mb-4">
                     {% if gym.image %}
                         <img src="{{ gym.image.url }}" alt="{{ gym.name }}">
@@ -57,6 +60,7 @@
                     {% endif %}
                 </div>
 
+                <!-- Basic location and visit information. -->
                 <div class="row g-4">
                     <div class="col-md-6">
                         <div class="p-3 bg-light rounded-4 h-100">
@@ -102,6 +106,7 @@
                     </div>
                 </div>
 
+                <!-- Only show the map when the gym has coordinates. -->
                 {% if gym.latitude and gym.longitude %}
                     <div class="map-panel mt-4">
                         {% if google_maps_api_key %}
@@ -135,11 +140,13 @@
                     </div>
                 {% endif %}
 
+                <!-- Gym description added by the submitter. -->
                 <div class="mt-4">
                     <h2 class="h5">Description</h2>
                     <p class="text-secondary mb-0">{{ gym.description|default:'No description provided yet.' }}</p>
                 </div>
 
+                <!-- Amenities are selected separately from Google Places data. -->
                 <div class="mt-4">
                     <h2 class="h5">Amenities</h2>
                     {% with gym_amenities=gym.amenities.all %}
@@ -158,6 +165,7 @@
                     {% endwith %}
                 </div>
 
+                <!-- Existing reviews and owner-only edit/delete buttons. -->
                 <div class="mt-5">
                     <h2 class="h4 mb-3">Reviews</h2>
 
@@ -192,6 +200,7 @@
                     {% endif %}
                 </div>
 
+                <!-- Logged-in users can leave one review per gym. -->
                 <div class="mt-5">
                     <h2 class="h4 mb-3">Add Review</h2>
 
@@ -224,6 +233,7 @@
 
 {% block extra_scripts %}
 {% if google_maps_api_key and gym.latitude and gym.longitude %}
+<!-- Load Google Maps only when the detail page needs a map. -->
 <script>
     function showGoogleMapsError() {
         const errorPanel = document.getElementById("google-maps-error");
