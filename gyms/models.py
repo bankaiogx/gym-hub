@@ -117,7 +117,7 @@ class Favourite(models.Model):
     gym = models.ForeignKey(
         Gym,
         on_delete=models.CASCADE,
-        related_name='favourited_by'
+        related_name='favourites'
     )
     created_at = models.DateTimeField(auto_now_add=True)
 

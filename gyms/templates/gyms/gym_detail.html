@@ -14,7 +14,31 @@
                         <h1 class="mb-2">{{ gym.name }}</h1>
                         <p class="text-secondary mb-0">Added by {{ gym.owner.username }}</p>
                     </div>
-                    <span class="badge text-bg-primary fs-6">{{ gym.get_price_range_display }}</span>
+                    <div class="d-flex flex-column align-items-start align-items-md-end gap-3">
+                        <span class="badge text-bg-primary fs-6">{{ gym.get_price_range_display }}</span>
+                        <div class="bookmark-actions">
+                            {% if user.is_authenticated %}
+                                <form class="bookmark-form" method="POST" action="{% url 'toggle_bookmark' gym.slug %}">
+                                    {% csrf_token %}
+                                    <input type="hidden" name="next" value="{{ request.get_full_path }}">
+                                    <button
+                                        class="bookmark-button{% if is_bookmarked %} is-bookmarked{% endif %}"
+                                        type="submit"
+                                        aria-pressed="{% if is_bookmarked %}true{% else %}false{% endif %}"
+                                    >
+                                        <span aria-hidden="true">&#128278;</span>
+                                        {% if is_bookmarked %}Bookmarked{% else %}Bookmark{% endif %}
+                                    </button>
+                                </form>
+                            {% else %}
+                                <a class="bookmark-button" href="{% url 'admin:login' %}?next={{ request.get_full_path|urlencode }}">
+                                    <span aria-hidden="true">&#128278;</span>
+                                    Log in to bookmark
+                                </a>
+                            {% endif %}
+                            <p class="bookmark-count">{{ bookmark_count }} bookmark{{ bookmark_count|pluralize }}</p>
+                        </div>
+                    </div>
                 </div>
 
                 <div class="row g-4">
