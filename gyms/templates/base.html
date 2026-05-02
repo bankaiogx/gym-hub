@@ -166,6 +166,11 @@
             box-shadow: var(--gymxp-card-shadow) !important;
         }
 
+        .add-gym-card,
+        .add-gym-card .card-body {
+            overflow: visible;
+        }
+
         .bg-light {
             background: var(--gymxp-surface-inset) !important;
             border: 1px solid var(--gymxp-border-soft);
@@ -429,6 +434,11 @@
 
         .map-panel-body {
             padding: 1rem;
+        }
+
+        .pac-container {
+            pointer-events: auto !important;
+            z-index: 99999 !important;
         }
 
         @media (min-width: 576px) {
