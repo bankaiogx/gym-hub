@@ -593,6 +593,45 @@ main > .container {
     min-height: 52px;
 }
 
+.search-controls {
+    align-items: stretch;
+    display: flex;
+    gap: 0.85rem;
+}
+
+.search-controls .form-control,
+.search-controls .btn {
+    align-items: center;
+    display: inline-flex;
+    height: 52px;
+    justify-content: center;
+    line-height: 1;
+    min-height: 52px;
+}
+
+.search-controls .form-control {
+    display: block;
+    flex: 1 1 auto;
+    min-width: 0;
+}
+
+.search-filter-dropdown {
+    display: flex;
+    flex: 0 0 auto;
+}
+
+.search-filter-dropdown .filter-button {
+    min-width: 116px;
+    padding-inline: 1.15rem;
+}
+
+.search-submit-button,
+.search-clear-button {
+    flex: 0 0 auto;
+    min-width: 92px;
+    padding-inline: 1.15rem;
+}
+
 .map-panel {
     background: var(--gymxp-glass-bg);
     border: 1px solid var(--gymxp-border);
@@ -630,6 +669,20 @@ main > .container {
 
     .navbar-actions {
         justify-content: flex-start;
+        width: 100%;
+    }
+
+    .search-controls {
+        flex-direction: column;
+    }
+
+    .search-filter-dropdown,
+    .search-submit-button,
+    .search-clear-button {
+        width: 100%;
+    }
+
+    .search-filter-dropdown .filter-button {
         width: 100%;
     }
 }

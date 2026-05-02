@@ -23,7 +23,7 @@
 
 <form class="search-panel mb-4" method="GET" action="{% url 'gym_list' %}">
     <label class="form-label" for="gym-search">Search gyms</label>
-    <div class="d-flex flex-column flex-md-row gap-3">
+    <div class="search-controls">
         <input
             class="form-control"
             id="gym-search"
@@ -32,9 +32,9 @@
             value="{{ query }}"
             placeholder="Search by name, city, postcode, or address"
         >
-        <div class="dropdown">
+        <div class="dropdown search-filter-dropdown">
             <button
-                class="btn btn-outline-secondary filter-button w-100"
+                class="btn btn-outline-secondary filter-button"
                 type="button"
                 data-bs-toggle="dropdown"
                 data-bs-auto-close="outside"
@@ -121,9 +121,9 @@
                 </div>
             </div>
         </div>
-        <button class="btn btn-primary" type="submit">Search</button>
+        <button class="btn btn-primary search-submit-button" type="submit">Search</button>
         {% if query or active_filter_count %}
-            <a class="btn btn-outline-secondary" href="{% url 'gym_list' %}">Clear</a>
+            <a class="btn btn-outline-secondary search-clear-button" href="{% url 'gym_list' %}">Clear</a>
         {% endif %}
     </div>
 </form>
