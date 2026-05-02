@@ -71,6 +71,11 @@
                     <div class="map-panel mt-4">
                         {% if google_maps_api_key %}
                             <div id="map" class="gym-map" aria-label="Map showing {{ gym.name }}"></div>
+                            <div id="google-maps-error" class="map-panel-body" hidden>
+                                <p class="mb-0 text-secondary">
+                                    Google Maps could not load. Check the API key restrictions, billing, and enabled APIs in Google Cloud.
+                                </p>
+                            </div>
                         {% else %}
                             <div class="gym-map d-flex align-items-center justify-content-center p-4 text-center">
                                 <p class="text-secondary mb-0">
@@ -156,7 +161,19 @@
 {% block extra_scripts %}
 {% if google_maps_api_key and gym.latitude and gym.longitude %}
 <script>
+    function showGoogleMapsError() {
+        const errorPanel = document.getElementById("google-maps-error");
+        if (errorPanel) errorPanel.hidden = false;
+    }
+
+    window.gm_authFailure = showGoogleMapsError;
+
     window.initMap = function () {
+        if (!window.google || !google.maps) {
+            showGoogleMapsError();
+            return;
+        }
+
         const location = {
             lat: {{ gym.latitude }},
             lng: {{ gym.longitude }}
@@ -174,6 +191,7 @@
 </script>
 <script
     src="https://maps.googleapis.com/maps/api/js?key={{ google_maps_api_key }}&callback=initMap"
+    onerror="showGoogleMapsError()"
     async
     defer
 ></script>

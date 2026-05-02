@@ -37,6 +37,12 @@
                         </div>
                     {% endif %}
 
+                    <div id="google-maps-error" class="bg-light rounded-4 p-3 mb-4" hidden>
+                        <p class="mb-0 text-secondary">
+                            Google autocomplete could not load. Check that billing is active, Maps JavaScript API and Places API are enabled, and this localhost URL is allowed on the API key.
+                        </p>
+                    </div>
+
                     {% for field in form.visible_fields %}
                         <p>
                             {{ field.label_tag }}
@@ -65,9 +71,19 @@
 {% block extra_scripts %}
 {% if google_maps_api_key %}
 <script>
+    function showGoogleMapsError() {
+        const errorPanel = document.getElementById("google-maps-error");
+        if (errorPanel) errorPanel.hidden = false;
+    }
+
+    window.gm_authFailure = showGoogleMapsError;
+
     window.initAutocomplete = function () {
         const input = document.getElementById("autocomplete");
-        if (!input || !window.google || !google.maps || !google.maps.places) return;
+        if (!input || !window.google || !google.maps || !google.maps.places) {
+            showGoogleMapsError();
+            return;
+        }
 
         const autocomplete = new google.maps.places.Autocomplete(input, {
             fields: ["name", "formatted_address", "geometry", "place_id", "address_components"]
@@ -101,6 +117,7 @@
 </script>
 <script
     src="https://maps.googleapis.com/maps/api/js?key={{ google_maps_api_key }}&libraries=places&callback=initAutocomplete"
+    onerror="showGoogleMapsError()"
     async
     defer
 ></script>
