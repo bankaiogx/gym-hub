@@ -34,6 +34,11 @@ class Gym(models.Model):
     latitude = models.FloatField(null=True, blank=True)
     longitude = models.FloatField(null=True, blank=True)
     google_place_id = models.CharField(max_length=255, blank=True)
+    google_rating = models.FloatField(null=True, blank=True)
+    opening_hours_text = models.TextField(blank=True)
+    image_url = models.URLField(max_length=1000, blank=True)
+    website = models.URLField(max_length=500, blank=True)
+    phone_number = models.CharField(max_length=50, blank=True)
     description = models.TextField()
     price_range = models.CharField(
         max_length=20,

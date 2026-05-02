@@ -25,7 +25,7 @@
                             autocomplete="off"
                         >
                         <p class="text-secondary small mt-2 mb-0">
-                            Pick a UK Google suggestion to auto-fill the name, address, city, postcode, and map location.
+                            Pick a UK Google suggestion to auto-fill the name, address, city, postcode, map location, and available Google details.
                         </p>
                     </div>
 
@@ -109,7 +109,18 @@
 
         const autocomplete = new google.maps.places.Autocomplete(input, {
             componentRestrictions: { country: "gb" },
-            fields: ["name", "formatted_address", "geometry", "place_id", "address_components"]
+            fields: [
+                "name",
+                "formatted_address",
+                "geometry",
+                "place_id",
+                "address_components",
+                "rating",
+                "opening_hours",
+                "photos",
+                "website",
+                "formatted_phone_number"
+            ]
         });
 
         autocomplete.addListener("place_changed", function () {
@@ -127,6 +138,18 @@
             document.getElementById("id_latitude").value = place.geometry.location.lat();
             document.getElementById("id_longitude").value = place.geometry.location.lng();
             document.getElementById("id_google_place_id").value = place.place_id || "";
+            document.getElementById("id_google_rating").value = place.rating || "";
+            document.getElementById("id_website").value = place.website || "";
+            document.getElementById("id_phone_number").value = place.formatted_phone_number || "";
+
+            const weekdayText = place.opening_hours?.weekday_text || [];
+            document.getElementById("id_opening_hours_text").value = weekdayText.join("\n");
+            if (weekdayText.length > 0) {
+                document.getElementById("id_opening_hours").value = weekdayText.join(" | ").slice(0, 255);
+            }
+
+            const firstPhoto = place.photos?.[0];
+            document.getElementById("id_image_url").value = firstPhoto ? firstPhoto.getUrl({ maxWidth: 900 }) : "";
 
             let postcode = "";
             let city = "";

@@ -1,4 +1,5 @@
 {% extends 'base.html' %}
+{% load static %}
 {% load rating_tags %}
 
 {% block title %}{{ gym.name }} - Gym Hub UK{% endblock %}
@@ -41,19 +42,46 @@
                     </div>
                 </div>
 
+                <div class="gym-detail-photo mb-4">
+                    {% if gym.image_url %}
+                        <img src="{{ gym.image_url }}" alt="{{ gym.name }}">
+                    {% else %}
+                        <img src="{% static 'gyms/images/gymxp-session-bg.jpg' %}" alt="{{ gym.name }}">
+                    {% endif %}
+                </div>
+
                 <div class="row g-4">
                     <div class="col-md-6">
                         <div class="p-3 bg-light rounded-4 h-100">
                             <h2 class="h5">Location</h2>
                             <p class="mb-2"><strong>City:</strong> {{ gym.city }}</p>
                             <p class="mb-0"><strong>Address:</strong> {{ gym.address }}</p>
+                            {% if gym.phone_number %}
+                                <p class="mt-2 mb-0"><strong>Phone:</strong> {{ gym.phone_number }}</p>
+                            {% endif %}
+                            {% if gym.website %}
+                                <p class="mt-2 mb-0">
+                                    <strong>Website:</strong>
+                                    <a href="{{ gym.website }}" target="_blank" rel="noopener noreferrer">Visit website</a>
+                                </p>
+                            {% endif %}
                         </div>
                     </div>
                     <div class="col-md-6">
                         <div class="p-3 bg-light rounded-4 h-100">
                             <h2 class="h5">Visit Info</h2>
-                            <p class="mb-2"><strong>Opening Hours:</strong> {{ gym.opening_hours|default:'Not provided' }}</p>
+                            <p class="mb-2">
+                                <strong>Opening Hours:</strong>
+                                {% if gym.opening_hours_text %}
+                                    <br>{{ gym.opening_hours_text|linebreaksbr }}
+                                {% else %}
+                                    {{ gym.opening_hours|default:'Not provided' }}
+                                {% endif %}
+                            </p>
                             <p class="mb-0"><strong>Postcode:</strong> {{ gym.postcode|default:'Not provided' }}</p>
+                            {% if gym.google_rating %}
+                                <p class="mt-2 mb-0"><strong>Google Rating:</strong> {{ gym.google_rating }}/5</p>
+                            {% endif %}
                             <div class="mt-2">
                                 <strong>Average Rating:</strong>
                                 <span class="rating-stars" aria-label="{{ average_rating|rating_label }}">

@@ -51,7 +51,11 @@
     {% for gym in gyms %}
         <div class="card gym-card mb-3">
             <div class="gym-card-media">
-                <img src="{% static 'gyms/images/gymxp-session-bg.jpg' %}" alt="">
+                {% if gym.image_url %}
+                    <img src="{{ gym.image_url }}" alt="{{ gym.name }}">
+                {% else %}
+                    <img src="{% static 'gyms/images/gymxp-session-bg.jpg' %}" alt="{{ gym.name }}">
+                {% endif %}
             </div>
             <div class="card-body">
                 <div class="d-flex flex-column flex-md-row justify-content-between gap-3 mb-3">

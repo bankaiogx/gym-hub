@@ -14,6 +14,11 @@ class GymForm(forms.ModelForm):
             'latitude',
             'longitude',
             'google_place_id',
+            'google_rating',
+            'opening_hours_text',
+            'image_url',
+            'website',
+            'phone_number',
             'description',
             'price_range',
             'opening_hours',
@@ -23,6 +28,11 @@ class GymForm(forms.ModelForm):
             'latitude': forms.HiddenInput(),
             'longitude': forms.HiddenInput(),
             'google_place_id': forms.HiddenInput(),
+            'google_rating': forms.HiddenInput(),
+            'opening_hours_text': forms.HiddenInput(),
+            'image_url': forms.HiddenInput(),
+            'website': forms.HiddenInput(),
+            'phone_number': forms.HiddenInput(),
         }
 
     def __init__(self, *args, **kwargs):
