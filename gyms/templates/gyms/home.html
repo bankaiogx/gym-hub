@@ -1,33 +1,43 @@
 {% extends 'base.html' %}
+{% load static %}
 
 {% block title %}Gym Hub UK{% endblock %}
 
 {% block content %}
-<div class="row justify-content-center">
-    <div class="col-lg-10">
-        <div class="card hero-card rounded-4">
-            <div class="card-body p-5 text-center text-lg-start">
-                <div class="row align-items-center g-4">
-                    <div class="col-lg-7">
-                        <span class="badge bg-light text-primary mb-3">Discover. Review. Share.</span>
-                        <h1 class="display-5 fw-bold">Find the right gym anywhere in the UK.</h1>
-                        <p class="lead mb-4">Explore local gyms, compare facilities, and help other members by adding places worth training at.</p>
-                        <div class="d-flex flex-column flex-sm-row gap-3">
-                            <a class="btn btn-light btn-lg" href="{% url 'gym_list' %}">Browse Gyms</a>
-                            <a class="btn btn-outline-light btn-lg" href="{% url 'add_gym' %}">Add a Gym</a>
-                        </div>
-                    </div>
-                    <div class="col-lg-5">
-                        <div class="bg-white bg-opacity-10 border border-white border-opacity-25 rounded-4 p-4">
-                            <h2 class="h4">Why Gym Hub?</h2>
-                            <ul class="list-unstyled mb-0">
-                                <li class="mb-2">Track gyms across different cities</li>
-                                <li class="mb-2">Highlight pricing and opening hours</li>
-                                <li>Make it easier for users to find trusted spots</li>
-                            </ul>
-                        </div>
-                    </div>
-                </div>
+<section class="card hero-card home-hero rounded-4 mb-5">
+    <img class="home-hero-fallback" src="{% static 'gyms/images/gymxp-session-bg.jpg' %}" alt="">
+    <video autoplay muted loop playsinline poster="{% static 'gyms/images/gymxp-session-bg.jpg' %}">
+        <source src="{% static 'gyms/videos/gymxp-launch-hero.mp4' %}" type="video/mp4">
+    </video>
+    <div class="card-body p-4 p-lg-5 d-flex align-items-center home-hero-content">
+        <div class="col-lg-7 text-center text-lg-start">
+            <span class="badge bg-light text-dark mb-3">Discover. Review. Share.</span>
+            <h1 class="display-5 fw-bold">Find the right gym anywhere in the UK.</h1>
+            <p class="lead mb-4">Explore local gyms, compare facilities, and help other members by adding places worth training at.</p>
+            <div class="d-flex flex-column flex-sm-row gap-3 justify-content-center justify-content-lg-start">
+                <a class="btn btn-light btn-lg" href="{% url 'gym_list' %}">Browse Gyms</a>
+                <a class="btn btn-outline-light btn-lg" href="{% url 'add_gym' %}">Add a Gym</a>
+            </div>
+        </div>
+    </div>
+</section>
+
+<div class="row g-4">
+    <div class="col-md-6">
+        <div class="home-feature-card h-100">
+            <img src="{% static 'gyms/images/gymxp-squat.jpg' %}" alt="Gym training space">
+            <div class="p-4">
+                <h2 class="h4">Compare Real Training Spaces</h2>
+                <p class="text-secondary mb-0">Use reviews, ratings, prices, and location details to find a gym that fits the way you train.</p>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-6">
+        <div class="home-feature-card h-100">
+            <img src="{% static 'gyms/images/gymxp-hypertrophy-bg.jpg' %}" alt="Dark gym interior">
+            <div class="p-4">
+                <h2 class="h4">Share Better Gym Picks</h2>
+                <p class="text-secondary mb-0">Add gyms for your city and help other members spot places worth visiting.</p>
             </div>
         </div>
     </div>

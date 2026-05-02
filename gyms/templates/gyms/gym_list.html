@@ -1,4 +1,6 @@
 {% extends 'base.html' %}
+{% load static %}
+{% load rating_tags %}
 
 {% block title %}All Gyms - Gym Hub UK{% endblock %}
 
@@ -14,11 +16,20 @@
 {% if gyms %}
     {% for gym in gyms %}
         <div class="card gym-card mb-3">
+            <div class="gym-card-media">
+                <img src="{% static 'gyms/images/gymxp-session-bg.jpg' %}" alt="">
+            </div>
             <div class="card-body">
                 <h4 class="card-title">
                     <a href="{% url 'gym_detail' gym.slug %}">{{ gym.name }}</a>
                 </h4>
                 <p class="mb-2"><strong>City:</strong> {{ gym.city }}</p>
+                <div class="rating-stars mb-3" aria-label="{{ gym.average_rating|rating_label }}">
+                    {% for star in gym.average_rating|star_states %}
+                        <span class="rating-star rating-star-{{ star }}">&#9733;</span>
+                    {% endfor %}
+                    <span class="rating-text">{{ gym.average_rating|rating_label }}</span>
+                </div>
                 <p class="text-secondary">{{ gym.description }}</p>
                 <p class="mb-0"><span class="price-pill">Price: {{ gym.get_price_range_display }}</span></p>
             </div>

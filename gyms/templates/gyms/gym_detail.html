@@ -1,4 +1,5 @@
 {% extends 'base.html' %}
+{% load rating_tags %}
 
 {% block title %}{{ gym.name }} - Gym Hub UK{% endblock %}
 
@@ -29,6 +30,15 @@
                             <h2 class="h5">Visit Info</h2>
                             <p class="mb-2"><strong>Opening Hours:</strong> {{ gym.opening_hours|default:'Not provided' }}</p>
                             <p class="mb-0"><strong>Postcode:</strong> {{ gym.postcode|default:'Not provided' }}</p>
+                            <div class="mt-2">
+                                <strong>Average Rating:</strong>
+                                <span class="rating-stars" aria-label="{{ average_rating|rating_label }}">
+                                    {% for star in average_rating|star_states %}
+                                        <span class="rating-star rating-star-{{ star }}">&#9733;</span>
+                                    {% endfor %}
+                                    <span class="rating-text">{{ average_rating|rating_label }}</span>
+                                </span>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -46,7 +56,11 @@
                             <div class="border rounded-3 p-3 mb-3 bg-light">
                                 <div class="d-flex flex-column flex-sm-row justify-content-between gap-2 mb-2">
                                     <strong>{{ review.user.username }}</strong>
-                                    <span class="badge text-bg-dark">{{ review.rating }}/5</span>
+                                    <span class="rating-stars" aria-label="{{ review.rating }}/5">
+                                        {% for star in review.rating|star_states %}
+                                            <span class="rating-star rating-star-{{ star }}">&#9733;</span>
+                                        {% endfor %}
+                                    </span>
                                 </div>
                                 <p class="mb-1">{{ review.comment }}</p>
                                 <p class="text-secondary small mb-0">{{ review.created_at|date:"d M Y" }}</p>
@@ -61,14 +75,18 @@
                     <h2 class="h4 mb-3">Add Review</h2>
 
                     {% if user.is_authenticated %}
-                        <form method="POST" action="{% url 'add_review' gym.slug %}">
-                            {% csrf_token %}
-                            {{ review_form.as_p }}
-                            <button class="btn btn-primary">Submit Review</button>
-                        </form>
+                        {% if user_review %}
+                            <p class="text-secondary">You have already reviewed this gym.</p>
+                        {% else %}
+                            <form method="POST" action="{% url 'add_review' gym.slug %}">
+                                {% csrf_token %}
+                                {{ review_form.as_p }}
+                                <button class="btn btn-primary">Submit Review</button>
+                            </form>
+                        {% endif %}
                     {% else %}
                         <p class="text-secondary">
-                            <a href="/admin/login/?next={{ request.path }}">Log in</a> to add a review.
+                            <a href="/accounts/login/">Log in</a> to leave a review.
                         </p>
                     {% endif %}
                 </div>

@@ -1,3 +1,4 @@
+{% load static %}
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -28,16 +29,45 @@
         }
 
         body {
-            background: var(--gymxp-page-bg);
+            background:
+                linear-gradient(180deg, rgba(243, 244, 246, 0.92) 0%, rgba(255, 255, 255, 0.96) 48%, rgba(229, 231, 235, 0.94) 100%),
+                url("{% static 'gyms/images/gymxp-hypertrophy-bg.jpg' %}") center top / cover fixed;
             color: var(--gymxp-foreground);
             min-height: 100vh;
         }
 
         .hero-card {
-            background: linear-gradient(135deg, #0d6efd, #0a58ca);
+            background: #030712;
             color: #fff;
             border: 0;
-            box-shadow: 0 1rem 2rem rgba(13, 110, 253, 0.18);
+            box-shadow: 0 1.5rem 4rem rgba(3, 7, 18, 0.28);
+        }
+
+        .home-hero {
+            min-height: 520px;
+            overflow: hidden;
+            position: relative;
+        }
+
+        .home-hero video,
+        .home-hero-fallback {
+            height: 100%;
+            inset: 0;
+            object-fit: cover;
+            position: absolute;
+            width: 100%;
+        }
+
+        .home-hero::after {
+            background: linear-gradient(90deg, rgba(3, 7, 18, 0.92) 0%, rgba(3, 7, 18, 0.72) 42%, rgba(3, 7, 18, 0.28) 100%);
+            content: "";
+            inset: 0;
+            position: absolute;
+        }
+
+        .home-hero-content {
+            position: relative;
+            z-index: 1;
         }
 
         .gym-card {
@@ -48,6 +78,18 @@
             box-shadow: var(--gymxp-card-shadow);
             overflow: hidden;
             transition: transform var(--gymxp-transition), box-shadow var(--gymxp-transition);
+        }
+
+        .gym-card-media {
+            aspect-ratio: 16 / 7;
+            background: #111827;
+            overflow: hidden;
+        }
+
+        .gym-card-media img {
+            height: 100%;
+            object-fit: cover;
+            width: 100%;
         }
 
         .gym-card:hover {
@@ -86,6 +128,42 @@
             color: #fff;
             padding: 0.35rem 0.8rem;
             font-size: 0.9rem;
+        }
+
+        .rating-stars {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.15rem;
+        }
+
+        .rating-star {
+            color: #d1d5db;
+            font-size: 1.15rem;
+            line-height: 1;
+        }
+
+        .rating-star-filled {
+            color: #f59e0b;
+        }
+
+        .rating-text {
+            color: var(--gymxp-muted);
+            font-size: 0.9rem;
+            margin-left: 0.35rem;
+        }
+
+        .home-feature-card {
+            background: rgba(255, 255, 255, 0.76);
+            border: 1px solid rgba(255, 255, 255, 0.62);
+            border-radius: var(--gymxp-card-radius);
+            box-shadow: var(--gymxp-card-shadow);
+            overflow: hidden;
+        }
+
+        .home-feature-card img {
+            aspect-ratio: 16 / 9;
+            object-fit: cover;
+            width: 100%;
         }
 
         @media (min-width: 576px) {
