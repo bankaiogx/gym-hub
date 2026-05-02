@@ -69,6 +69,13 @@
                     {% endfor %}
                 </select>
 
+                <label class="form-label mt-4" for="sort-filter">Sort by</label>
+                <select class="form-select" id="sort-filter" name="sort" aria-label="Sort gyms">
+                    {% for value, label in sort_choices %}
+                        <option value="{{ value }}"{% if sort == value %} selected{% endif %}>{{ label }}</option>
+                    {% endfor %}
+                </select>
+
                 <p class="form-label mt-4 mb-2">Amenities</p>
                 <div class="amenity-filter-grid">
                     {% for amenity in amenities %}

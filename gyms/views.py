@@ -17,8 +17,19 @@ def gym_list(request):
     query = request.GET.get('q', '').strip()
     price = request.GET.get('price', '').strip()
     min_rating = request.GET.get('rating', '').strip()
+    sort = request.GET.get('sort', 'az').strip()
     bookmarked_only = request.GET.get('bookmarked') == '1'
     selected_amenity_ids = request.GET.getlist('amenities')
+    sort_choices = [
+        ('newest', 'Newest'),
+        ('highest_rated', 'Highest rated'),
+        ('most_bookmarked', 'Most bookmarked'),
+        ('az', 'A-Z'),
+    ]
+    valid_sort_values = {value for value, label in sort_choices}
+    if sort not in valid_sort_values:
+        sort = 'az'
+
     gyms = Gym.objects.prefetch_related('amenities').annotate(
         average_rating=Avg('reviews__rating'),
         bookmark_count=Count('favourites', distinct=True),
@@ -59,6 +70,15 @@ def gym_list(request):
         else:
             gyms = gyms.none()
 
+    if sort == 'newest':
+        gyms = gyms.order_by('-created_at', 'name')
+    elif sort == 'highest_rated':
+        gyms = gyms.order_by('-average_rating', 'name')
+    elif sort == 'most_bookmarked':
+        gyms = gyms.order_by('-bookmark_count', 'name')
+    else:
+        gyms = gyms.order_by('name')
+
     return render(
         request,
         'gyms/gym_list.html',
@@ -67,6 +87,7 @@ def gym_list(request):
             'query': query,
             'price': price,
             'min_rating': min_rating,
+            'sort': sort,
             'bookmarked_only': bookmarked_only,
             'amenities': Amenity.objects.all(),
             'selected_amenity_ids': selected_amenity_ids,
@@ -78,6 +99,7 @@ def gym_list(request):
             ),
             'price_choices': Gym.PRICE_CHOICES,
             'rating_choices': [5, 4, 3, 2, 1],
+            'sort_choices': sort_choices,
         },
     )
 
