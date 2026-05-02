@@ -138,6 +138,7 @@ celerybeat.pid
 # Environments
 .env
 .envrc
+ASSIGNMENT_NOTES.md
 .venv
 env/
 venv/
