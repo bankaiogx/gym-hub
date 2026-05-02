@@ -1,0 +1,28 @@
+{% extends 'base.html' %}
+
+{% block title %}My Submitted Gyms - Gym Hub UK{% endblock %}
+
+{% block content %}
+<div class="d-flex flex-column flex-md-row justify-content-between align-items-md-center gap-3 mb-4">
+    <div>
+        <p class="text-uppercase text-primary fw-semibold small mb-2">My Account</p>
+        <h1 class="mb-1">My Submitted Gyms</h1>
+        <p class="text-secondary mb-0">Gyms you have added to Gym Hub UK.</p>
+    </div>
+    <a class="btn btn-outline-secondary" href="{% url 'account_dashboard' %}">Back to My Account</a>
+</div>
+
+{% if gyms %}
+    {% for gym in gyms %}
+        {% include 'gyms/includes/gym_card.html' %}
+    {% endfor %}
+{% else %}
+    <div class="card border-0 shadow-sm rounded-4">
+        <div class="card-body p-5 text-center">
+            <h2 class="h4 mb-3">No submitted gyms yet</h2>
+            <p class="text-secondary mb-4">Add your first gym to start building your submitted list.</p>
+            <a class="btn btn-primary" href="{% url 'add_gym' %}">Add a Gym</a>
+        </div>
+    </div>
+{% endif %}
+{% endblock %}

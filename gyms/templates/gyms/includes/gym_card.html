@@ -1,0 +1,68 @@
+{% load static %}
+{% load rating_tags %}
+
+<div class="card gym-card mb-3">
+    <div class="gym-card-media">
+        {% if gym.image %}
+            <img src="{{ gym.image.url }}" alt="{{ gym.name }}">
+        {% elif gym.image_url %}
+            <img src="{{ gym.image_url }}" alt="{{ gym.name }}">
+        {% else %}
+            <img src="{% static 'gyms/images/gymxp-session-bg.jpg' %}" alt="{{ gym.name }}">
+        {% endif %}
+    </div>
+    <div class="card-body">
+        <div class="d-flex flex-column flex-md-row justify-content-between gap-3 mb-3">
+            <h4 class="card-title mb-0">
+                <a href="{% url 'gym_detail' gym.slug %}">{{ gym.name }}</a>
+            </h4>
+            <div class="bookmark-actions">
+                {% if user.is_authenticated %}
+                    <form class="bookmark-form" method="POST" action="{% url 'toggle_bookmark' gym.slug %}">
+                        {% csrf_token %}
+                        <input type="hidden" name="next" value="{{ request.get_full_path }}">
+                        <button
+                            class="bookmark-button{% if gym.is_bookmarked %} is-bookmarked{% endif %}"
+                            type="submit"
+                            aria-pressed="{% if gym.is_bookmarked %}true{% else %}false{% endif %}"
+                        >
+                            <span aria-hidden="true">&#128278;</span>
+                            {% if gym.is_bookmarked %}Bookmarked{% else %}Bookmark{% endif %}
+                        </button>
+                    </form>
+                {% else %}
+                    <a class="bookmark-button" href="{% url 'login' %}?next={{ request.get_full_path|urlencode }}">
+                        <span aria-hidden="true">&#128278;</span>
+                        Log in to bookmark
+                    </a>
+                {% endif %}
+                <p class="bookmark-count">{{ gym.bookmark_count }} bookmark{{ gym.bookmark_count|pluralize }}</p>
+            </div>
+        </div>
+        <p class="mb-2"><strong>City:</strong> {{ gym.city }}</p>
+        <div class="rating-stars mb-3" aria-label="{{ gym.average_rating|rating_label }}">
+            {% for star in gym.average_rating|star_states %}
+                <span class="rating-star rating-star-{{ star }}">&#9733;</span>
+            {% endfor %}
+            <span class="rating-text">{{ gym.average_rating|rating_label }}</span>
+        </div>
+        <div class="mb-3">
+            {% with gym_amenities=gym.amenities.all %}
+                {% if gym_amenities %}
+                    <div class="amenity-chips">
+                        {% for amenity in gym_amenities %}
+                            <span class="amenity-chip">
+                                {% if amenity.icon %}<span>{{ amenity.icon }}</span>{% endif %}
+                                <span>{{ amenity.name }}</span>
+                            </span>
+                        {% endfor %}
+                    </div>
+                {% else %}
+                    <p class="text-secondary small mb-0">No amenities listed yet.</p>
+                {% endif %}
+            {% endwith %}
+        </div>
+        <p class="text-secondary">{{ gym.description|default:'No description provided yet.' }}</p>
+        <p class="mb-0"><span class="price-pill">Price: {{ gym.get_price_range_display }}</span></p>
+    </div>
+</div>
