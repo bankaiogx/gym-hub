@@ -102,8 +102,18 @@
                     >
                     <span>Bookmarked gyms only</span>
                 </label>
+                <label class="bookmark-filter mt-3" for="submitted-filter">
+                    <input
+                        id="submitted-filter"
+                        type="checkbox"
+                        name="submitted"
+                        value="1"
+                        {% if submitted_only %}checked{% endif %}
+                    >
+                    <span>My submitted gyms only</span>
+                </label>
                 {% if not user.is_authenticated %}
-                    <p class="text-secondary small mt-2 mb-0">Log in to filter by your bookmarks.</p>
+                    <p class="text-secondary small mt-2 mb-0">Log in to filter by your bookmarks or submissions.</p>
                 {% endif %}
                 <div class="d-flex gap-2 mt-4">
                     <button class="btn btn-primary flex-fill" type="submit">Apply filters</button>

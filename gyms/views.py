@@ -33,12 +33,26 @@ def logout_view(request):
     return redirect('gym_list')
 
 
+@login_required
+def account_dashboard(request):
+    return render(
+        request,
+        'gyms/account.html',
+        {
+            'submitted_count': request.user.gyms.count(),
+            'bookmark_count': request.user.favourites.count(),
+            'review_count': request.user.reviews.count(),
+        },
+    )
+
+
 def gym_list(request):
     query = request.GET.get('q', '').strip()
     price = request.GET.get('price', '').strip()
     min_rating = request.GET.get('rating', '').strip()
     sort = request.GET.get('sort', 'az').strip()
     bookmarked_only = request.GET.get('bookmarked') == '1'
+    submitted_only = request.GET.get('submitted') == '1'
     selected_amenity_ids = request.GET.getlist('amenities')
     sort_choices = [
         ('newest', 'Newest'),
@@ -90,6 +104,12 @@ def gym_list(request):
         else:
             gyms = gyms.none()
 
+    if submitted_only:
+        if request.user.is_authenticated:
+            gyms = gyms.filter(owner=request.user)
+        else:
+            gyms = gyms.none()
+
     if sort == 'newest':
         gyms = gyms.order_by('-created_at', 'name')
     elif sort == 'highest_rated':
@@ -109,6 +129,7 @@ def gym_list(request):
             'min_rating': min_rating,
             'sort': sort,
             'bookmarked_only': bookmarked_only,
+            'submitted_only': submitted_only,
             'amenities': Amenity.objects.all(),
             'selected_amenity_ids': selected_amenity_ids,
             'active_filter_count': (
@@ -116,6 +137,7 @@ def gym_list(request):
                 + (1 if price else 0)
                 + (1 if min_rating else 0)
                 + (1 if bookmarked_only else 0)
+                + (1 if submitted_only else 0)
             ),
             'price_choices': Gym.PRICE_CHOICES,
             'rating_choices': [5, 4, 3, 2, 1],

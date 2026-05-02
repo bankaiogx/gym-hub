@@ -695,3 +695,33 @@ main > .container {
     color: #fca5a5;
     padding: 1rem;
 }
+
+/* Account page */
+.account-stats {
+    display: grid;
+    gap: 1rem;
+    grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+}
+
+.account-stat {
+    background: rgba(255, 255, 255, 0.045);
+    border: 1px solid var(--gymxp-border);
+    border-radius: 20px;
+    padding: 1rem;
+}
+
+.account-stat-number {
+    color: var(--gymxp-foreground);
+    display: block;
+    font-size: clamp(2rem, 5vw, 3rem);
+    font-weight: 900;
+    line-height: 1;
+}
+
+.account-stat-label {
+    color: var(--gymxp-muted);
+    display: block;
+    font-size: 0.9rem;
+    font-weight: 800;
+    margin-top: 0.45rem;
+}

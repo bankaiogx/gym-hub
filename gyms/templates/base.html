@@ -23,6 +23,7 @@
                     <a class="btn btn-outline-light" href="{% url 'login' %}">Login</a>
                     <a class="btn btn-outline-light" href="{% url 'signup' %}">Sign Up</a>
                 {% else %}
+                    <a class="btn btn-outline-light" href="{% url 'account_dashboard' %}">My Account</a>
                     <span class="navbar-user">
                         Signed in as {{ user.username }}
                     </span>

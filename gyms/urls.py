@@ -15,6 +15,7 @@ urlpatterns = [
     ),
     path('signup/', views.signup, name='signup'),
     path('logout/', views.logout_view, name='logout'),
+    path('account/', views.account_dashboard, name='account_dashboard'),
     path('gyms/', views.gym_list, name='gym_list'),
     path('gyms/add/', views.add_gym, name='add_gym'),
     path('gyms/<slug:slug>/bookmark/', views.toggle_bookmark, name='toggle_bookmark'),
