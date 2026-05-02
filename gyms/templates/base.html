@@ -202,7 +202,7 @@
             color: rgba(245, 247, 250, 0.38);
         }
 
-        .amenity-checkbox-list {
+        #id_amenities {
             display: grid;
             gap: 0.65rem;
             grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
@@ -211,7 +211,11 @@
             padding: 0;
         }
 
-        .amenity-checkbox-list label {
+        #id_amenities > div {
+            min-width: 0;
+        }
+
+        #id_amenities label {
             align-items: center;
             background: rgba(255, 255, 255, 0.045);
             border: 1px solid var(--gymxp-border);
@@ -222,10 +226,20 @@
             gap: 0.55rem;
             min-height: 46px;
             padding: 0.65rem 0.8rem;
+            transition: background var(--gymxp-transition), border-color var(--gymxp-transition);
+            width: 100%;
         }
 
-        .amenity-checkbox-list input {
+        #id_amenities label:has(input:checked) {
+            background: var(--gymxp-accent-soft);
+            border-color: var(--gymxp-accent-border);
+        }
+
+        #id_amenities input {
             accent-color: var(--gymxp-accent);
+            flex: 0 0 auto;
+            height: 1rem;
+            width: 1rem;
         }
 
         .amenity-filter-grid {
@@ -260,6 +274,7 @@
             color: var(--gymxp-foreground);
             min-width: min(92vw, 420px);
             padding: 1rem;
+            z-index: 9999;
         }
 
         .filter-menu .form-select {
@@ -533,7 +548,10 @@
             border: 1px solid var(--gymxp-border);
             border-radius: var(--gymxp-card-radius);
             box-shadow: var(--gymxp-card-shadow);
+            overflow: visible;
             padding: var(--gymxp-space-card-lg);
+            position: relative;
+            z-index: 20;
         }
 
         .search-panel .form-control {

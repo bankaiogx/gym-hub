@@ -77,6 +77,12 @@
                         </label>
                     {% endfor %}
                 </div>
+                <div class="d-flex gap-2 mt-4">
+                    <button class="btn btn-primary flex-fill" type="submit">Apply filters</button>
+                    {% if price or selected_amenity_ids %}
+                        <a class="btn btn-outline-secondary" href="{% url 'gym_list' %}{% if query %}?q={{ query|urlencode }}{% endif %}">Reset filters</a>
+                    {% endif %}
+                </div>
             </div>
         </div>
         <button class="btn btn-primary" type="submit">Search</button>

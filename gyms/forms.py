@@ -41,9 +41,6 @@ class GymForm(forms.ModelForm):
         super().__init__(*args, **kwargs)
         for field_name, field in self.fields.items():
             if isinstance(field.widget, forms.CheckboxSelectMultiple):
-                css_class = 'amenity-checkbox-list'
-                existing_classes = field.widget.attrs.get('class', '')
-                field.widget.attrs['class'] = f"{existing_classes} {css_class}".strip()
                 continue
 
             if isinstance(field.widget, forms.Select):
