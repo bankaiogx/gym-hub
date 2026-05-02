@@ -1,0 +1,50 @@
+{% extends 'base.html' %}
+
+{% block title %}Sign Up - Gym Hub UK{% endblock %}
+
+{% block content %}
+<div class="row justify-content-center">
+    <div class="col-lg-7 col-xl-6">
+        <div class="card border-0 shadow-sm rounded-4">
+            <div class="card-body p-4 p-lg-5">
+                <div class="mb-4">
+                    <p class="text-uppercase text-primary fw-semibold small mb-2">Join Gym Hub UK</p>
+                    <h1 class="mb-1">Create your account</h1>
+                    <p class="text-secondary mb-0">Sign up to bookmark gyms, add reviews, and share new places with the community.</p>
+                </div>
+
+                <form method="POST">
+                    {% csrf_token %}
+                    {% for field in form.visible_fields %}
+                        <p>
+                            <label for="{{ field.id_for_label }}">
+                                {{ field.label }}
+                                {% if field.field.required %}
+                                    <span class="required-marker" aria-label="required">*</span>
+                                {% endif %}
+                            </label>
+                            {{ field }}
+                            {% if field.help_text %}
+                                <span class="form-text text-secondary d-block mt-1">{{ field.help_text }}</span>
+                            {% endif %}
+                            {% for error in field.errors %}
+                                <span class="text-danger d-block">{{ error }}</span>
+                            {% endfor %}
+                        </p>
+                    {% endfor %}
+
+                    {% if form.non_field_errors %}
+                        <div class="bg-light rounded-4 p-3 mb-4">
+                            {% for error in form.non_field_errors %}
+                                <p class="text-danger mb-0">{{ error }}</p>
+                            {% endfor %}
+                        </div>
+                    {% endif %}
+
+                    <button class="btn btn-primary w-100" type="submit">Sign Up</button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

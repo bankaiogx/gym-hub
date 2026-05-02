@@ -1,4 +1,6 @@
 from django.contrib.auth.decorators import login_required
+from django.contrib.auth import login
+from django.contrib.auth.forms import UserCreationForm
 from django.conf import settings
 from django.db.models import Avg, BooleanField, Count, Exists, OuterRef, Q, Value
 from django.shortcuts import get_object_or_404, redirect, render
@@ -11,6 +13,19 @@ from .models import Amenity, Favourite, Gym
 
 def home(request):
     return render(request, 'gyms/home.html')
+
+
+def signup(request):
+    if request.method == 'POST':
+        form = UserCreationForm(request.POST)
+        if form.is_valid():
+            user = form.save()
+            login(request, user)
+            return redirect('gym_list')
+    else:
+        form = UserCreationForm()
+
+    return render(request, 'gyms/signup.html', {'form': form})
 
 
 def gym_list(request):
