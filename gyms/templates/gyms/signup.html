@@ -10,41 +10,186 @@
                 <div class="mb-4">
                     <p class="text-uppercase text-primary fw-semibold small mb-2">Join Gym Hub UK</p>
                     <h1 class="mb-1">Create your account</h1>
-                    <p class="text-secondary mb-0">Sign up to bookmark gyms, add reviews, and share new places with the community.</p>
+                    <p class="text-secondary mb-0">Create an account to bookmark gyms, leave reviews, and add listings.</p>
                 </div>
 
-                <form method="POST">
+                <form method="POST" novalidate>
                     {% csrf_token %}
-                    {% for field in form.visible_fields %}
-                        <p>
-                            <label for="{{ field.id_for_label }}">
-                                {{ field.label }}
-                                {% if field.field.required %}
-                                    <span class="required-marker" aria-label="required">*</span>
-                                {% endif %}
-                            </label>
-                            {{ field }}
-                            {% if field.help_text %}
-                                <span class="form-text text-secondary d-block mt-1">{{ field.help_text }}</span>
-                            {% endif %}
-                            {% for error in field.errors %}
-                                <span class="text-danger d-block">{{ error }}</span>
-                            {% endfor %}
-                        </p>
-                    {% endfor %}
 
                     {% if form.non_field_errors %}
-                        <div class="bg-light rounded-4 p-3 mb-4">
+                        <div class="signup-errors mb-4">
                             {% for error in form.non_field_errors %}
-                                <p class="text-danger mb-0">{{ error }}</p>
+                                <p class="mb-0">{{ error }}</p>
                             {% endfor %}
                         </div>
                     {% endif %}
 
-                    <button class="btn btn-primary w-100" type="submit">Sign Up</button>
+                    <div class="auth-field">
+                        <label for="{{ form.email.id_for_label }}">
+                            {{ form.email.label }}
+                            <span class="required-marker" aria-label="required">*</span>
+                        </label>
+                        {{ form.email }}
+                        {% if form.email.help_text %}
+                            <span class="form-text">{{ form.email.help_text }}</span>
+                        {% endif %}
+                        {% for error in form.email.errors %}
+                            <span class="auth-status is-error">{{ error }}</span>
+                        {% endfor %}
+                    </div>
+
+                    <div class="auth-field">
+                        <label for="{{ form.username.id_for_label }}">
+                            {{ form.username.label }}
+                            <span class="required-marker" aria-label="required">*</span>
+                        </label>
+                        <div class="handle-field">
+                            <span class="handle-prefix" aria-hidden="true">@</span>
+                            {{ form.username }}
+                        </div>
+                        {% if form.username.help_text %}
+                            <span class="form-text">{{ form.username.help_text }}</span>
+                        {% endif %}
+                        <span id="username-status" class="auth-status" aria-live="polite">Choose your public User ID.</span>
+                        {% for error in form.username.errors %}
+                            <span class="auth-status is-error">{{ error }}</span>
+                        {% endfor %}
+                    </div>
+
+                    <div class="auth-field">
+                        <label for="{{ form.password1.id_for_label }}">
+                            Create Password
+                            <span class="required-marker" aria-label="required">*</span>
+                        </label>
+                        <div class="password-shell">
+                            {{ form.password1 }}
+                            <button class="password-toggle" type="button" data-password-toggle="id_password1">Show</button>
+                        </div>
+                        {% if form.password1.help_text %}
+                            <span class="form-text">{{ form.password1.help_text }}</span>
+                        {% endif %}
+                        <div class="auth-meter" aria-hidden="true">
+                            <div id="password-strength-fill" class="auth-meter-fill"></div>
+                        </div>
+                        <span id="password-strength-label" class="auth-status" aria-live="polite">Password strength will appear here.</span>
+                        {% for error in form.password1.errors %}
+                            <span class="auth-status is-error">{{ error }}</span>
+                        {% endfor %}
+                    </div>
+
+                    <div class="auth-field">
+                        <label for="{{ form.password2.id_for_label }}">
+                            Confirm Password
+                            <span class="required-marker" aria-label="required">*</span>
+                        </label>
+                        <div class="password-shell">
+                            {{ form.password2 }}
+                            <button class="password-toggle" type="button" data-password-toggle="id_password2">Show</button>
+                        </div>
+                        {% if form.password2.help_text %}
+                            <span class="form-text">{{ form.password2.help_text }}</span>
+                        {% endif %}
+                        <span id="password-match-label" class="auth-status" aria-live="polite">Confirm your password to continue.</span>
+                        {% for error in form.password2.errors %}
+                            <span class="auth-status is-error">{{ error }}</span>
+                        {% endfor %}
+                    </div>
+
+                    <button class="btn btn-primary w-100" type="submit">Create Account</button>
                 </form>
+
+                <p class="text-secondary mt-4 mb-0">
+                    Already have an account?
+                    <a href="{% url 'login' %}">Sign in</a>.
+                </p>
             </div>
         </div>
     </div>
 </div>
+{% endblock %}
+
+{% block extra_scripts %}
+<script>
+    function getPasswordStrength(password) {
+        const hasUpper = /[A-Z]/.test(password);
+        const hasLower = /[a-z]/.test(password);
+        const hasNumber = /\d/.test(password);
+        const hasSymbol = /[^A-Za-z0-9]/.test(password);
+
+        if (!password.length) return { label: "", progress: 0, color: "var(--gymxp-accent)" };
+        if (password.length < 8 || !hasUpper || !hasNumber) {
+            return { label: "Weak", progress: 25, color: "#ef4444" };
+        }
+        if (password.length >= 16 && hasUpper && hasLower && hasNumber && hasSymbol) {
+            return { label: "Very Strong", progress: 100, color: "#16a34a" };
+        }
+        if (password.length >= 12 && hasUpper && hasNumber && hasSymbol) {
+            return { label: "Strong", progress: 78, color: "#22c55e" };
+        }
+        return { label: "Medium", progress: 50, color: "#f59e0b" };
+    }
+
+    function updatePasswordUi() {
+        const passwordInput = document.getElementById("id_password1");
+        const confirmInput = document.getElementById("id_password2");
+        const strengthFill = document.getElementById("password-strength-fill");
+        const strengthLabel = document.getElementById("password-strength-label");
+        const matchLabel = document.getElementById("password-match-label");
+        if (!passwordInput || !confirmInput || !strengthFill || !strengthLabel || !matchLabel) return;
+
+        const strength = getPasswordStrength(passwordInput.value);
+        strengthFill.style.width = `${strength.progress}%`;
+        strengthFill.style.background = strength.color;
+        strengthLabel.textContent = strength.label ? `${strength.label} password` : "Password strength will appear here.";
+        strengthLabel.style.color = strength.color;
+
+        if (!confirmInput.value.length) {
+            matchLabel.textContent = "Confirm your password to continue.";
+            matchLabel.className = "auth-status";
+            return;
+        }
+
+        const matches = passwordInput.value === confirmInput.value;
+        matchLabel.textContent = matches ? "Passwords match." : "Passwords do not match.";
+        matchLabel.className = matches ? "auth-status is-success" : "auth-status is-error";
+    }
+
+    function updateUsernameUi() {
+        const usernameInput = document.getElementById("id_username");
+        const usernameStatus = document.getElementById("username-status");
+        if (!usernameInput || !usernameStatus) return;
+
+        usernameInput.value = usernameInput.value.toLowerCase().replace(/\s+/g, "");
+        const value = usernameInput.value;
+        const valid = /^[a-z0-9._]{3,20}$/.test(value);
+
+        if (!value.length) {
+            usernameStatus.textContent = "Choose your public User ID.";
+            usernameStatus.className = "auth-status";
+        } else if (valid) {
+            usernameStatus.textContent = "User ID format looks good.";
+            usernameStatus.className = "auth-status is-success";
+        } else {
+            usernameStatus.textContent = "Use 3-20 letters, numbers, periods, or underscores.";
+            usernameStatus.className = "auth-status is-error";
+        }
+    }
+
+    document.querySelectorAll("[data-password-toggle]").forEach((button) => {
+        button.addEventListener("click", () => {
+            const input = document.getElementById(button.dataset.passwordToggle);
+            if (!input) return;
+
+            const isPassword = input.type === "password";
+            input.type = isPassword ? "text" : "password";
+            button.textContent = isPassword ? "Hide" : "Show";
+        });
+    });
+
+    document.getElementById("id_password1")?.addEventListener("input", updatePasswordUi);
+    document.getElementById("id_password2")?.addEventListener("input", updatePasswordUi);
+    document.getElementById("id_username")?.addEventListener("input", updateUsernameUi);
+    updatePasswordUi();
+    updateUsernameUi();
+</script>
 {% endblock %}

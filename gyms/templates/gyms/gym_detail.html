@@ -32,7 +32,7 @@
                                     </button>
                                 </form>
                             {% else %}
-                                <a class="bookmark-button" href="{% url 'admin:login' %}?next={{ request.get_full_path|urlencode }}">
+                                <a class="bookmark-button" href="{% url 'login' %}?next={{ request.get_full_path|urlencode }}">
                                     <span aria-hidden="true">&#128278;</span>
                                     Log in to bookmark
                                 </a>
@@ -191,7 +191,7 @@
                         {% endif %}
                     {% else %}
                         <p class="text-secondary">
-                            <a href="/accounts/login/">Log in</a> to leave a review.
+                            <a href="{% url 'login' %}?next={{ request.get_full_path|urlencode }}">Log in</a> to leave a review.
                         </p>
                     {% endif %}
                 </div>

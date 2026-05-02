@@ -1,0 +1,697 @@
+:root {
+    --gymxp-bg-0: #000000;
+    --gymxp-bg-1: #06080C;
+    --gymxp-surface: #0E1116;
+    --gymxp-surface-raised: #12161D;
+    --gymxp-surface-inset: #171B22;
+    --gymxp-surface-secondary: #11151B;
+    --gymxp-foreground: #F5F7FA;
+    --gymxp-muted: #A9B3BF;
+    --gymxp-faint: #767F8B;
+    --gymxp-accent: #27B3C7;
+    --gymxp-accent-strong: #2FA7C7;
+    --gymxp-accent-soft: rgba(47, 167, 199, 0.18);
+    --gymxp-accent-border: rgba(47, 167, 199, 0.55);
+    --gymxp-glass-bg: rgba(8, 9, 12, 0.78);
+    --gymxp-glass-raised: rgba(12, 14, 18, 0.84);
+    --gymxp-glass-subtle: rgba(10, 11, 14, 0.64);
+    --gymxp-border: rgba(255, 255, 255, 0.10);
+    --gymxp-border-soft: rgba(255, 255, 255, 0.05);
+    --gymxp-border-strong: rgba(255, 255, 255, 0.14);
+    --gymxp-inner-highlight: rgba(255, 255, 255, 0.07);
+    --gymxp-card-shadow: 0 16px 26px rgba(0, 0, 0, 0.48);
+    --gymxp-card-shadow-hover: 0 18px 32px rgba(0, 0, 0, 0.58);
+    --gymxp-card-radius: 28px;
+    --gymxp-stage-radius: 30px;
+    --gymxp-chip-radius: 12px;
+    --gymxp-card-blur: blur(34px);
+    --gymxp-nav-blur: blur(18px);
+    --gymxp-title-gradient: linear-gradient(90deg, #F5F7FA, #A9B3BF, #27B3C7);
+    --gymxp-pill-bg: rgba(23, 27, 34, 0.88);
+    --gymxp-pill-radius: 999px;
+    --gymxp-space-card: 16px;
+    --gymxp-space-card-lg: 20px;
+    --gymxp-space-section: 24px;
+    --gymxp-transition: 200ms ease;
+}
+
+body {
+    background:
+        radial-gradient(circle at 18% 0%, rgba(47, 167, 199, 0.18), transparent 28rem),
+        linear-gradient(180deg, rgba(0, 0, 0, 0.92) 0%, rgba(6, 8, 12, 0.96) 44%, rgba(0, 0, 0, 0.98) 100%),
+        url("../images/gymxp-hypertrophy-bg.jpg") center top / cover fixed;
+    color: var(--gymxp-foreground);
+    font-family: "Avenir Next", "Helvetica Neue", Arial, sans-serif;
+    min-height: 100vh;
+}
+
+a {
+    color: var(--gymxp-accent);
+}
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+    color: var(--gymxp-foreground);
+    font-weight: 900;
+}
+
+.text-secondary {
+    color: var(--gymxp-muted) !important;
+}
+
+.text-primary {
+    color: var(--gymxp-accent) !important;
+}
+
+.navbar {
+    background: rgba(5, 6, 8, 0.74) !important;
+    backdrop-filter: var(--gymxp-nav-blur);
+    border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+    box-shadow: 0 18px 32px rgba(0, 0, 0, 0.55);
+    min-height: 68px;
+}
+
+.navbar-brand {
+    color: var(--gymxp-foreground) !important;
+    font-weight: 900;
+    letter-spacing: 0.02em;
+}
+
+.navbar-user {
+    color: var(--gymxp-muted);
+    font-size: 0.82rem;
+    font-weight: 800;
+}
+
+.btn {
+    border-radius: 18px;
+    font-weight: 900;
+    letter-spacing: 0.02em;
+    min-height: 44px;
+    padding-inline: 1rem;
+}
+
+.btn-primary {
+    background: var(--gymxp-accent-soft) !important;
+    border-color: var(--gymxp-accent-border) !important;
+    box-shadow: inset 0 1px 0 var(--gymxp-inner-highlight);
+    color: var(--gymxp-foreground) !important;
+}
+
+.btn-primary:hover,
+.btn-primary:focus {
+    background: rgba(47, 167, 199, 0.28) !important;
+    border-color: rgba(47, 167, 199, 0.72) !important;
+}
+
+.btn-light {
+    background: #f3f4f6 !important;
+    border-color: rgba(255, 255, 255, 0.18) !important;
+    color: #05070b !important;
+}
+
+.btn-outline-light,
+.btn-outline-secondary {
+    background: rgba(255, 255, 255, 0.06);
+    border-color: var(--gymxp-border);
+    color: var(--gymxp-foreground);
+}
+
+.btn-outline-light:hover,
+.btn-outline-secondary:hover {
+    background: rgba(255, 255, 255, 0.12);
+    border-color: var(--gymxp-border-strong);
+    color: var(--gymxp-foreground);
+}
+
+.badge,
+.text-bg-primary {
+    background: var(--gymxp-accent-soft) !important;
+    border: 1px solid rgba(47, 167, 199, 0.35);
+    color: var(--gymxp-foreground) !important;
+    font-weight: 900;
+    letter-spacing: 0.08em;
+}
+
+.card {
+    background: var(--gymxp-glass-bg);
+    backdrop-filter: var(--gymxp-card-blur);
+    border: 1px solid var(--gymxp-border);
+    border-radius: var(--gymxp-card-radius);
+    box-shadow: var(--gymxp-card-shadow);
+    color: var(--gymxp-foreground);
+}
+
+.card.border-0 {
+    border: 1px solid var(--gymxp-border) !important;
+}
+
+.card.rounded-4 {
+    border-radius: var(--gymxp-card-radius) !important;
+}
+
+.card.shadow-sm {
+    box-shadow: var(--gymxp-card-shadow) !important;
+}
+
+.add-gym-card,
+.add-gym-card .card-body {
+    overflow: visible;
+}
+
+.bg-light {
+    background: var(--gymxp-surface-inset) !important;
+    border: 1px solid var(--gymxp-border-soft);
+    color: var(--gymxp-foreground);
+}
+
+.border {
+    border-color: var(--gymxp-border) !important;
+}
+
+.form-control,
+.form-select {
+    background: rgba(255, 255, 255, 0.035);
+    border: 1px solid rgba(255, 255, 255, 0.06);
+    border-radius: 16px;
+    color: var(--gymxp-foreground);
+    font-weight: 700;
+}
+
+.form-control:focus,
+.form-select:focus {
+    background: rgba(255, 255, 255, 0.055);
+    border-color: rgba(47, 167, 199, 0.55);
+    box-shadow: 0 0 0 0.2rem rgba(47, 167, 199, 0.16);
+    color: var(--gymxp-foreground);
+}
+
+.form-control::placeholder {
+    color: rgba(245, 247, 250, 0.38);
+}
+
+#id_amenities {
+    display: grid;
+    gap: 0.65rem;
+    grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+    list-style: none;
+    margin: 0;
+    padding: 0;
+}
+
+#id_amenities > div {
+    min-width: 0;
+}
+
+#id_amenities label {
+    align-items: center;
+    background: rgba(255, 255, 255, 0.045);
+    border: 1px solid var(--gymxp-border);
+    border-radius: 16px;
+    color: var(--gymxp-foreground);
+    cursor: pointer;
+    display: flex;
+    gap: 0.55rem;
+    min-height: 46px;
+    padding: 0.65rem 0.8rem;
+    transition: background var(--gymxp-transition), border-color var(--gymxp-transition);
+    width: 100%;
+}
+
+#id_amenities label:has(input:checked) {
+    background: var(--gymxp-accent-soft);
+    border-color: var(--gymxp-accent-border);
+}
+
+#id_amenities input {
+    accent-color: var(--gymxp-accent);
+    flex: 0 0 auto;
+    height: 1rem;
+    width: 1rem;
+}
+
+.amenity-filter-grid {
+    display: grid;
+    gap: 0.6rem;
+    grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+    margin-top: 1rem;
+}
+
+.amenity-filter-grid label {
+    align-items: center;
+    background: rgba(255, 255, 255, 0.045);
+    border: 1px solid var(--gymxp-border);
+    border-radius: 999px;
+    color: var(--gymxp-foreground);
+    cursor: pointer;
+    display: flex;
+    font-size: 0.9rem;
+    gap: 0.45rem;
+    padding: 0.5rem 0.75rem;
+}
+
+.amenity-filter-grid input {
+    accent-color: var(--gymxp-accent);
+}
+
+.filter-menu {
+    background: rgba(8, 9, 12, 0.96);
+    border: 1px solid var(--gymxp-border);
+    border-radius: 22px;
+    box-shadow: var(--gymxp-card-shadow-hover);
+    color: var(--gymxp-foreground);
+    min-width: min(92vw, 420px);
+    padding: 1rem;
+    z-index: 9999;
+}
+
+.filter-menu .form-select {
+    min-height: 44px;
+}
+
+.filter-button {
+    align-items: center;
+    display: inline-flex;
+    gap: 0.45rem;
+    justify-content: center;
+    white-space: nowrap;
+}
+
+.filter-count {
+    align-items: center;
+    background: var(--gymxp-accent-soft);
+    border: 1px solid var(--gymxp-accent-border);
+    border-radius: 999px;
+    display: inline-flex;
+    font-size: 0.78rem;
+    justify-content: center;
+    min-width: 1.45rem;
+    padding: 0.1rem 0.4rem;
+}
+
+.bookmark-filter {
+    align-items: center;
+    background: rgba(255, 255, 255, 0.045);
+    border: 1px solid var(--gymxp-border);
+    border-radius: 16px;
+    color: var(--gymxp-foreground);
+    cursor: pointer;
+    display: flex;
+    gap: 0.55rem;
+    padding: 0.65rem 0.8rem;
+}
+
+.bookmark-filter input {
+    accent-color: var(--gymxp-accent);
+}
+
+.bookmark-filter:has(input:checked) {
+    background: var(--gymxp-accent-soft);
+    border-color: var(--gymxp-accent-border);
+}
+
+label {
+    color: var(--gymxp-muted);
+    font-weight: 800;
+}
+
+.required-marker {
+    color: var(--gymxp-accent-strong);
+    margin-left: 0.2rem;
+}
+
+main > .container {
+    max-width: 1040px;
+}
+
+.hero-card {
+    background: var(--gymxp-surface);
+    color: #fff;
+    border-color: var(--gymxp-border-soft);
+    border-radius: var(--gymxp-stage-radius);
+    box-shadow: 0 18px 32px rgba(0, 0, 0, 0.58);
+}
+
+.home-hero {
+    min-height: 520px;
+    overflow: hidden;
+    position: relative;
+}
+
+.home-hero video,
+.home-hero-fallback {
+    height: 100%;
+    inset: 0;
+    object-fit: cover;
+    position: absolute;
+    width: 100%;
+}
+
+.home-hero::after {
+    background:
+        linear-gradient(90deg, rgba(0, 0, 0, 0.92) 0%, rgba(6, 8, 12, 0.74) 44%, rgba(6, 8, 12, 0.30) 100%),
+        linear-gradient(180deg, rgba(255, 255, 255, 0.08), rgba(255, 255, 255, 0.00));
+    content: "";
+    inset: 0;
+    position: absolute;
+}
+
+.home-hero-content {
+    position: relative;
+    z-index: 1;
+}
+
+.gym-card {
+    background: var(--gymxp-glass-bg);
+    border: 1px solid var(--gymxp-border);
+    border-radius: var(--gymxp-card-radius);
+    backdrop-filter: var(--gymxp-card-blur);
+    box-shadow: var(--gymxp-card-shadow);
+    overflow: hidden;
+    transition: transform var(--gymxp-transition), box-shadow var(--gymxp-transition);
+}
+
+.gym-card-media {
+    aspect-ratio: 16 / 7;
+    background: var(--gymxp-surface-inset);
+    overflow: hidden;
+    position: relative;
+}
+
+.gym-card-media img {
+    height: 100%;
+    object-fit: cover;
+    width: 100%;
+}
+
+.gym-card-media::after {
+    background: linear-gradient(180deg, rgba(0, 0, 0, 0.02), rgba(0, 0, 0, 0.42));
+    content: "";
+    inset: 0;
+    position: absolute;
+}
+
+.gym-card:hover {
+    transform: translateY(-4px) scale(1.01);
+    box-shadow: var(--gymxp-card-shadow-hover);
+}
+
+.gym-card .card-body {
+    padding: 2rem;
+}
+
+.gym-card .text-secondary {
+    color: var(--gymxp-muted) !important;
+}
+
+.gym-card .card-title a {
+    color: var(--gymxp-foreground);
+    font-weight: 900;
+    text-decoration: none;
+}
+
+@supports ((-webkit-background-clip: text) or (background-clip: text)) {
+    .gym-card .card-title a {
+        background: var(--gymxp-title-gradient);
+        -webkit-background-clip: text;
+        background-clip: text;
+        color: transparent;
+        -webkit-text-fill-color: transparent;
+    }
+}
+
+.gym-card .price-pill {
+    display: inline-flex;
+    border-radius: var(--gymxp-pill-radius);
+    background: var(--gymxp-pill-bg);
+    border: 1px solid var(--gymxp-border-soft);
+    color: var(--gymxp-foreground);
+    font-weight: 800;
+    padding: 0.35rem 0.8rem;
+    font-size: 0.9rem;
+}
+
+.rating-stars {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.15rem;
+}
+
+.amenity-chips {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.45rem;
+}
+
+.amenity-chip {
+    align-items: center;
+    background: rgba(255, 255, 255, 0.055);
+    border: 1px solid var(--gymxp-border);
+    border-radius: 999px;
+    color: var(--gymxp-foreground);
+    display: inline-flex;
+    font-size: 0.82rem;
+    font-weight: 800;
+    gap: 0.35rem;
+    padding: 0.35rem 0.7rem;
+}
+
+.gym-detail-photo {
+    aspect-ratio: 16 / 8;
+    background: var(--gymxp-surface-inset);
+    border: 1px solid var(--gymxp-border-soft);
+    border-radius: 24px;
+    overflow: hidden;
+}
+
+.gym-detail-photo img {
+    height: 100%;
+    object-fit: cover;
+    width: 100%;
+}
+
+.rating-star {
+    color: rgba(245, 247, 250, 0.24);
+    font-size: 1.15rem;
+    line-height: 1;
+}
+
+.rating-star-filled {
+    color: var(--gymxp-accent-strong);
+}
+
+.rating-text {
+    color: var(--gymxp-muted);
+    font-size: 0.9rem;
+    margin-left: 0.35rem;
+}
+
+.bookmark-actions {
+    align-items: flex-start;
+    display: inline-flex;
+    flex-direction: column;
+    gap: 0.45rem;
+}
+
+.bookmark-form {
+    margin: 0;
+}
+
+.bookmark-button {
+    align-items: center;
+    background: rgba(255, 255, 255, 0.06);
+    border: 1px solid var(--gymxp-border);
+    border-radius: var(--gymxp-pill-radius);
+    color: var(--gymxp-foreground);
+    display: inline-flex;
+    font-size: 0.9rem;
+    font-weight: 900;
+    gap: 0.4rem;
+    line-height: 1;
+    min-height: 40px;
+    padding: 0.55rem 0.9rem;
+    text-decoration: none;
+    transition: background var(--gymxp-transition), border-color var(--gymxp-transition), transform var(--gymxp-transition);
+}
+
+.bookmark-button:hover,
+.bookmark-button:focus {
+    background: rgba(47, 167, 199, 0.16);
+    border-color: var(--gymxp-accent-border);
+    color: var(--gymxp-foreground);
+    transform: translateY(-1px);
+}
+
+.bookmark-button.is-bookmarked {
+    background: var(--gymxp-accent-soft);
+    border-color: var(--gymxp-accent-border);
+    color: var(--gymxp-foreground);
+}
+
+.bookmark-count {
+    color: var(--gymxp-muted);
+    font-size: 0.88rem;
+    font-weight: 800;
+    margin: 0;
+}
+
+.home-feature-card {
+    background: var(--gymxp-glass-bg);
+    backdrop-filter: var(--gymxp-card-blur);
+    border: 1px solid var(--gymxp-border);
+    border-radius: var(--gymxp-card-radius);
+    box-shadow: var(--gymxp-card-shadow);
+    color: var(--gymxp-foreground);
+    overflow: hidden;
+}
+
+.home-feature-card img {
+    aspect-ratio: 16 / 9;
+    object-fit: cover;
+    width: 100%;
+}
+
+.search-panel {
+    background: var(--gymxp-glass-bg);
+    backdrop-filter: var(--gymxp-card-blur);
+    border: 1px solid var(--gymxp-border);
+    border-radius: var(--gymxp-card-radius);
+    box-shadow: var(--gymxp-card-shadow);
+    overflow: visible;
+    padding: var(--gymxp-space-card-lg);
+    position: relative;
+    z-index: 20;
+}
+
+.search-panel .form-control {
+    min-height: 52px;
+}
+
+.map-panel {
+    background: var(--gymxp-glass-bg);
+    border: 1px solid var(--gymxp-border);
+    border-radius: var(--gymxp-card-radius);
+    box-shadow: var(--gymxp-card-shadow);
+    overflow: hidden;
+}
+
+.gym-map {
+    background: var(--gymxp-surface-inset);
+    min-height: 320px;
+    width: 100%;
+}
+
+.map-panel-body {
+    padding: 1rem;
+}
+
+.pac-container {
+    pointer-events: auto !important;
+    z-index: 99999 !important;
+}
+
+@media (min-width: 576px) {
+    .gym-card .card-body {
+        padding: 2.5rem;
+    }
+}
+
+/* Auth pages */
+.auth-field {
+    margin-bottom: 1.15rem;
+}
+
+.handle-field,
+.password-shell {
+    align-items: center;
+    background: rgba(255, 255, 255, 0.035);
+    border: 1px solid rgba(255, 255, 255, 0.06);
+    border-radius: 16px;
+    display: flex;
+    min-height: 54px;
+    overflow: hidden;
+    transition: border-color var(--gymxp-transition), box-shadow var(--gymxp-transition);
+}
+
+.handle-field:focus-within,
+.password-shell:focus-within {
+    border-color: rgba(47, 167, 199, 0.55);
+    box-shadow: 0 0 0 0.2rem rgba(47, 167, 199, 0.16);
+}
+
+.handle-prefix {
+    color: rgba(245, 247, 250, 0.62);
+    font-weight: 900;
+    padding-left: 1rem;
+}
+
+.handle-field .form-control,
+.password-shell .form-control {
+    background: transparent;
+    border: 0;
+    box-shadow: none;
+    min-height: 54px;
+}
+
+.password-toggle {
+    background: transparent;
+    border: 0;
+    color: rgba(245, 247, 250, 0.82);
+    font-size: 0.78rem;
+    font-weight: 900;
+    padding: 0 1rem;
+    text-transform: uppercase;
+}
+
+.auth-meter {
+    background: rgba(255, 255, 255, 0.16);
+    border-radius: 999px;
+    height: 6px;
+    margin-top: 0.65rem;
+    overflow: hidden;
+}
+
+.auth-meter-fill {
+    background: var(--gymxp-accent);
+    border-radius: 999px;
+    height: 100%;
+    transition: background var(--gymxp-transition), width var(--gymxp-transition);
+    width: 0;
+}
+
+.auth-status {
+    color: rgba(245, 247, 250, 0.74);
+    display: block;
+    font-size: 0.78rem;
+    font-weight: 800;
+    margin-top: 0.45rem;
+}
+
+.auth-field .form-text {
+    color: rgba(245, 247, 250, 0.72);
+    display: block;
+    font-size: 0.82rem;
+    font-weight: 700;
+    line-height: 1.5;
+    margin-top: 0.45rem;
+}
+
+.auth-status.is-success {
+    color: #22c55e;
+}
+
+.auth-status.is-error {
+    color: #ef4444;
+}
+
+.signup-errors {
+    background: rgba(239, 68, 68, 0.08);
+    border: 1px solid rgba(239, 68, 68, 0.22);
+    border-radius: 18px;
+    color: #fca5a5;
+    padding: 1rem;
+}

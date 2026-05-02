@@ -1,13 +1,12 @@
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth import login, logout
-from django.contrib.auth.forms import UserCreationForm
 from django.conf import settings
 from django.db.models import Avg, BooleanField, Count, Exists, OuterRef, Q, Value
 from django.shortcuts import get_object_or_404, redirect, render
 from django.utils.http import url_has_allowed_host_and_scheme
-from django.views.decorators.http import require_POST
+from django.views.decorators.http import require_http_methods, require_POST
 
-from .forms import GymForm, ReviewForm
+from .forms import GymForm, ReviewForm, SignupForm
 from .models import Amenity, Favourite, Gym
 
 
@@ -17,18 +16,18 @@ def home(request):
 
 def signup(request):
     if request.method == 'POST':
-        form = UserCreationForm(request.POST)
+        form = SignupForm(request.POST)
         if form.is_valid():
             user = form.save()
             login(request, user)
             return redirect('gym_list')
     else:
-        form = UserCreationForm()
+        form = SignupForm()
 
     return render(request, 'gyms/signup.html', {'form': form})
 
 
-@require_POST
+@require_http_methods(['GET', 'POST'])
 def logout_view(request):
     logout(request)
     return redirect('gym_list')

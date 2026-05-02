@@ -1,8 +1,18 @@
 from django.urls import path
+from django.contrib.auth import views as auth_views
+from .forms import LoginForm
 from . import views
 
 urlpatterns = [
     path('', views.home, name='home'),
+    path(
+        'login/',
+        auth_views.LoginView.as_view(
+            authentication_form=LoginForm,
+            template_name='gyms/login.html',
+        ),
+        name='login',
+    ),
     path('signup/', views.signup, name='signup'),
     path('logout/', views.logout_view, name='logout'),
     path('gyms/', views.gym_list, name='gym_list'),
