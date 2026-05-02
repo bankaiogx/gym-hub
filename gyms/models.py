@@ -4,6 +4,7 @@ from django.utils.text import slugify
 
 
 class Amenity(models.Model):
+    # Amenities are chosen by users/admins instead of pulled from Google.
     name = models.CharField(max_length=100, unique=True)
     icon = models.CharField(max_length=50, blank=True)
     created_at = models.DateTimeField(auto_now_add=True)
@@ -17,6 +18,7 @@ class Amenity(models.Model):
 
 
 class Gym(models.Model):
+    # Moderation status controls whether a submitted gym appears publicly.
     STATUS_PENDING = 'pending'
     STATUS_APPROVED = 'approved'
     STATUS_REJECTED = 'rejected'
@@ -91,6 +93,7 @@ class Gym(models.Model):
 
     def save(self, *args, **kwargs):
         if not self.slug:
+            # Use name and city to create readable detail-page URLs.
             base_slug = slugify(f"{self.name}-{self.city}")
             slug = base_slug
             counter = 1
@@ -105,6 +108,7 @@ class Gym(models.Model):
 
 
 class Review(models.Model):
+    # Ratings are limited to a simple 1-5 star scale.
     RATING_CHOICES = [
         (1, '1'),
         (2, '2'),
@@ -130,6 +134,7 @@ class Review(models.Model):
     class Meta:
         ordering = ['-created_at']
         constraints = [
+            # A user can only review the same gym once.
             models.UniqueConstraint(
                 fields=['gym', 'user'],
                 name='unique_review_per_user_per_gym'
@@ -145,6 +150,7 @@ class Review(models.Model):
 
 
 class Favourite(models.Model):
+    # Bookmarks connect a user to a gym they want to save.
     user = models.ForeignKey(
         User,
         on_delete=models.CASCADE,
@@ -160,6 +166,7 @@ class Favourite(models.Model):
     class Meta:
         ordering = ['-created_at']
         constraints = [
+            # Prevent duplicate bookmarks for the same user and gym.
             models.UniqueConstraint(
                 fields=['user', 'gym'],
                 name='unique_favourite_per_user_per_gym'
@@ -171,6 +178,7 @@ class Favourite(models.Model):
 
 
 class GymAmenity(models.Model):
+    # Through model keeps gym and amenity links unique.
     gym = models.ForeignKey(
         Gym,
         on_delete=models.CASCADE
