@@ -762,34 +762,54 @@ main > .container {
 
 /* Reviews */
 .review-header {
-    align-items: flex-start;
+    align-items: center;
     display: flex;
     gap: 1rem;
     justify-content: space-between;
-    margin-bottom: 0.9rem;
+    margin-bottom: 1rem;
 }
 
 .review-comment {
-    margin-bottom: 1rem;
+    margin-bottom: 1.1rem;
+}
+
+.review-footer {
+    align-items: center;
+    display: flex;
+    gap: 1rem;
+    justify-content: space-between;
 }
 
 .review-actions {
     align-items: center;
     display: flex;
     gap: 0.5rem;
-    justify-content: flex-end;
 }
 
 .review-actions form {
+    display: flex;
     margin: 0;
+}
+
+.review-actions .btn {
+    align-items: center;
+    display: inline-flex;
+    height: 44px;
+    justify-content: center;
+    line-height: 1;
+    min-height: 44px;
+    min-width: 72px;
+    padding: 0 1rem;
 }
 
 @media (max-width: 575.98px) {
     .review-header {
         flex-direction: column;
+        align-items: flex-start;
     }
 
-    .review-actions {
-        justify-content: flex-start;
+    .review-footer {
+        align-items: flex-start;
+        flex-direction: column;
     }
 }
