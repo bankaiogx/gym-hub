@@ -1,29 +1,36 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>All Gyms - Gym Hub UK</title>
-</head>
-<body>
-    <h1>All Gyms</h1>
+{% extends 'base.html' %}
 
-    {% if gyms %}
-        <ul>
-            {% for gym in gyms %}
-                <li>
-                    <h2><a href="{% url 'gym_detail' gym.slug %}">{{ gym.name }}</a></h2>
-                    <p><strong>City:</strong> {{ gym.city }}</p>
-                    <p><strong>Description:</strong> {{ gym.description }}</p>
-                    <p><strong>Price Range:</strong> {{ gym.get_price_range_display }}</p>
-                </li>
-            {% endfor %}
-        </ul>
-    {% else %}
-        <p>No gyms added yet.</p>
-    {% endif %}
+{% block title %}All Gyms - Gym Hub UK{% endblock %}
 
-    <p><a href="{% url 'add_gym' %}">Add a Gym</a></p>
-    <a href="{% url 'home' %}">Back to Home</a>
-</body>
-</html>
+{% block content %}
+<div class="d-flex flex-column flex-md-row justify-content-between align-items-md-center gap-3 mb-4">
+    <div>
+        <h1 class="mb-1">All Gyms</h1>
+        <p class="text-secondary mb-0">Browse the gyms currently listed on Gym Hub UK.</p>
+    </div>
+    <a class="btn btn-primary" href="{% url 'add_gym' %}">Add a Gym</a>
+</div>
+
+{% if gyms %}
+    {% for gym in gyms %}
+        <div class="card gym-card mb-3">
+            <div class="card-body">
+                <h4 class="card-title">
+                    <a href="{% url 'gym_detail' gym.slug %}">{{ gym.name }}</a>
+                </h4>
+                <p class="mb-2"><strong>City:</strong> {{ gym.city }}</p>
+                <p class="text-secondary">{{ gym.description }}</p>
+                <p class="mb-0"><span class="price-pill">Price: {{ gym.get_price_range_display }}</span></p>
+            </div>
+        </div>
+    {% endfor %}
+{% else %}
+    <div class="card border-0 shadow-sm rounded-4">
+        <div class="card-body p-5 text-center">
+            <h2 class="h4 mb-3">No gyms added yet</h2>
+            <p class="text-secondary mb-4">Start the directory by adding the first gym.</p>
+            <a class="btn btn-primary" href="{% url 'add_gym' %}">Add the First Gym</a>
+        </div>
+    </div>
+{% endif %}
+{% endblock %}

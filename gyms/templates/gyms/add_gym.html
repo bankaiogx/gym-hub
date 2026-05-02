@@ -1,19 +1,48 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Add Gym - Gym Hub UK</title>
-</head>
-<body>
-    <h1>Add a New Gym</h1>
+{% extends 'base.html' %}
 
-    <form method="post">
-        {% csrf_token %}
-        {{ form.as_p }}
-        <button type="submit">Add Gym</button>
-    </form>
+{% block title %}Add Gym - Gym Hub UK{% endblock %}
 
-    <a href="{% url 'gym_list' %}">Back to all gyms</a>
-</body>
-</html>
+{% block content %}
+<div class="row justify-content-center">
+    <div class="col-lg-8 col-xl-7">
+        <div class="card border-0 shadow-sm rounded-4">
+            <div class="card-body p-4 p-lg-5">
+                <div class="mb-4">
+                    <p class="text-uppercase text-primary fw-semibold small mb-2">Create Listing</p>
+                    <h1 class="mb-1">Add a New Gym</h1>
+                    <p class="text-secondary mb-0">Share a gym with the community by filling in the details below.</p>
+                </div>
+
+                <form method="post" novalidate>
+                    {% csrf_token %}
+                    {% for field in form %}
+                        <div class="mb-3">
+                            <label class="form-label" for="{{ field.id_for_label }}">{{ field.label }}</label>
+                            {{ field }}
+                            {% if field.help_text %}
+                                <div class="form-text">{{ field.help_text }}</div>
+                            {% endif %}
+                            {% for error in field.errors %}
+                                <div class="text-danger small mt-1">{{ error }}</div>
+                            {% endfor %}
+                        </div>
+                    {% endfor %}
+
+                    {% if form.non_field_errors %}
+                        <div class="alert alert-danger">
+                            {% for error in form.non_field_errors %}
+                                <div>{{ error }}</div>
+                            {% endfor %}
+                        </div>
+                    {% endif %}
+
+                    <div class="d-flex flex-column flex-sm-row gap-3 mt-4">
+                        <button class="btn btn-primary" type="submit">Add Gym</button>
+                        <a class="btn btn-outline-secondary" href="{% url 'gym_list' %}">Back to all gyms</a>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

@@ -1,20 +1,49 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>{{ gym.name }} - Gym Hub UK</title>
-</head>
-<body>
-    <h1>{{ gym.name }}</h1>
+{% extends 'base.html' %}
 
-    <p><strong>City:</strong> {{ gym.city }}</p>
-    <p><strong>Address:</strong> {{ gym.address }}</p>
-    <p><strong>Description:</strong> {{ gym.description }}</p>
-    <p><strong>Price Range:</strong> {{ gym.get_price_range_display }}</p>
-    <p><strong>Opening Hours:</strong> {{ gym.opening_hours }}</p>
-    <p><strong>Created by:</strong> {{ gym.owner.username }}</p>
+{% block title %}{{ gym.name }} - Gym Hub UK{% endblock %}
 
-    <a href="{% url 'gym_list' %}">Back to all gyms</a>
-</body>
-</html>
+{% block content %}
+<div class="row justify-content-center">
+    <div class="col-lg-8">
+        <div class="card border-0 shadow-sm rounded-4">
+            <div class="card-body p-4 p-lg-5">
+                <div class="d-flex flex-column flex-md-row justify-content-between align-items-md-start gap-3 mb-4">
+                    <div>
+                        <p class="text-uppercase text-primary fw-semibold small mb-2">Gym Profile</p>
+                        <h1 class="mb-2">{{ gym.name }}</h1>
+                        <p class="text-secondary mb-0">Added by {{ gym.owner.username }}</p>
+                    </div>
+                    <span class="badge text-bg-primary fs-6">{{ gym.get_price_range_display }}</span>
+                </div>
+
+                <div class="row g-4">
+                    <div class="col-md-6">
+                        <div class="p-3 bg-light rounded-4 h-100">
+                            <h2 class="h5">Location</h2>
+                            <p class="mb-2"><strong>City:</strong> {{ gym.city }}</p>
+                            <p class="mb-0"><strong>Address:</strong> {{ gym.address }}</p>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="p-3 bg-light rounded-4 h-100">
+                            <h2 class="h5">Visit Info</h2>
+                            <p class="mb-2"><strong>Opening Hours:</strong> {{ gym.opening_hours|default:'Not provided' }}</p>
+                            <p class="mb-0"><strong>Postcode:</strong> {{ gym.postcode|default:'Not provided' }}</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="mt-4">
+                    <h2 class="h5">Description</h2>
+                    <p class="text-secondary mb-0">{{ gym.description }}</p>
+                </div>
+
+                <div class="mt-4 d-flex gap-3">
+                    <a class="btn btn-outline-secondary" href="{% url 'gym_list' %}">Back to all gyms</a>
+                    <a class="btn btn-primary" href="{% url 'add_gym' %}">Add another gym</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
