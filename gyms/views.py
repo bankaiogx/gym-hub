@@ -1,4 +1,5 @@
 from django.contrib.auth.decorators import login_required
+from django.conf import settings
 from django.db.models import Avg, BooleanField, Count, Exists, OuterRef, Q, Value
 from django.shortcuts import get_object_or_404, redirect, render
 from django.utils.http import url_has_allowed_host_and_scheme
@@ -14,6 +15,7 @@ def home(request):
 
 def gym_list(request):
     query = request.GET.get('q', '').strip()
+    price = request.GET.get('price', '').strip()
     gyms = Gym.objects.annotate(
         average_rating=Avg('reviews__rating'),
         bookmark_count=Count('favourites', distinct=True),
@@ -31,18 +33,14 @@ def gym_list(request):
         )
 
     if query:
-        matching_price_ranges = [
-            value
-            for value, label in Gym.PRICE_CHOICES
-            if query.lower() in value.lower() or query.lower() in label.lower()
-        ]
         gyms = gyms.filter(
             Q(name__icontains=query)
             | Q(city__icontains=query)
             | Q(description__icontains=query)
-            | Q(price_range__icontains=query)
-            | Q(price_range__in=matching_price_ranges)
         )
+
+    if price:
+        gyms = gyms.filter(price_range=price)
 
     return render(
         request,
@@ -50,6 +48,8 @@ def gym_list(request):
         {
             'gyms': gyms,
             'query': query,
+            'price': price,
+            'price_choices': Gym.PRICE_CHOICES,
         },
     )
 
@@ -80,6 +80,7 @@ def gym_detail(request, slug):
             'is_bookmarked': is_bookmarked,
             'review_form': review_form,
             'user_review': user_review,
+            'google_maps_api_key': settings.GOOGLE_MAPS_API_KEY,
         },
     )
 
@@ -96,15 +97,20 @@ def add_gym(request):
     else:
         form = GymForm()
 
-    return render(request, 'gyms/add_gym.html', {'form': form})
+    return render(
+        request,
+        'gyms/add_gym.html',
+        {
+            'form': form,
+            'google_maps_api_key': settings.GOOGLE_MAPS_API_KEY,
+        },
+    )
 
 
 @login_required
+@require_POST
 def add_review(request, slug):
     gym = get_object_or_404(Gym, slug=slug)
-
-    if request.method != 'POST':
-        return redirect('gym_detail', slug=gym.slug)
 
     if gym.reviews.filter(user=request.user).exists():
         return redirect('gym_detail', slug=gym.slug)
@@ -130,6 +136,7 @@ def add_review(request, slug):
             'is_bookmarked': gym.favourites.filter(user=request.user).exists(),
             'review_form': form,
             'user_review': None,
+            'google_maps_api_key': settings.GOOGLE_MAPS_API_KEY,
         },
     )
 

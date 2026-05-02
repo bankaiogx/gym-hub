@@ -28,9 +28,12 @@ class Gym(models.Model):
     )
     name = models.CharField(max_length=150)
     slug = models.SlugField(max_length=160, unique=True, blank=True)
-    city = models.CharField(max_length=100)
-    address = models.CharField(max_length=255)
+    city = models.CharField(max_length=100, blank=True)
+    address = models.CharField(max_length=255, blank=True)
     postcode = models.CharField(max_length=20, blank=True)
+    latitude = models.FloatField(null=True, blank=True)
+    longitude = models.FloatField(null=True, blank=True)
+    google_place_id = models.CharField(max_length=255, blank=True)
     description = models.TextField()
     price_range = models.CharField(
         max_length=20,

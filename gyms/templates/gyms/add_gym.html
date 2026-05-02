@@ -15,11 +15,94 @@
 
                 <form method="POST">
                     {% csrf_token %}
-                    {{ form.as_p }}
+                    <div class="mb-4">
+                        <label class="form-label" for="autocomplete">Search gym or address</label>
+                        <input
+                            id="autocomplete"
+                            type="text"
+                            placeholder="Start typing a gym name or address"
+                            class="form-control"
+                            autocomplete="off"
+                        >
+                        <p class="text-secondary small mt-2 mb-0">
+                            Pick a Google suggestion to auto-fill the name, address, city, postcode, and map location.
+                        </p>
+                    </div>
+
+                    {% if not google_maps_api_key %}
+                        <div class="bg-light rounded-4 p-3 mb-4">
+                            <p class="mb-0 text-secondary">
+                                Google autocomplete is disabled until <code>GOOGLE_MAPS_API_KEY</code> is set.
+                            </p>
+                        </div>
+                    {% endif %}
+
+                    {% for field in form.visible_fields %}
+                        <p>
+                            {{ field.label_tag }}
+                            {{ field }}
+                            {% if field.help_text %}
+                                <span class="form-text">{{ field.help_text }}</span>
+                            {% endif %}
+                            {% for error in field.errors %}
+                                <span class="text-danger d-block">{{ error }}</span>
+                            {% endfor %}
+                        </p>
+                    {% endfor %}
+
+                    {% for field in form.hidden_fields %}
+                        {{ field }}
+                    {% endfor %}
+
                     <button class="btn btn-primary">Add Gym</button>
                 </form>
             </div>
         </div>
     </div>
 </div>
+{% endblock %}
+
+{% block extra_scripts %}
+{% if google_maps_api_key %}
+<script>
+    window.initAutocomplete = function () {
+        const input = document.getElementById("autocomplete");
+        if (!input || !window.google || !google.maps || !google.maps.places) return;
+
+        const autocomplete = new google.maps.places.Autocomplete(input, {
+            fields: ["name", "formatted_address", "geometry", "place_id", "address_components"]
+        });
+
+        autocomplete.addListener("place_changed", function () {
+            const place = autocomplete.getPlace();
+            if (!place.geometry) return;
+
+            document.getElementById("id_name").value = place.name || "";
+            document.getElementById("id_address").value = place.formatted_address || "";
+            document.getElementById("id_latitude").value = place.geometry.location.lat();
+            document.getElementById("id_longitude").value = place.geometry.location.lng();
+            document.getElementById("id_google_place_id").value = place.place_id || "";
+
+            let postcode = "";
+            let city = "";
+            place.address_components.forEach((component) => {
+                if (component.types.includes("postal_code")) {
+                    postcode = component.long_name;
+                }
+                if (component.types.includes("postal_town") || component.types.includes("locality")) {
+                    city = component.long_name;
+                }
+            });
+
+            document.getElementById("id_postcode").value = postcode;
+            document.getElementById("id_city").value = city;
+        });
+    };
+</script>
+<script
+    src="https://maps.googleapis.com/maps/api/js?key={{ google_maps_api_key }}&libraries=places&callback=initAutocomplete"
+    async
+    defer
+></script>
+{% endif %}
 {% endblock %}

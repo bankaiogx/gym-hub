@@ -11,12 +11,18 @@ class GymForm(forms.ModelForm):
             'city',
             'address',
             'postcode',
+            'latitude',
+            'longitude',
+            'google_place_id',
             'description',
             'price_range',
             'opening_hours',
         ]
         widgets = {
             'description': forms.Textarea(attrs={'rows': 4}),
+            'latitude': forms.HiddenInput(),
+            'longitude': forms.HiddenInput(),
+            'google_place_id': forms.HiddenInput(),
         }
 
     def __init__(self, *args, **kwargs):

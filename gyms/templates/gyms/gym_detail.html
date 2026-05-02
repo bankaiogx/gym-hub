@@ -67,6 +67,34 @@
                     </div>
                 </div>
 
+                {% if gym.latitude and gym.longitude %}
+                    <div class="map-panel mt-4">
+                        {% if google_maps_api_key %}
+                            <div id="map" class="gym-map" aria-label="Map showing {{ gym.name }}"></div>
+                        {% else %}
+                            <div class="gym-map d-flex align-items-center justify-content-center p-4 text-center">
+                                <p class="text-secondary mb-0">
+                                    Map preview is disabled until <code>GOOGLE_MAPS_API_KEY</code> is set.
+                                </p>
+                            </div>
+                        {% endif %}
+                        <div class="map-panel-body d-flex flex-column flex-md-row justify-content-between align-items-md-center gap-3">
+                            <div>
+                                <h2 class="h5 mb-1">Map</h2>
+                                <p class="text-secondary mb-0">{{ gym.address }}</p>
+                            </div>
+                            <a
+                                class="btn btn-primary"
+                                href="https://www.google.com/maps/search/?api=1&query={{ gym.latitude }},{{ gym.longitude }}"
+                                target="_blank"
+                                rel="noopener noreferrer"
+                            >
+                                Open in Google Maps
+                            </a>
+                        </div>
+                    </div>
+                {% endif %}
+
                 <div class="mt-4">
                     <h2 class="h5">Description</h2>
                     <p class="text-secondary mb-0">{{ gym.description }}</p>
@@ -123,4 +151,31 @@
         </div>
     </div>
 </div>
+{% endblock %}
+
+{% block extra_scripts %}
+{% if google_maps_api_key and gym.latitude and gym.longitude %}
+<script>
+    window.initMap = function () {
+        const location = {
+            lat: {{ gym.latitude }},
+            lng: {{ gym.longitude }}
+        };
+        const map = new google.maps.Map(document.getElementById("map"), {
+            zoom: 14,
+            center: location
+        });
+
+        new google.maps.Marker({
+            position: location,
+            map: map
+        });
+    };
+</script>
+<script
+    src="https://maps.googleapis.com/maps/api/js?key={{ google_maps_api_key }}&callback=initMap"
+    async
+    defer
+></script>
+{% endif %}
 {% endblock %}

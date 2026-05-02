@@ -9,8 +9,12 @@
     <div>
         <h1 class="mb-1">All Gyms</h1>
         <p class="text-secondary mb-0">
-            {% if query %}
+            {% if query and price %}
+                Showing results for "{{ query }}" with the selected price filter.
+            {% elif query %}
                 Showing results for "{{ query }}".
+            {% elif price %}
+                Showing gyms matching the selected price filter.
             {% else %}
                 Browse the gyms currently listed on Gym Hub UK.
             {% endif %}
@@ -28,10 +32,16 @@
             type="search"
             name="q"
             value="{{ query }}"
-            placeholder="Search by name, city, description, or price"
+            placeholder="Search by name, city, or description"
         >
+        <select class="form-select" name="price" aria-label="Filter by price range">
+            <option value="">All prices</option>
+            {% for value, label in price_choices %}
+                <option value="{{ value }}"{% if price == value %} selected{% endif %}>{{ label }}</option>
+            {% endfor %}
+        </select>
         <button class="btn btn-primary" type="submit">Search</button>
-        {% if query %}
+        {% if query or price %}
             <a class="btn btn-outline-secondary" href="{% url 'gym_list' %}">Clear</a>
         {% endif %}
     </div>
@@ -86,9 +96,9 @@
 {% else %}
     <div class="card border-0 shadow-sm rounded-4">
         <div class="card-body p-5 text-center">
-            {% if query %}
+            {% if query or price %}
                 <h2 class="h4 mb-3">No gyms found</h2>
-                <p class="text-secondary mb-4">No gyms match "{{ query }}". Try another name, city, description, or price range.</p>
+                <p class="text-secondary mb-4">No gyms match your search and filter. Try another name, city, description, or price range.</p>
                 <a class="btn btn-outline-secondary" href="{% url 'gym_list' %}">Clear Search</a>
             {% else %}
                 <h2 class="h4 mb-3">No gyms added yet</h2>
