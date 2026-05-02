@@ -16,6 +16,7 @@ class GymForm(forms.ModelForm):
             'google_place_id',
             'google_rating',
             'opening_hours_text',
+            'image',
             'image_url',
             'website',
             'phone_number',
@@ -25,6 +26,7 @@ class GymForm(forms.ModelForm):
             'amenities',
         ]
         widgets = {
+            'image': forms.ClearableFileInput(attrs={'accept': 'image/*'}),
             'description': forms.Textarea(attrs={'rows': 4}),
             'amenities': forms.CheckboxSelectMultiple(),
             'latitude': forms.HiddenInput(),

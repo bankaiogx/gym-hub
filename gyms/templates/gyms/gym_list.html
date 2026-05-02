@@ -124,7 +124,9 @@
     {% for gym in gyms %}
         <div class="card gym-card mb-3">
             <div class="gym-card-media">
-                {% if gym.image_url %}
+                {% if gym.image %}
+                    <img src="{{ gym.image.url }}" alt="{{ gym.name }}">
+                {% elif gym.image_url %}
                     <img src="{{ gym.image_url }}" alt="{{ gym.name }}">
                 {% else %}
                     <img src="{% static 'gyms/images/gymxp-session-bg.jpg' %}" alt="{{ gym.name }}">

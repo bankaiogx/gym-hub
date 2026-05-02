@@ -13,7 +13,7 @@
                     <p class="text-secondary mb-0">Share a gym with the community by filling in the details below.</p>
                 </div>
 
-                <form method="POST">
+                <form method="POST" enctype="multipart/form-data">
                     {% csrf_token %}
                     <div class="mb-4">
                         <label class="form-label" for="autocomplete">Search gym or address</label>

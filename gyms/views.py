@@ -138,7 +138,7 @@ def gym_detail(request, slug):
 @login_required
 def add_gym(request):
     if request.method == 'POST':
-        form = GymForm(request.POST)
+        form = GymForm(request.POST, request.FILES)
         if form.is_valid():
             gym = form.save(commit=False)
             gym.owner = request.user
