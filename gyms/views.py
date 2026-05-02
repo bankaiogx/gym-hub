@@ -2,12 +2,13 @@ from django.contrib.auth.decorators import login_required
 from django.contrib.auth import login, logout
 from django.conf import settings
 from django.db.models import Avg, BooleanField, Count, Exists, OuterRef, Q, Value
+from django.http import HttpResponseForbidden
 from django.shortcuts import get_object_or_404, redirect, render
 from django.utils.http import url_has_allowed_host_and_scheme
 from django.views.decorators.http import require_http_methods, require_POST
 
 from .forms import GymForm, ReviewForm, SignupForm
-from .models import Amenity, Favourite, Gym
+from .models import Amenity, Favourite, Gym, Review
 
 
 def home(request):
@@ -248,6 +249,43 @@ def add_review(request, slug):
             'google_maps_api_key': settings.GOOGLE_MAPS_API_KEY,
         },
     )
+
+
+@login_required
+def edit_review(request, review_id):
+    review = get_object_or_404(Review, pk=review_id)
+    if review.user != request.user:
+        return HttpResponseForbidden('You can only edit your own reviews.')
+
+    if request.method == 'POST':
+        form = ReviewForm(request.POST, instance=review)
+        if form.is_valid():
+            form.save()
+            return redirect('gym_detail', slug=review.gym.slug)
+    else:
+        form = ReviewForm(instance=review)
+
+    return render(
+        request,
+        'gyms/edit_review.html',
+        {
+            'form': form,
+            'review': review,
+            'gym': review.gym,
+        },
+    )
+
+
+@login_required
+@require_POST
+def delete_review(request, review_id):
+    review = get_object_or_404(Review, pk=review_id)
+    if review.user != request.user:
+        return HttpResponseForbidden('You can only delete your own reviews.')
+
+    gym_slug = review.gym.slug
+    review.delete()
+    return redirect('gym_detail', slug=gym_slug)
 
 
 @login_required

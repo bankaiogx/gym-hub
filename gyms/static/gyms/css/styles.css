@@ -393,6 +393,7 @@ main > .container {
     backdrop-filter: var(--gymxp-card-blur);
     box-shadow: var(--gymxp-card-shadow);
     overflow: hidden;
+    scroll-margin-top: 6rem;
     transition: transform var(--gymxp-transition), box-shadow var(--gymxp-transition);
 }
 
@@ -757,4 +758,38 @@ main > .container {
     font-size: 0.9rem;
     font-weight: 800;
     margin-top: 0.45rem;
+}
+
+/* Reviews */
+.review-header {
+    align-items: flex-start;
+    display: flex;
+    gap: 1rem;
+    justify-content: space-between;
+    margin-bottom: 0.9rem;
+}
+
+.review-comment {
+    margin-bottom: 1rem;
+}
+
+.review-actions {
+    align-items: center;
+    display: flex;
+    gap: 0.5rem;
+    justify-content: flex-end;
+}
+
+.review-actions form {
+    margin: 0;
+}
+
+@media (max-width: 575.98px) {
+    .review-header {
+        flex-direction: column;
+    }
+
+    .review-actions {
+        justify-content: flex-start;
+    }
 }

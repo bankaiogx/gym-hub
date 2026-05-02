@@ -107,8 +107,11 @@ class Review(models.Model):
 
     class Meta:
         ordering = ['-created_at']
-        unique_together = ('gym', 'user')
         constraints = [
+            models.UniqueConstraint(
+                fields=['gym', 'user'],
+                name='unique_review_per_user_per_gym'
+            ),
             models.CheckConstraint(
                 condition=models.Q(rating__gte=1) & models.Q(rating__lte=5),
                 name='review_rating_between_1_and_5'

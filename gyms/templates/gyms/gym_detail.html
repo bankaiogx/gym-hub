@@ -159,16 +159,27 @@
                     {% if reviews %}
                         {% for review in reviews %}
                             <div class="border rounded-3 p-3 mb-3 bg-light">
-                                <div class="d-flex flex-column flex-sm-row justify-content-between gap-2 mb-2">
-                                    <strong>{{ review.user.username }}</strong>
-                                    <span class="rating-stars" aria-label="{{ review.rating }}/5">
+                                <div class="review-header">
+                                    <div>
+                                        <strong>{{ review.user.username }}</strong>
+                                        <p class="text-secondary small mb-0">{{ review.created_at|date:"d M Y" }}</p>
+                                    </div>
+                                    <div class="rating-stars" aria-label="{{ review.rating }}/5">
                                         {% for star in review.rating|star_states %}
                                             <span class="rating-star rating-star-{{ star }}">&#9733;</span>
                                         {% endfor %}
-                                    </span>
+                                    </div>
                                 </div>
-                                <p class="mb-1">{{ review.comment }}</p>
-                                <p class="text-secondary small mb-0">{{ review.created_at|date:"d M Y" }}</p>
+                                <p class="review-comment">{{ review.comment }}</p>
+                                {% if review.user == user %}
+                                    <div class="review-actions">
+                                        <a class="btn btn-outline-secondary btn-sm" href="{% url 'edit_review' review.id %}">Edit</a>
+                                        <form method="POST" action="{% url 'delete_review' review.id %}" onsubmit="return confirm('Delete this review?');">
+                                            {% csrf_token %}
+                                            <button class="btn btn-outline-secondary btn-sm" type="submit">Delete</button>
+                                        </form>
+                                    </div>
+                                {% endif %}
                             </div>
                         {% endfor %}
                     {% else %}

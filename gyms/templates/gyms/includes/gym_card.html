@@ -1,7 +1,7 @@
 {% load static %}
 {% load rating_tags %}
 
-<div class="card gym-card mb-3">
+<div id="gym-{{ gym.pk }}" class="card gym-card mb-3">
     <div class="gym-card-media">
         {% if gym.image %}
             <img src="{{ gym.image.url }}" alt="{{ gym.name }}">
@@ -20,7 +20,7 @@
                 {% if user.is_authenticated %}
                     <form class="bookmark-form" method="POST" action="{% url 'toggle_bookmark' gym.slug %}">
                         {% csrf_token %}
-                        <input type="hidden" name="next" value="{{ request.get_full_path }}">
+                        <input type="hidden" name="next" value="{{ request.get_full_path }}#gym-{{ gym.pk }}">
                         <button
                             class="bookmark-button{% if gym.is_bookmarked %} is-bookmarked{% endif %}"
                             type="submit"
