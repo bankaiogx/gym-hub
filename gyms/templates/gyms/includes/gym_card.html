@@ -1,7 +1,9 @@
 {% load static %}
 {% load rating_tags %}
 
+<!-- Reusable gym card used on list-style pages. -->
 <div id="gym-{{ gym.pk }}" class="card gym-card mb-3">
+    <!-- Prefer uploaded image, then Google image, then fallback image. -->
     <div class="gym-card-media">
         {% if gym.image %}
             <img src="{{ gym.image.url }}" alt="{{ gym.name }}">
@@ -12,6 +14,7 @@
         {% endif %}
     </div>
     <div class="card-body">
+        <!-- Gym title and bookmark action. -->
         <div class="d-flex flex-column flex-md-row justify-content-between gap-3 mb-3">
             <h4 class="card-title mb-0">
                 <a href="{% url 'gym_detail' gym.slug %}">{{ gym.name }}</a>
@@ -42,12 +45,14 @@
             </div>
         </div>
         <p class="mb-2"><strong>City:</strong> {{ gym.city }}</p>
+        <!-- Average rating is rendered as stars. -->
         <div class="rating-stars mb-3" aria-label="{{ gym.average_rating|rating_label }}">
             {% for star in gym.average_rating|star_states %}
                 <span class="rating-star rating-star-{{ star }}">&#9733;</span>
             {% endfor %}
             <span class="rating-text">{{ gym.average_rating|rating_label }}</span>
         </div>
+        <!-- Amenities show as chips when selected. -->
         <div class="mb-3">
             {% with gym_amenities=gym.amenities.all %}
                 {% if gym_amenities %}
