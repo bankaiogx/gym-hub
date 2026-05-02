@@ -34,14 +34,53 @@
             value="{{ query }}"
             placeholder="Search by name, city, or description"
         >
-        <select class="form-select" name="price" aria-label="Filter by price range">
-            <option value="">All prices</option>
-            {% for value, label in price_choices %}
-                <option value="{{ value }}"{% if price == value %} selected{% endif %}>{{ label }}</option>
-            {% endfor %}
-        </select>
+        <div class="dropdown">
+            <button
+                class="btn btn-outline-secondary filter-button w-100"
+                type="button"
+                data-bs-toggle="dropdown"
+                data-bs-auto-close="outside"
+                aria-expanded="false"
+            >
+                <span aria-hidden="true">
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none">
+                        <path d="M4 6h16M7 12h10M10 18h4" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"/>
+                    </svg>
+                </span>
+                <span>Filters</span>
+                {% if active_filter_count %}
+                    <span class="filter-count">{{ active_filter_count }}</span>
+                {% endif %}
+            </button>
+            <div class="dropdown-menu dropdown-menu-end filter-menu">
+                <label class="form-label" for="price-filter">Price range</label>
+                <select class="form-select" id="price-filter" name="price" aria-label="Filter by price range">
+                    <option value="">All prices</option>
+                    {% for value, label in price_choices %}
+                        <option value="{{ value }}"{% if price == value %} selected{% endif %}>{{ label }}</option>
+                    {% endfor %}
+                </select>
+
+                <p class="form-label mt-4 mb-2">Amenities</p>
+                <div class="amenity-filter-grid">
+                    {% for amenity in amenities %}
+                        <label for="amenity-filter-{{ amenity.id }}">
+                            <input
+                                id="amenity-filter-{{ amenity.id }}"
+                                type="checkbox"
+                                name="amenities"
+                                value="{{ amenity.id }}"
+                                {% if amenity.id|stringformat:'s' in selected_amenity_ids %}checked{% endif %}
+                            >
+                            {% if amenity.icon %}<span>{{ amenity.icon }}</span>{% endif %}
+                            <span>{{ amenity.name }}</span>
+                        </label>
+                    {% endfor %}
+                </div>
+            </div>
+        </div>
         <button class="btn btn-primary" type="submit">Search</button>
-        {% if query or price %}
+        {% if query or price or selected_amenity_ids %}
             <a class="btn btn-outline-secondary" href="{% url 'gym_list' %}">Clear</a>
         {% endif %}
     </div>
@@ -92,6 +131,22 @@
                     {% endfor %}
                     <span class="rating-text">{{ gym.average_rating|rating_label }}</span>
                 </div>
+                <div class="mb-3">
+                    {% with gym_amenities=gym.amenities.all %}
+                        {% if gym_amenities %}
+                            <div class="amenity-chips">
+                                {% for amenity in gym_amenities %}
+                                    <span class="amenity-chip">
+                                        {% if amenity.icon %}<span>{{ amenity.icon }}</span>{% endif %}
+                                        <span>{{ amenity.name }}</span>
+                                    </span>
+                                {% endfor %}
+                            </div>
+                        {% else %}
+                            <p class="text-secondary small mb-0">No amenities listed yet.</p>
+                        {% endif %}
+                    {% endwith %}
+                </div>
                 <p class="text-secondary">{{ gym.description|default:'No description provided yet.' }}</p>
                 <p class="mb-0"><span class="price-pill">Price: {{ gym.get_price_range_display }}</span></p>
             </div>
@@ -100,9 +155,9 @@
 {% else %}
     <div class="card border-0 shadow-sm rounded-4">
         <div class="card-body p-5 text-center">
-            {% if query or price %}
+            {% if query or price or selected_amenity_ids %}
                 <h2 class="h4 mb-3">No gyms found</h2>
-                <p class="text-secondary mb-4">No gyms match your search and filter. Try another name, city, description, or price range.</p>
+                <p class="text-secondary mb-4">No gyms match your search and filters. Try another name, city, description, price range, or amenity.</p>
                 <a class="btn btn-outline-secondary" href="{% url 'gym_list' %}">Clear Search</a>
             {% else %}
                 <h2 class="h4 mb-3">No gyms added yet</h2>

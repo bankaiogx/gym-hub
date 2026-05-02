@@ -6,7 +6,7 @@ from django.utils.http import url_has_allowed_host_and_scheme
 from django.views.decorators.http import require_POST
 
 from .forms import GymForm, ReviewForm
-from .models import Favourite, Gym
+from .models import Amenity, Favourite, Gym
 
 
 def home(request):
@@ -16,7 +16,8 @@ def home(request):
 def gym_list(request):
     query = request.GET.get('q', '').strip()
     price = request.GET.get('price', '').strip()
-    gyms = Gym.objects.annotate(
+    selected_amenity_ids = request.GET.getlist('amenities')
+    gyms = Gym.objects.prefetch_related('amenities').annotate(
         average_rating=Avg('reviews__rating'),
         bookmark_count=Count('favourites', distinct=True),
     )
@@ -42,6 +43,9 @@ def gym_list(request):
     if price:
         gyms = gyms.filter(price_range=price)
 
+    if selected_amenity_ids:
+        gyms = gyms.filter(amenities__id__in=selected_amenity_ids).distinct()
+
     return render(
         request,
         'gyms/gym_list.html',
@@ -49,13 +53,16 @@ def gym_list(request):
             'gyms': gyms,
             'query': query,
             'price': price,
+            'amenities': Amenity.objects.all(),
+            'selected_amenity_ids': selected_amenity_ids,
+            'active_filter_count': len(selected_amenity_ids) + (1 if price else 0),
             'price_choices': Gym.PRICE_CHOICES,
         },
     )
 
 
 def gym_detail(request, slug):
-    gym = get_object_or_404(Gym, slug=slug)
+    gym = get_object_or_404(Gym.objects.prefetch_related('amenities'), slug=slug)
     reviews = gym.reviews.select_related('user')
     average_rating = gym.reviews.aggregate(Avg('rating'))['rating__avg']
     bookmark_count = gym.favourites.count()
@@ -93,6 +100,7 @@ def add_gym(request):
             gym = form.save(commit=False)
             gym.owner = request.user
             gym.save()
+            form.save_m2m()
             return redirect('gym_detail', slug=gym.slug)
     else:
         form = GymForm()

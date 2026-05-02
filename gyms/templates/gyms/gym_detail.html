@@ -133,6 +133,24 @@
                     <p class="text-secondary mb-0">{{ gym.description|default:'No description provided yet.' }}</p>
                 </div>
 
+                <div class="mt-4">
+                    <h2 class="h5">Amenities</h2>
+                    {% with gym_amenities=gym.amenities.all %}
+                        {% if gym_amenities %}
+                            <div class="amenity-chips">
+                                {% for amenity in gym_amenities %}
+                                    <span class="amenity-chip">
+                                        {% if amenity.icon %}<span>{{ amenity.icon }}</span>{% endif %}
+                                        <span>{{ amenity.name }}</span>
+                                    </span>
+                                {% endfor %}
+                            </div>
+                        {% else %}
+                            <p class="text-secondary mb-0">No amenities listed yet.</p>
+                        {% endif %}
+                    {% endwith %}
+                </div>
+
                 <div class="mt-5">
                     <h2 class="h4 mb-3">Reviews</h2>
 

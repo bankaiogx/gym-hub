@@ -22,9 +22,11 @@ class GymForm(forms.ModelForm):
             'description',
             'price_range',
             'opening_hours',
+            'amenities',
         ]
         widgets = {
             'description': forms.Textarea(attrs={'rows': 4}),
+            'amenities': forms.CheckboxSelectMultiple(),
             'latitude': forms.HiddenInput(),
             'longitude': forms.HiddenInput(),
             'google_place_id': forms.HiddenInput(),
@@ -38,6 +40,12 @@ class GymForm(forms.ModelForm):
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
         for field_name, field in self.fields.items():
+            if isinstance(field.widget, forms.CheckboxSelectMultiple):
+                css_class = 'amenity-checkbox-list'
+                existing_classes = field.widget.attrs.get('class', '')
+                field.widget.attrs['class'] = f"{existing_classes} {css_class}".strip()
+                continue
+
             if isinstance(field.widget, forms.Select):
                 css_class = 'form-select'
             elif isinstance(field.widget, forms.Textarea):
