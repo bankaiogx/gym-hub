@@ -1,5 +1,5 @@
 from django.contrib.auth.decorators import login_required
-from django.contrib.auth import login
+from django.contrib.auth import login, logout
 from django.contrib.auth.forms import UserCreationForm
 from django.conf import settings
 from django.db.models import Avg, BooleanField, Count, Exists, OuterRef, Q, Value
@@ -26,6 +26,12 @@ def signup(request):
         form = UserCreationForm()
 
     return render(request, 'gyms/signup.html', {'form': form})
+
+
+@require_POST
+def logout_view(request):
+    logout(request)
+    return redirect('gym_list')
 
 
 def gym_list(request):
