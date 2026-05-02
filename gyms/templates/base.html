@@ -22,10 +22,10 @@
             --gymxp-foreground: #F5F7FA;
             --gymxp-muted: #A9B3BF;
             --gymxp-faint: #767F8B;
-            --gymxp-accent: #C88637;
-            --gymxp-accent-strong: #FF8A2A;
-            --gymxp-accent-soft: rgba(200, 134, 55, 0.18);
-            --gymxp-accent-border: rgba(255, 138, 42, 0.55);
+            --gymxp-accent: #27B3C7;
+            --gymxp-accent-strong: #2FA7C7;
+            --gymxp-accent-soft: rgba(47, 167, 199, 0.18);
+            --gymxp-accent-border: rgba(47, 167, 199, 0.55);
             --gymxp-glass-bg: rgba(8, 9, 12, 0.78);
             --gymxp-glass-raised: rgba(12, 14, 18, 0.84);
             --gymxp-glass-subtle: rgba(10, 11, 14, 0.64);
@@ -40,7 +40,7 @@
             --gymxp-chip-radius: 12px;
             --gymxp-card-blur: blur(34px);
             --gymxp-nav-blur: blur(18px);
-            --gymxp-title-gradient: linear-gradient(90deg, #F5F7FA, #A9B3BF, #C88637);
+            --gymxp-title-gradient: linear-gradient(90deg, #F5F7FA, #A9B3BF, #27B3C7);
             --gymxp-pill-bg: rgba(23, 27, 34, 0.88);
             --gymxp-pill-radius: 999px;
             --gymxp-space-card: 16px;
@@ -51,7 +51,7 @@
 
         body {
             background:
-                radial-gradient(circle at 18% 0%, rgba(200, 134, 55, 0.18), transparent 28rem),
+                radial-gradient(circle at 18% 0%, rgba(47, 167, 199, 0.18), transparent 28rem),
                 linear-gradient(180deg, rgba(0, 0, 0, 0.92) 0%, rgba(6, 8, 12, 0.96) 44%, rgba(0, 0, 0, 0.98) 100%),
                 url("{% static 'gyms/images/gymxp-hypertrophy-bg.jpg' %}") center top / cover fixed;
             color: var(--gymxp-foreground);
@@ -112,8 +112,8 @@
 
         .btn-primary:hover,
         .btn-primary:focus {
-            background: rgba(255, 138, 42, 0.28) !important;
-            border-color: rgba(255, 138, 42, 0.72) !important;
+            background: rgba(47, 167, 199, 0.28) !important;
+            border-color: rgba(47, 167, 199, 0.72) !important;
         }
 
         .btn-light {
@@ -139,7 +139,7 @@
         .badge,
         .text-bg-primary {
             background: var(--gymxp-accent-soft) !important;
-            border: 1px solid rgba(255, 138, 42, 0.35);
+            border: 1px solid rgba(47, 167, 199, 0.35);
             color: var(--gymxp-foreground) !important;
             font-weight: 900;
             letter-spacing: 0.08em;
@@ -188,8 +188,8 @@
         .form-control:focus,
         .form-select:focus {
             background: rgba(255, 255, 255, 0.055);
-            border-color: rgba(255, 138, 42, 0.55);
-            box-shadow: 0 0 0 0.2rem rgba(255, 138, 42, 0.16);
+            border-color: rgba(47, 167, 199, 0.55);
+            box-shadow: 0 0 0 0.2rem rgba(47, 167, 199, 0.16);
             color: var(--gymxp-foreground);
         }
 
@@ -349,6 +349,19 @@
             aspect-ratio: 16 / 9;
             object-fit: cover;
             width: 100%;
+        }
+
+        .search-panel {
+            background: var(--gymxp-glass-bg);
+            backdrop-filter: var(--gymxp-card-blur);
+            border: 1px solid var(--gymxp-border);
+            border-radius: var(--gymxp-card-radius);
+            box-shadow: var(--gymxp-card-shadow);
+            padding: var(--gymxp-space-card-lg);
+        }
+
+        .search-panel .form-control {
+            min-height: 52px;
         }
 
         @media (min-width: 576px) {

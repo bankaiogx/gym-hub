@@ -1,5 +1,5 @@
 from django.contrib.auth.decorators import login_required
-from django.db.models import Avg
+from django.db.models import Avg, Q
 from django.shortcuts import get_object_or_404, redirect, render
 
 from .forms import GymForm, ReviewForm
@@ -11,8 +11,31 @@ def home(request):
 
 
 def gym_list(request):
+    query = request.GET.get('q', '').strip()
     gyms = Gym.objects.annotate(average_rating=Avg('reviews__rating'))
-    return render(request, 'gyms/gym_list.html', {'gyms': gyms})
+
+    if query:
+        matching_price_ranges = [
+            value
+            for value, label in Gym.PRICE_CHOICES
+            if query.lower() in value.lower() or query.lower() in label.lower()
+        ]
+        gyms = gyms.filter(
+            Q(name__icontains=query)
+            | Q(city__icontains=query)
+            | Q(description__icontains=query)
+            | Q(price_range__icontains=query)
+            | Q(price_range__in=matching_price_ranges)
+        )
+
+    return render(
+        request,
+        'gyms/gym_list.html',
+        {
+            'gyms': gyms,
+            'query': query,
+        },
+    )
 
 
 def gym_detail(request, slug):
