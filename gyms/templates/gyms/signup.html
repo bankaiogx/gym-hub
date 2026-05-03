@@ -3,6 +3,7 @@
 {% block title %}Sign Up - Gym Hub UK{% endblock %}
 
 {% block content %}
+<!-- Signup form card. -->
 <div class="row justify-content-center">
     <div class="col-lg-7 col-xl-6">
         <div class="card border-0 shadow-sm rounded-4">
@@ -16,6 +17,7 @@
                 <form method="POST" novalidate>
                     {% csrf_token %}
 
+                    <!-- Show any form-wide signup errors. -->
                     {% if form.non_field_errors %}
                         <div class="signup-errors mb-4">
                             {% for error in form.non_field_errors %}
@@ -24,6 +26,7 @@
                         </div>
                     {% endif %}
 
+                    <!-- Email is required for account recovery and identification. -->
                     <div class="auth-field">
                         <label for="{{ form.email.id_for_label }}">
                             {{ form.email.label }}
@@ -38,6 +41,7 @@
                         {% endfor %}
                     </div>
 
+                    <!-- Gym Hub ID is the public username shown on reviews. -->
                     <div class="auth-field">
                         <label for="{{ form.username.id_for_label }}">
                             {{ form.username.label }}
@@ -56,6 +60,7 @@
                         {% endfor %}
                     </div>
 
+                    <!-- Password field includes a simple strength indicator. -->
                     <div class="auth-field">
                         <label for="{{ form.password1.id_for_label }}">
                             Create Password
@@ -77,6 +82,7 @@
                         {% endfor %}
                     </div>
 
+                    <!-- Confirmation field checks that both passwords match. -->
                     <div class="auth-field">
                         <label for="{{ form.password2.id_for_label }}">
                             Confirm Password
@@ -109,6 +115,7 @@
 {% endblock %}
 
 {% block extra_scripts %}
+<!-- Small signup helpers for password strength, matching, and User ID format. -->
 <script>
     function getPasswordStrength(password) {
         const hasUpper = /[A-Z]/.test(password);
