@@ -81,9 +81,19 @@ h6 {
 }
 
 .navbar-brand {
+    align-items: center;
     color: var(--gymxp-foreground) !important;
+    display: inline-flex;
     font-weight: 900;
+    gap: 0.65rem;
     letter-spacing: 0.02em;
+}
+
+.navbar-brand img {
+    border-radius: 12px;
+    height: 42px;
+    object-fit: contain;
+    width: 42px;
 }
 
 .navbar-actions {
