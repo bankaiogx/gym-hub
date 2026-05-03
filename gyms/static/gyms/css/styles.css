@@ -175,6 +175,36 @@ h6 {
     color: var(--gymxp-foreground);
 }
 
+.site-footer {
+    border-top: 1px solid var(--gymxp-border-soft);
+    color: var(--gymxp-muted);
+}
+
+.site-footer p {
+    margin-bottom: 0.75rem;
+}
+
+.footer-social-links {
+    align-items: center;
+    display: flex;
+    gap: 1rem;
+    justify-content: center;
+}
+
+.footer-social-links a {
+    align-items: center;
+    color: var(--gymxp-muted);
+    display: inline-flex;
+    gap: 0.4rem;
+    text-decoration: none;
+    transition: color var(--gymxp-transition);
+}
+
+.footer-social-links a:hover,
+.footer-social-links a:focus {
+    color: var(--gymxp-accent);
+}
+
 .badge,
 .text-bg-primary {
     background: var(--gymxp-accent-soft) !important;
