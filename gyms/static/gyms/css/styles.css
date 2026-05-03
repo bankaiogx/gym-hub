@@ -1,3 +1,4 @@
+/* Design tokens */
 :root {
     --gymxp-bg-0: #000000;
     --gymxp-bg-1: #06080C;
@@ -35,6 +36,7 @@
     --gymxp-transition: 200ms ease;
 }
 
+/* Base layout */
 body {
     background:
         radial-gradient(circle at 18% 0%, rgba(47, 167, 199, 0.18), transparent 28rem),
@@ -67,6 +69,7 @@ h6 {
     color: var(--gymxp-accent) !important;
 }
 
+/* Navbar */
 .navbar {
     background: rgba(5, 6, 8, 0.74) !important;
     backdrop-filter: var(--gymxp-nav-blur);
@@ -134,6 +137,7 @@ h6 {
     box-shadow: 0 0 0 0.2rem rgba(47, 167, 199, 0.18);
 }
 
+/* Buttons */
 .btn {
     border-radius: 18px;
     font-weight: 900;
@@ -205,6 +209,7 @@ h6 {
     color: var(--gymxp-accent);
 }
 
+/* Shared cards and badges */
 .badge,
 .text-bg-primary {
     background: var(--gymxp-accent-soft) !important;
@@ -250,6 +255,7 @@ h6 {
     border-color: var(--gymxp-border) !important;
 }
 
+/* Forms */
 .form-control,
 .form-select {
     background: rgba(255, 255, 255, 0.035);
@@ -311,6 +317,7 @@ h6 {
     width: 1rem;
 }
 
+/* Search and filter controls */
 .amenity-filter-grid {
     display: grid;
     gap: 0.6rem;
@@ -405,6 +412,7 @@ main > .container {
     max-width: 1040px;
 }
 
+/* Home page */
 .hero-card {
     background: var(--gymxp-surface);
     color: #fff;
@@ -442,6 +450,7 @@ main > .container {
     z-index: 1;
 }
 
+/* Gym cards */
 .gym-card {
     background: var(--gymxp-glass-bg);
     border: 1px solid var(--gymxp-border);
@@ -552,6 +561,7 @@ main > .container {
     width: 100%;
 }
 
+/* Ratings and bookmarks */
 .rating-star {
     color: rgba(245, 247, 250, 0.24);
     font-size: 1.15rem;
@@ -639,6 +649,7 @@ main > .container {
     width: 100%;
 }
 
+/* Search panel */
 .search-panel {
     background: var(--gymxp-glass-bg);
     backdrop-filter: var(--gymxp-card-blur);
@@ -694,6 +705,7 @@ main > .container {
     padding-inline: 1.15rem;
 }
 
+/* Map and Google autocomplete */
 .map-panel {
     background: var(--gymxp-glass-bg);
     border: 1px solid var(--gymxp-border);
@@ -717,6 +729,7 @@ main > .container {
     z-index: 99999 !important;
 }
 
+/* Responsive styles */
 @media (min-width: 576px) {
     .gym-card .card-body {
         padding: 2.5rem;
