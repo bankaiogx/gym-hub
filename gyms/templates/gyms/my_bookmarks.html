@@ -3,6 +3,7 @@
 {% block title %}My Bookmarks - Gym Hub UK{% endblock %}
 
 {% block content %}
+<!-- Header for the user's saved gyms page. -->
 <div class="d-flex flex-column flex-md-row justify-content-between align-items-md-center gap-3 mb-4">
     <div>
         <p class="text-uppercase text-primary fw-semibold small mb-2">My Account</p>
@@ -12,11 +13,13 @@
     <a class="btn btn-outline-secondary" href="{% url 'account_dashboard' %}">Back to My Account</a>
 </div>
 
+<!-- Reuse the standard gym card for each bookmarked gym. -->
 {% if gyms %}
     {% for gym in gyms %}
         {% include 'gyms/includes/gym_card.html' %}
     {% endfor %}
 {% else %}
+    <!-- Empty state shown when the user has no bookmarks yet. -->
     <div class="card border-0 shadow-sm rounded-4">
         <div class="card-body p-5 text-center">
             <h2 class="h4 mb-3">No bookmarks yet</h2>
