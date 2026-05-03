@@ -10,6 +10,7 @@ from .models import Gym, Review
 class LoginForm(AuthenticationForm):
     def __init__(self, request=None, *args, **kwargs):
         super().__init__(request, *args, **kwargs)
+        # Add Bootstrap styling to the built-in login fields.
         self.fields['username'].widget.attrs.update({
             'class': 'form-control',
             'placeholder': 'Username',
@@ -23,6 +24,7 @@ class LoginForm(AuthenticationForm):
 
 
 class SignupForm(UserCreationForm):
+    # Email is required so accounts can be identified more clearly.
     email = forms.EmailField(
         label='Email',
         required=True,
@@ -56,12 +58,14 @@ class SignupForm(UserCreationForm):
             'password2': 'new-password',
         }
 
+        # Apply the same styling and autocomplete hints to every signup field.
         for field_name, field in self.fields.items():
             field.widget.attrs['class'] = 'form-control'
             field.widget.attrs['placeholder'] = placeholders.get(field_name, '')
             field.widget.attrs['autocomplete'] = autocomplete.get(field_name, '')
 
     def clean_email(self):
+        # Prevent two users from registering with the same email address.
         email = self.cleaned_data['email'].strip().lower()
         user_model = get_user_model()
         if user_model.objects.filter(email__iexact=email).exists():
@@ -69,6 +73,7 @@ class SignupForm(UserCreationForm):
         return email
 
     def clean_username(self):
+        # Keep the public Gym Hub ID simple and URL-friendly.
         username = self.cleaned_data['username'].strip().lower()
         if not re.fullmatch(r'[a-z0-9._]{3,20}', username):
             raise forms.ValidationError(
@@ -79,6 +84,7 @@ class SignupForm(UserCreationForm):
         return username
 
     def clean_password2(self):
+        # Keep the password rules clear without adding a complex password UI.
         password1 = self.cleaned_data.get('password1') or ''
         password2 = self.cleaned_data.get('password2') or ''
         if password1 and password2 and password1 != password2:
@@ -100,6 +106,7 @@ class SignupForm(UserCreationForm):
 class GymForm(forms.ModelForm):
     class Meta:
         model = Gym
+        # Includes manual fields plus hidden fields filled by Google Places.
         fields = [
             'name',
             'city',
@@ -120,6 +127,7 @@ class GymForm(forms.ModelForm):
             'amenities',
         ]
         widgets = {
+            # Limit the upload picker to image files.
             'image': forms.ClearableFileInput(attrs={'accept': 'image/*'}),
             'description': forms.Textarea(attrs={'rows': 4}),
             'amenities': forms.CheckboxSelectMultiple(),
@@ -135,6 +143,7 @@ class GymForm(forms.ModelForm):
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
+        # Match Django form widgets to the existing Bootstrap/Gym Hub styling.
         for field_name, field in self.fields.items():
             if isinstance(field.widget, forms.CheckboxSelectMultiple):
                 continue
@@ -155,11 +164,13 @@ class ReviewForm(forms.ModelForm):
         model = Review
         fields = ['rating', 'comment']
         widgets = {
+            # Give review comments enough space without making the form huge.
             'comment': forms.Textarea(attrs={'rows': 4}),
         }
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
+        # Keep review fields visually consistent with the rest of the site.
         for field in self.fields.values():
             if isinstance(field.widget, forms.Select):
                 css_class = 'form-select'
