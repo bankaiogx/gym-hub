@@ -18,23 +18,36 @@
 </head>
 <body>
     <!-- Shared navigation changes depending on login state. -->
-    <nav class="navbar navbar-dark bg-dark">
-        <div class="container d-flex justify-content-between align-items-center gap-3">
+    <nav class="navbar navbar-expand-md navbar-dark bg-dark">
+        <div class="container">
             <a class="navbar-brand" href="/">
                 <img src="{% static 'gyms/images/gymhub-logo.png' %}" alt="Gym Hub UK">
             </a>
-            <div class="navbar-actions">
-                {% if not user.is_authenticated %}
-                    <a class="btn btn-outline-light" href="{% url 'login' %}">Login</a>
-                    <a class="btn btn-outline-light" href="{% url 'signup' %}">Sign Up</a>
-                {% else %}
-                    <a class="btn btn-outline-light" href="{% url 'account_dashboard' %}">My Account</a>
-                    <form method="post" action="{% url 'logout' %}" class="m-0">
-                        {% csrf_token %}
-                        <button class="btn btn-outline-light" type="submit">Log Out</button>
-                    </form>
-                {% endif %}
-                <a class="btn btn-light" href="{% url 'add_gym' %}">Add Gym</a>
+            <button
+                class="navbar-toggler"
+                type="button"
+                data-bs-toggle="collapse"
+                data-bs-target="#mainNavbar"
+                aria-controls="mainNavbar"
+                aria-expanded="false"
+                aria-label="Toggle navigation"
+            >
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div id="mainNavbar" class="collapse navbar-collapse">
+                <div class="navbar-actions ms-md-auto">
+                    {% if not user.is_authenticated %}
+                        <a class="btn btn-outline-light" href="{% url 'login' %}">Login</a>
+                        <a class="btn btn-outline-light" href="{% url 'signup' %}">Sign Up</a>
+                    {% else %}
+                        <a class="btn btn-outline-light" href="{% url 'account_dashboard' %}">My Account</a>
+                        <form method="post" action="{% url 'logout' %}" class="m-0">
+                            {% csrf_token %}
+                            <button class="btn btn-outline-light" type="submit">Log Out</button>
+                        </form>
+                    {% endif %}
+                    <a class="btn btn-light" href="{% url 'add_gym' %}">Add Gym</a>
+                </div>
             </div>
         </div>
     </nav>
@@ -53,6 +66,14 @@
             {% block content %}{% endblock %}
         </div>
     </main>
+
+    <footer class="text-center py-4 mt-5">
+        <p>© 2026 Gym Hub UK</p>
+        <div>
+            <a href="#">Twitter</a> ·
+            <a href="#">Instagram</a>
+        </div>
+    </footer>
 
     <!-- Bootstrap JavaScript is needed for dropdowns such as filters. -->
     <script

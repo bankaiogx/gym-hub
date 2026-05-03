@@ -78,6 +78,7 @@ h6 {
 }
 
 .navbar .container {
+    align-items: center;
     flex-direction: row;
 }
 
@@ -120,6 +121,17 @@ h6 {
     min-height: 38px;
     padding: 0 0.9rem;
     white-space: nowrap;
+}
+
+.navbar-toggler {
+    border-color: var(--gymxp-border);
+    border-radius: 14px;
+    min-height: 38px;
+    padding: 0.35rem 0.55rem;
+}
+
+.navbar-toggler:focus {
+    box-shadow: 0 0 0 0.2rem rgba(47, 167, 199, 0.18);
 }
 
 .btn {
@@ -682,16 +694,6 @@ main > .container {
 }
 
 @media (max-width: 575.98px) {
-    .navbar .container {
-        align-items: flex-start !important;
-        flex-direction: column;
-    }
-
-    .navbar-actions {
-        justify-content: flex-start;
-        width: 100%;
-    }
-
     .search-controls {
         flex-direction: column;
     }
@@ -703,6 +705,35 @@ main > .container {
     }
 
     .search-filter-dropdown .filter-button {
+        width: 100%;
+    }
+}
+
+@media (max-width: 767.98px) {
+    .navbar {
+        height: auto;
+        min-height: 68px;
+    }
+
+    .navbar-collapse {
+        background: rgba(8, 9, 12, 0.96);
+        border: 1px solid var(--gymxp-border);
+        border-radius: 20px;
+        box-shadow: var(--gymxp-card-shadow);
+        margin-top: 0.75rem;
+        padding: 0.85rem;
+        width: 100%;
+    }
+
+    .navbar-actions {
+        align-items: stretch;
+        flex-direction: column;
+        gap: 0.55rem;
+        width: 100%;
+    }
+
+    .navbar-actions form,
+    .navbar-actions .btn {
         width: 100%;
     }
 }
