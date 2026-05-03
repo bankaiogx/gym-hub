@@ -3,6 +3,7 @@
 {% block title %}My Account - Gym Hub UK{% endblock %}
 
 {% block content %}
+<!-- Account dashboard card for the logged-in user. -->
 <div class="row justify-content-center">
     <div class="col-lg-9">
         <div class="card border-0 shadow-sm rounded-4 account-card">
@@ -10,12 +11,14 @@
                 <p class="text-uppercase text-primary fw-semibold small mb-2">My Account</p>
                 <h1 class="mb-2">{{ user.username }}</h1>
 
+                <!-- Show the user's email when one is saved. -->
                 {% if user.email %}
                     <p class="text-secondary mb-4">{{ user.email }}</p>
                 {% else %}
                     <p class="text-secondary mb-4">No email address added.</p>
                 {% endif %}
 
+                <!-- Quick account totals for submitted gyms, bookmarks, and reviews. -->
                 <div class="account-stats mb-4">
                     <div class="account-stat">
                         <span class="account-stat-number">{{ submitted_count }}</span>
@@ -31,6 +34,7 @@
                     </div>
                 </div>
 
+                <!-- Main account actions. -->
                 <div class="d-flex flex-column flex-md-row gap-3">
                     <a class="btn btn-primary" href="{% url 'my_submitted_gyms' %}">My submitted gyms</a>
                     <a class="btn btn-outline-secondary" href="{% url 'my_bookmarks' %}">My bookmarks</a>
