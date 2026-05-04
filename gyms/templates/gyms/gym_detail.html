@@ -96,7 +96,7 @@
                             {% endif %}
                             <div class="mt-2">
                                 <strong>Average Rating:</strong>
-                                <span class="rating-stars" aria-label="{{ average_rating|rating_label }}">
+                                <span class="rating-stars">
                                     {% for star in average_rating|star_states %}
                                         <span class="rating-star rating-star-{{ star }}" aria-hidden="true">&#9733;</span>
                                     {% endfor %}
@@ -111,7 +111,7 @@
                 {% if gym.latitude and gym.longitude %}
                     <div class="map-panel mt-4">
                         {% if google_maps_api_key %}
-                            <div id="map" class="gym-map" aria-label="Map showing {{ gym.name }}"></div>
+                            <div id="map" class="gym-map" title="Map showing {{ gym.name }}"></div>
                             <div id="google-maps-error" class="map-panel-body" hidden>
                                 <p class="mb-0 text-secondary">
                                     Google Maps could not load. Check the API key restrictions, billing, and enabled APIs in Google Cloud.
@@ -176,10 +176,11 @@
                             <div class="border rounded-3 p-3 mb-3 bg-light">
                                 <div class="review-header">
                                     <strong>{{ review.user.username }}</strong>
-                                    <div class="rating-stars" aria-label="{{ review.rating }}/5">
+                                    <div class="rating-stars">
                                         {% for star in review.rating|star_states %}
                                             <span class="rating-star rating-star-{{ star }}" aria-hidden="true">&#9733;</span>
                                         {% endfor %}
+                                        <span class="rating-text">{{ review.rating }}/5</span>
                                     </div>
                                 </div>
                                 <p class="review-comment">{{ review.comment }}</p>

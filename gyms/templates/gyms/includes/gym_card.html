@@ -16,9 +16,9 @@
     <div class="card-body">
         <!-- Gym title and bookmark action. -->
         <div class="d-flex flex-column flex-md-row justify-content-between gap-3 mb-3">
-            <h4 class="card-title mb-0">
+            <h2 class="card-title h4 mb-0">
                 <a href="{% url 'gym_detail' gym.slug %}">{{ gym.name }}</a>
-            </h4>
+            </h2>
             <div class="bookmark-actions">
                 {% if user.is_authenticated %}
                     <form class="bookmark-form" method="POST" action="{% url 'toggle_bookmark' gym.slug %}">
@@ -47,7 +47,7 @@
         </div>
         <p class="mb-2"><strong>City:</strong> {{ gym.city }}</p>
         <!-- Average rating is rendered as stars. -->
-        <div class="rating-stars mb-3" aria-label="{{ gym.average_rating|rating_label }}">
+        <div class="rating-stars mb-3">
             {% for star in gym.average_rating|star_states %}
                 <span class="rating-star rating-star-{{ star }}" aria-hidden="true">&#9733;</span>
             {% endfor %}
