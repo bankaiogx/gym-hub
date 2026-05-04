@@ -4,6 +4,7 @@ from .forms import LoginForm
 from . import views
 
 urlpatterns = [
+    # Public pages and authentication.
     path('', views.home, name='home'),
     path(
         'login/',
@@ -15,9 +16,13 @@ urlpatterns = [
     ),
     path('signup/', views.signup, name='signup'),
     path('logout/', views.logout_view, name='logout'),
+
+    # Logged-in account pages.
     path('account/', views.account_dashboard, name='account_dashboard'),
     path('account/bookmarks/', views.my_bookmarks, name='my_bookmarks'),
     path('account/submitted-gyms/', views.my_submitted_gyms, name='my_submitted_gyms'),
+
+    # Gym listing, creation, detail, bookmarks, and reviews.
     path('gyms/', views.gym_list, name='gym_list'),
     path('gyms/add/', views.add_gym, name='add_gym'),
     path('gyms/<slug:slug>/bookmark/', views.toggle_bookmark, name='toggle_bookmark'),
