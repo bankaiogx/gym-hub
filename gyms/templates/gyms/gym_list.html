@@ -80,7 +80,7 @@
                                 value="{{ amenity.id }}"
                                 {% if amenity.id|stringformat:'s' in selected_amenity_ids %}checked{% endif %}
                             >
-                            {% if amenity.icon %}<span>{{ amenity.icon }}</span>{% endif %}
+                            {% if amenity.icon %}<span aria-hidden="true">{{ amenity.icon }}</span>{% endif %}
                             <span>{{ amenity.name }}</span>
                         </label>
                     {% endfor %}
