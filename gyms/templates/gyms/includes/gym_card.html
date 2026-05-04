@@ -6,11 +6,11 @@
     <!-- Prefer uploaded image, then Google image, then fallback image. -->
     <div class="gym-card-media">
         {% if gym.image %}
-            <img src="{{ gym.image.url }}" alt="{{ gym.name }}">
+            <img src="{{ gym.image.url }}" alt="{{ gym.name }} gym image">
         {% elif gym.image_url %}
-            <img src="{{ gym.image_url }}" alt="{{ gym.name }}">
+            <img src="{{ gym.image_url }}" alt="{{ gym.name }} gym image">
         {% else %}
-            <img src="{% static 'gyms/images/gymxp-session-bg.jpg' %}" alt="{{ gym.name }}">
+            <img src="{% static 'gyms/images/gymxp-session-bg.jpg' %}" alt="">
         {% endif %}
     </div>
     <div class="card-body">
@@ -27,6 +27,7 @@
                         <button
                             class="bookmark-button{% if gym.is_bookmarked %} is-bookmarked{% endif %}"
                             type="submit"
+                            aria-label="{% if gym.is_bookmarked %}Remove {{ gym.name }} from bookmarks{% else %}Bookmark {{ gym.name }}{% endif %}"
                             aria-pressed="{% if gym.is_bookmarked %}true{% else %}false{% endif %}"
                         >
                             <span aria-hidden="true">&#128278;</span>
@@ -48,7 +49,7 @@
         <!-- Average rating is rendered as stars. -->
         <div class="rating-stars mb-3" aria-label="{{ gym.average_rating|rating_label }}">
             {% for star in gym.average_rating|star_states %}
-                <span class="rating-star rating-star-{{ star }}">&#9733;</span>
+                <span class="rating-star rating-star-{{ star }}" aria-hidden="true">&#9733;</span>
             {% endfor %}
             <span class="rating-text">{{ gym.average_rating|rating_label }}</span>
         </div>
@@ -59,7 +60,7 @@
                     <div class="amenity-chips">
                         {% for amenity in gym_amenities %}
                             <span class="amenity-chip">
-                                {% if amenity.icon %}<span>{{ amenity.icon }}</span>{% endif %}
+                                {% if amenity.icon %}<span aria-hidden="true">{{ amenity.icon }}</span>{% endif %}
                                 <span>{{ amenity.name }}</span>
                             </span>
                         {% endfor %}
