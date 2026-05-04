@@ -10,7 +10,7 @@
         <h1 class="mb-1">My Submitted Gyms</h1>
         <p class="text-secondary mb-0">Gyms you have added to Gym Hub UK.</p>
     </div>
-    <a class="btn btn-outline-secondary" href="{% url 'account_dashboard' %}">Back to My Account</a>
+    <a class="btn btn-outline-secondary" href="{% url 'account_dashboard' %}" aria-label="Back to my account">Back to My Account</a>
 </div>
 
 <!-- Reuse the standard gym card for each submitted gym. -->
@@ -24,7 +24,7 @@
         <div class="card-body p-5 text-center">
             <h2 class="h4 mb-3">No submitted gyms yet</h2>
             <p class="text-secondary mb-4">Add your first gym to start building your submitted list.</p>
-            <a class="btn btn-primary" href="{% url 'add_gym' %}">Add a Gym</a>
+            <a class="btn btn-primary" href="{% url 'add_gym' %}" aria-label="Add a new gym">Add a Gym</a>
         </div>
     </div>
 {% endif %}
