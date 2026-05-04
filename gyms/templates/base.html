@@ -23,10 +23,10 @@
 </head>
 <body>
     <!-- Shared navigation changes depending on login state. -->
-    <nav class="navbar navbar-expand-md navbar-dark bg-dark">
+    <nav class="navbar navbar-expand-md navbar-dark bg-dark" aria-label="Main navigation">
         <div class="container">
-            <a class="navbar-brand" href="/">
-                <img src="{% static 'gyms/images/gymhub-logo.png' %}" alt="Gym Hub UK">
+            <a class="navbar-brand" href="/" aria-label="Gym Hub UK home">
+                <img src="{% static 'gyms/images/gymhub-logo.png' %}" alt="Gym Hub UK home">
             </a>
             <button
                 class="navbar-toggler"
@@ -35,7 +35,7 @@
                 data-bs-target="#mainNavbar"
                 aria-controls="mainNavbar"
                 aria-expanded="false"
-                aria-label="Toggle navigation"
+                aria-label="Toggle navigation menu"
             >
                 <span class="navbar-toggler-icon"></span>
             </button>
@@ -76,10 +76,10 @@
     <footer class="site-footer text-center py-4 mt-5">
         <p>© 2026 Gym Hub UK</p>
         <div class="footer-social-links">
-            <a href="https://x.com/" aria-label="X" target="_blank" rel="noopener noreferrer">
+            <a href="https://x.com/" aria-label="Visit our X" target="_blank" rel="noopener noreferrer">
                 <i class="bi bi-twitter-x" aria-hidden="true"></i>
             </a>
-            <a href="https://www.instagram.com/" aria-label="Instagram" target="_blank" rel="noopener noreferrer">
+            <a href="https://www.instagram.com/" aria-label="Visit our Instagram" target="_blank" rel="noopener noreferrer">
                 <i class="bi bi-instagram" aria-hidden="true"></i>
             </a>
         </div>
