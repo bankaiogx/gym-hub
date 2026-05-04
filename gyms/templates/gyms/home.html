@@ -4,6 +4,7 @@
 {% block title %}Gym Hub UK{% endblock %}
 
 {% block content %}
+<!-- Homepage hero section with video background and fallback image. -->
 <section class="card hero-card home-hero rounded-4 mb-5">
     <img class="home-hero-fallback" src="{% static 'gyms/images/gymxp-session-bg.jpg' %}" alt="">
     <video autoplay muted loop playsinline poster="{% static 'gyms/images/gymxp-session-bg.jpg' %}">
@@ -14,6 +15,7 @@
             <span class="badge bg-light text-dark mb-3">Discover. Review. Share.</span>
             <h1 class="display-5 fw-bold">Find the right gym anywhere in the UK.</h1>
             <p class="lead mb-4">Explore local gyms, compare facilities, and help other members by adding places worth training at.</p>
+            <!-- Main homepage calls to action. -->
             <div class="d-flex flex-column flex-sm-row gap-3 justify-content-center justify-content-lg-start">
                 <a class="btn btn-light btn-lg" href="{% url 'gym_list' %}">Browse Gyms</a>
                 <a class="btn btn-outline-light btn-lg" href="{% url 'add_gym' %}">Add a Gym</a>
@@ -22,6 +24,7 @@
     </div>
 </section>
 
+<!-- Feature cards explain the main value of the app. -->
 <div class="row g-4">
     <div class="col-md-6">
         <div class="home-feature-card h-100">
