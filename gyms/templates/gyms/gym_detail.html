@@ -30,6 +30,7 @@
                                     <button
                                         class="bookmark-button{% if is_bookmarked %} is-bookmarked{% endif %}"
                                         type="submit"
+                                        aria-label="{% if is_bookmarked %}Remove {{ gym.name }} from bookmarks{% else %}Bookmark {{ gym.name }}{% endif %}"
                                         aria-pressed="{% if is_bookmarked %}true{% else %}false{% endif %}"
                                     >
                                         <span aria-hidden="true">&#128278;</span>
@@ -56,7 +57,7 @@
                     {% elif gym.image_url %}
                         <img src="{{ gym.image_url }}" alt="{{ gym.name }}">
                     {% else %}
-                        <img src="{% static 'gyms/images/gymxp-session-bg.jpg' %}" alt="{{ gym.name }}">
+                        <img src="{% static 'gyms/images/gymxp-session-bg.jpg' %}" alt="">
                     {% endif %}
                 </div>
 
@@ -97,7 +98,7 @@
                                 <strong>Average Rating:</strong>
                                 <span class="rating-stars" aria-label="{{ average_rating|rating_label }}">
                                     {% for star in average_rating|star_states %}
-                                        <span class="rating-star rating-star-{{ star }}">&#9733;</span>
+                                        <span class="rating-star rating-star-{{ star }}" aria-hidden="true">&#9733;</span>
                                     {% endfor %}
                                     <span class="rating-text">{{ average_rating|rating_label }}</span>
                                 </span>
@@ -133,6 +134,7 @@
                                 href="https://www.google.com/maps/search/?api=1&query={{ gym.latitude }},{{ gym.longitude }}"
                                 target="_blank"
                                 rel="noopener noreferrer"
+                                aria-label="Open {{ gym.name }} in Google Maps"
                             >
                                 Open in Google Maps
                             </a>
@@ -154,7 +156,7 @@
                             <div class="amenity-chips">
                                 {% for amenity in gym_amenities %}
                                     <span class="amenity-chip">
-                                        {% if amenity.icon %}<span>{{ amenity.icon }}</span>{% endif %}
+                                        {% if amenity.icon %}<span aria-hidden="true">{{ amenity.icon }}</span>{% endif %}
                                         <span>{{ amenity.name }}</span>
                                     </span>
                                 {% endfor %}
@@ -176,7 +178,7 @@
                                     <strong>{{ review.user.username }}</strong>
                                     <div class="rating-stars" aria-label="{{ review.rating }}/5">
                                         {% for star in review.rating|star_states %}
-                                            <span class="rating-star rating-star-{{ star }}">&#9733;</span>
+                                            <span class="rating-star rating-star-{{ star }}" aria-hidden="true">&#9733;</span>
                                         {% endfor %}
                                     </div>
                                 </div>
