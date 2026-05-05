@@ -118,7 +118,7 @@ The dark background was chosen because it fits the gym/fitness theme and also ma
 
 I used a simple Gantt chart to plan the main parts of the project across the three week build. This helped me split the work into planning, Django setup, core features, user features, deployment, testing and final README work.
 
-![Gantt chart showing the project timeline](assets/readme/planning/gantt-chart.png)
+<img src="assets/readme/planning/gantt-chart.png" alt="Gantt chart showing the project timeline" width="650">
 
 ### Wireframes
 
@@ -126,15 +126,15 @@ Before building the main pages, I created simple wireframes to plan the layout a
 
 Home page wireframe:
 
-![Home page wireframe](assets/readme/wireframes/home-wireframe.png)
+<img src="assets/readme/wireframes/home-wireframe.png" alt="Home page wireframe" width="550">
 
 Gym list page wireframe:
 
-![Gym list page wireframe](assets/readme/wireframes/gym-list-wireframe.png)
+<img src="assets/readme/wireframes/gym-list-wireframe.png" alt="Gym list page wireframe" width="550">
 
 Add gym page wireframe:
 
-![Add gym page wireframe](assets/readme/wireframes/add-gym-wireframe.png)
+<img src="assets/readme/wireframes/add-gym-wireframe.png" alt="Add gym page wireframe" width="550">
 
 ### Design Tokens
 
@@ -176,7 +176,7 @@ The database was designed around the main gym listing system. The `Gym` model is
 
 The diagram below shows the main relationships between the models. It is a simplified ER diagram, so it focuses on the core structure rather than showing every extra field used later for Google Maps, images, upload fields and moderation.
 
-![Gym Hub UK ER diagram](assets/readme/er-diagram.png)
+<img src="assets/readme/er-diagram.png" alt="Gym Hub UK ER diagram" width="700">
 
 ### Model Breakdown
 
@@ -247,37 +247,37 @@ The project uses the database for more than just displaying static content. User
 
 The home page introduces Gym Hub UK and gives users a clear starting point. It uses a large hero section, gym imagery and call-to-action buttons so users can either browse gyms or add a gym.
 
-![Home page desktop screenshot](assets/readme/screenshots/home-desktop.png)
+<img src="assets/readme/screenshots/home-desktop.png" alt="Home page desktop screenshot" width="700">
 
-![Home page mobile screenshot](assets/readme/screenshots/home-mobile.png)
+<img src="assets/readme/screenshots/home-mobile.png" alt="Home page mobile screenshot" width="320">
 
 ### Gym List Page
 
 The gym list page is where users can browse the approved gyms. It includes search, price filtering, amenity filtering, sorting and reusable gym cards. Each card shows the main gym information, image, rating, amenities and bookmark button.
 
-![Gym list desktop screenshot](assets/readme/screenshots/gym-list-desktop.png)
+<img src="assets/readme/screenshots/gym-list-desktop.png" alt="Gym list desktop screenshot" width="700">
 
-![Gym list mobile menu screenshot](assets/readme/screenshots/gym-list-mobile-menu.png)
+<img src="assets/readme/screenshots/gym-list-mobile-menu.png" alt="Gym list mobile menu screenshot" width="320">
 
 ### Gym Detail Page
 
 The gym detail page shows more information about one gym. It includes the gym image, city, address, price range, amenities, average rating, reviews, bookmark option and Google map/open in maps link.
 
-![Gym detail page screenshot](assets/readme/screenshots/gym-detail-desktop.png)
+<img src="assets/readme/screenshots/gym-detail-desktop.png" alt="Gym detail page screenshot" width="700">
 
 ### Add Gym Page
 
 The add gym page lets logged-in users submit a new gym. It includes the Google Places autocomplete field, normal form fields, image upload, price range and amenity selection. Submitted gyms are set to pending until approved.
 
-![Add gym page screenshot](assets/readme/screenshots/add-gym-desktop.png)
+<img src="assets/readme/screenshots/add-gym-desktop.png" alt="Add gym page screenshot" width="700">
 
 ### Account Page
 
 The account page gives logged-in users a simple dashboard. It shows account information and counts for submitted gyms, bookmarks and reviews, with links to the user's saved and submitted gyms.
 
-![Account page desktop screenshot](assets/readme/screenshots/account-desktop.png)
+<img src="assets/readme/screenshots/account-desktop.png" alt="Account page desktop screenshot" width="700">
 
-![Account page mobile screenshot](assets/readme/screenshots/account-mobile.png)
+<img src="assets/readme/screenshots/account-mobile.png" alt="Account page mobile screenshot" width="320">
 
 ### My Bookmarks Page
 
@@ -435,23 +435,23 @@ HTML validation was carried out using the W3C Markup Validation Service. I check
 | Django project check | Django system check | Pass - no issues found |
 | Desktop performance | PageSpeed Insights / Lighthouse | Performance 96, Accessibility 100, Best Practices 100, SEO 100 |
 
-![Home page HTML validation](assets/readme/validation/html-home.png)
+<img src="assets/readme/validation/html-home.png" alt="Home page HTML validation" width="650">
 
-![Gym list HTML validation](assets/readme/validation/html-gyms.png)
+<img src="assets/readme/validation/html-gyms.png" alt="Gym list HTML validation" width="650">
 
-![Gym detail HTML validation](assets/readme/validation/html-detail.png)
+<img src="assets/readme/validation/html-detail.png" alt="Gym detail HTML validation" width="650">
 
 For CSS validation, I checked my custom stylesheet directly instead of validating the whole page with Bootstrap included. When the full page was checked, the validator reported issues from the external Bootstrap CDN file. Checking my own `styles.css` file separately showed no CSS errors.
 
-![Custom CSS validation](assets/readme/validation/css-validation.png)
+<img src="assets/readme/validation/css-validation.png" alt="Custom CSS validation" width="650">
 
 I also ran the Django system check to make sure there were no project configuration issues.
 
-![Django system check](assets/readme/validation/django-check.png)
+<img src="assets/readme/validation/django-check.png" alt="Django system check" width="650">
 
 I also checked the deployed site using PageSpeed Insights on desktop. The scores were high across performance, accessibility, best practices and SEO.
 
-![PageSpeed desktop results](assets/readme/validation/pagespeed-desktop.png)
+<img src="assets/readme/validation/pagespeed-desktop.png" alt="PageSpeed desktop results" width="650">
 
 ## Bugs and Fixes
 
