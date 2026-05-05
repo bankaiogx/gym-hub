@@ -114,7 +114,27 @@ This also made the project easier to manage because the same reusable assets and
 
 The dark background was chosen because it fits the gym/fitness theme and also makes the cyan accent colour stand out clearly. The cyan colour was used for important highlights such as links, ratings, selected states and buttons so users could easily notice interactive elements. Large images were used on the home page and gym cards because gym users usually want a quick visual impression of the space before reading more detail.
 
+### Project Planning
+
+I used a simple Gantt chart to plan the main parts of the project across the three week build. This helped me split the work into planning, Django setup, core features, user features, deployment, testing and final README work.
+
+![Gantt chart showing the project timeline](assets/readme/planning/gantt-chart.png)
+
 ### Wireframes
+
+Before building the main pages, I created simple wireframes to plan the layout and page structure. These were kept basic on purpose so I could focus on where the main content, navigation and buttons would go before adding the final styling.
+
+Home page wireframe:
+
+![Home page wireframe](assets/readme/wireframes/home-wireframe.png)
+
+Gym list page wireframe:
+
+![Gym list page wireframe](assets/readme/wireframes/gym-list-wireframe.png)
+
+Add gym page wireframe:
+
+![Add gym page wireframe](assets/readme/wireframes/add-gym-wireframe.png)
 
 ### Design Tokens
 
@@ -227,21 +247,37 @@ The project uses the database for more than just displaying static content. User
 
 The home page introduces Gym Hub UK and gives users a clear starting point. It uses a large hero section, gym imagery and call-to-action buttons so users can either browse gyms or add a gym.
 
+![Home page desktop screenshot](assets/readme/screenshots/home-desktop.png)
+
+![Home page mobile screenshot](assets/readme/screenshots/home-mobile.png)
+
 ### Gym List Page
 
 The gym list page is where users can browse the approved gyms. It includes search, price filtering, amenity filtering, sorting and reusable gym cards. Each card shows the main gym information, image, rating, amenities and bookmark button.
+
+![Gym list desktop screenshot](assets/readme/screenshots/gym-list-desktop.png)
+
+![Gym list mobile menu screenshot](assets/readme/screenshots/gym-list-mobile-menu.png)
 
 ### Gym Detail Page
 
 The gym detail page shows more information about one gym. It includes the gym image, city, address, price range, amenities, average rating, reviews, bookmark option and Google map/open in maps link.
 
+![Gym detail page screenshot](assets/readme/screenshots/gym-detail-desktop.png)
+
 ### Add Gym Page
 
 The add gym page lets logged-in users submit a new gym. It includes the Google Places autocomplete field, normal form fields, image upload, price range and amenity selection. Submitted gyms are set to pending until approved.
 
+![Add gym page screenshot](assets/readme/screenshots/add-gym-desktop.png)
+
 ### Account Page
 
 The account page gives logged-in users a simple dashboard. It shows account information and counts for submitted gyms, bookmarks and reviews, with links to the user's saved and submitted gyms.
+
+![Account page desktop screenshot](assets/readme/screenshots/account-desktop.png)
+
+![Account page mobile screenshot](assets/readme/screenshots/account-mobile.png)
 
 ### My Bookmarks Page
 
@@ -388,6 +424,35 @@ Alongside manual testing, I also checked that the Django project loaded correctl
 
 ### Validation
 
+HTML validation was carried out using the W3C Markup Validation Service. I checked the main public pages after fixing the aria-label and heading level issues.
+
+| Page | Validator | Result |
+|------|-----------|--------|
+| Home page | W3C HTML Validator | Pass - no errors or warnings |
+| Gym list page | W3C HTML Validator | Pass - no errors or warnings |
+| Gym detail page | W3C HTML Validator | Pass - no errors or warnings |
+| Custom CSS file | W3C CSS Validator | Pass - no errors found |
+| Django project check | Django system check | Pass - no issues found |
+| Desktop performance | PageSpeed Insights / Lighthouse | Performance 96, Accessibility 100, Best Practices 100, SEO 100 |
+
+![Home page HTML validation](assets/readme/validation/html-home.png)
+
+![Gym list HTML validation](assets/readme/validation/html-gyms.png)
+
+![Gym detail HTML validation](assets/readme/validation/html-detail.png)
+
+For CSS validation, I checked my custom stylesheet directly instead of validating the whole page with Bootstrap included. When the full page was checked, the validator reported issues from the external Bootstrap CDN file. Checking my own `styles.css` file separately showed no CSS errors.
+
+![Custom CSS validation](assets/readme/validation/css-validation.png)
+
+I also ran the Django system check to make sure there were no project configuration issues.
+
+![Django system check](assets/readme/validation/django-check.png)
+
+I also checked the deployed site using PageSpeed Insights on desktop. The scores were high across performance, accessibility, best practices and SEO.
+
+![PageSpeed desktop results](assets/readme/validation/pagespeed-desktop.png)
+
 ## Bugs and Fixes
 
 During development, I came across a number of bugs while adding features and testing the website manually. Most of these were found by using the site in the browser and checking that the pages, forms, buttons and deployment worked as expected.
@@ -424,32 +489,142 @@ During development, I came across a number of bugs while adding features and tes
 
 ## Version Control
 
+Version control was used throughout the development of this project to manage changes, track progress and keep the project organised. Git and GitHub were used together, with VS Code as the main development environment.
+
+I followed a simple workflow by working on a feature or fixing a bug, testing it, and then committing the change with a clear message. This made it easier to keep track of what had been added and also helped when debugging, because I could look back at previous commits to understand when a change was made.
+
+Commits were made regularly throughout the project and were usually based around individual features or fixes. For example, commits were used for adding reviews, bookmarks, authentication, Google Maps integration, admin moderation, deployment fixes and README updates.
+
+GitHub was also important for deployment because the Heroku app was connected to the GitHub repository. This meant the deployed project could be updated from the main branch after changes were pushed.
+
+Overall, version control helped keep the development process more organised and made it easier to build the project in stages rather than trying to add everything at once.
+
 ## Deployment
+
+This project was deployed using Heroku because it is a Django application and needs a backend server and database. GitHub was still used first for version control and to store the project repository.
+
+### GitHub Setup
+
+The project was first set up through GitHub and then linked to my local project through Terminal.
+
+The following steps were taken:
+
+1. I created the project repository on GitHub.
+2. I used the GitHub repository options to set up/copy the repository link.
+3. I opened Terminal on my Mac.
+4. I navigated to the folder where the project was stored.
+5. I linked the local project folder to the GitHub repository using the remote repository URL.
+6. I added and committed changes throughout development.
+7. I pushed the commits to the main GitHub repository.
+
+The GitHub repository was then used as the source for deployment to Heroku.
 
 ### Heroku Deployment
 
+The live site was deployed using Heroku:
+
+https://gymhub-1ec6d4b9abaf.herokuapp.com
+
+The following steps were taken:
+
+1. I created a new Heroku app.
+2. I connected the Heroku app to the GitHub repository.
+3. I added the required Heroku config vars for the project.
+4. I added Heroku Postgres so the deployed project had a production database.
+5. I made sure the project had the deployment files needed for Heroku, including `Procfile`, `.python-version`, `requirements.txt` and static file settings.
+6. I deployed the project from the main branch.
+7. I ran the database migrations on Heroku so the production database tables were created.
+8. I tested the live site after deployment to check the pages, styling, database and Google Maps features worked correctly.
+
+During deployment, I also had to fix issues with static files, Python version, Heroku Postgres and Google API key settings. These are listed in the Bugs and Fixes section.
+
 ### Environment Variables
 
+The project uses environment variables so private settings are not placed directly in the public GitHub repository.
 
+The main environment variables used were:
 
-### Local Setup
-
-```bash
-git clone
-cd gym-hub
-python -m venv venv
-source venv/bin/activate
-pip install -r requirements.txt
-python manage.py migrate
-python manage.py runserver
+```text
+SECRET_KEY
+DEBUG
+GOOGLE_MAPS_API_KEY
+DATABASE_URL
+ALLOWED_HOSTS
 ```
 
+`DATABASE_URL` is provided by Heroku Postgres. The Google Maps key was also added to Heroku config vars so autocomplete and maps could work on the deployed site.
+
 ## Future Improvements
+
+- **Improve bookmark behaviour**  
+At the moment, bookmarking uses a normal page refresh. In the future, I would improve this with JavaScript so bookmarks update instantly without moving the user back to the top of the page.
+
+- **Add stronger image storage**  
+Image uploads currently work for the project, but a proper cloud storage setup such as AWS S3 or Cloudinary would be better for a real deployed version.
+
+- **Add more advanced filters**  
+The current filters cover search, price and amenities. In the future, I could add distance-based filtering, rating filters or opening-hours filters.
+
+- **Improve review moderation**  
+Users can manage their own reviews, but a future version could include reporting reviews or admin review moderation.
+
+- **Improve map features**  
+The current map shows individual gym locations. A future improvement could show multiple gyms on one map or allow users to search nearby gyms.
 
 ## References
 
 ### Code and Documentation
 
+- Django documentation  
+https://docs.djangoproject.com/
+
+- Django authentication documentation  
+https://docs.djangoproject.com/en/stable/topics/auth/
+
+- Bootstrap documentation  
+https://getbootstrap.com/
+
+Bootstrap was used for the responsive navbar, hamburger menu, containers, spacing utilities, buttons, forms and basic layout helpers.
+
+- Bootstrap Icons  
+https://icons.getbootstrap.com/
+
+Bootstrap Icons were used for the footer social media icons.
+
+- Google Maps JavaScript API documentation  
+https://developers.google.com/maps/documentation/javascript
+
+- Google Places API documentation  
+https://developers.google.com/maps/documentation/places/web-service
+
+- Heroku Django deployment documentation  
+https://devcenter.heroku.com/articles/deploying-python
+
+- WhiteNoise documentation  
+https://whitenoise.readthedocs.io/
+
+- Pillow documentation  
+https://pillow.readthedocs.io/
+
+- W3C HTML Validator  
+https://validator.w3.org/
+
+- W3C CSS Validator  
+https://jigsaw.w3.org/css-validator/
+
+- Google PageSpeed Insights  
+https://pagespeed.web.dev/
+
 ### Media
 
+- Some visual assets were adapted from my own personal fitness-related project.
+
+- Some gym-style images were generated using Google Gemini and then used as supporting visuals for the Gym Hub UK interface.
+
+- Google Places data was used for gym address autocomplete, map location data and available Google business information.
+
 ### Design Inspiration
+
+- The visual style was influenced by a personal fitness-related project I had also been working on.
+
+- The design uses a dark fitness-style layout, cyan accent colours, large image-led cards and reusable CSS styling.
