@@ -157,8 +157,9 @@
                 document.getElementById("id_opening_hours").value = weekdayText.join(" | ").slice(0, 255);
             }
 
-            const firstPhoto = place.photos?.[0];
-            document.getElementById("id_image_url").value = firstPhoto ? firstPhoto.getUrl({ maxWidth: 900 }) : "";
+            // Google Maps JS photo URLs can expire or return Google's blocked-image placeholder later.
+            // Keep the field empty unless the user uploads an image.
+            document.getElementById("id_image_url").value = "";
 
             let postcode = "";
             let city = "";
