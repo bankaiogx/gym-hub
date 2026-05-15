@@ -261,8 +261,20 @@ h6 {
     background: rgba(255, 255, 255, 0.035);
     border: 1px solid rgba(255, 255, 255, 0.06);
     border-radius: 16px;
+    color-scheme: dark;
     color: var(--gymxp-foreground);
     font-weight: 700;
+}
+
+.form-select option,
+.form-select optgroup {
+    background: #101318;
+    color: #f5f7fa;
+}
+
+.form-select option:checked {
+    background: #2fa7c7;
+    color: #05070b;
 }
 
 .form-control:focus,
