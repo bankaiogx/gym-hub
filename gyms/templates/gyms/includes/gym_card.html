@@ -10,7 +10,16 @@
         {% elif gym.image_url %}
             <img src="{{ gym.image_url }}" alt="{{ gym.name }} gym image">
         {% else %}
-            <img src="{% static 'gyms/images/gymxp-session-bg.jpg' %}" alt="">
+            <img
+                src="{% static 'gyms/images/gymxp-session-bg.jpg' %}"
+                alt=""
+                {% if gym.google_place_id %}
+                    class="google-place-photo"
+                    data-google-place-id="{{ gym.google_place_id }}"
+                    data-photo-max-width="900"
+                    data-photo-alt="{{ gym.name }} gym image"
+                {% endif %}
+            >
         {% endif %}
     </div>
     <div class="card-body">

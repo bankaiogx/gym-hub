@@ -1,0 +1,50 @@
+{% if google_maps_api_key %}
+<script>
+    function showGoogleMapsError() {
+        const errorPanel = document.getElementById("google-maps-error");
+        if (errorPanel) errorPanel.hidden = false;
+    }
+
+    window.gm_authFailure = showGoogleMapsError;
+
+    window.loadGooglePlacePhotos = function () {
+        if (!window.google || !google.maps || !google.maps.places) {
+            showGoogleMapsError();
+            return;
+        }
+
+        const photoTargets = document.querySelectorAll(".google-place-photo[data-google-place-id]");
+        if (!photoTargets.length) return;
+
+        const serviceHost = document.createElement("div");
+        const placesService = new google.maps.places.PlacesService(serviceHost);
+
+        photoTargets.forEach((image) => {
+            const placeId = image.dataset.googlePlaceId;
+            if (!placeId) return;
+
+            placesService.getDetails(
+                {
+                    placeId,
+                    fields: ["photos"],
+                },
+                (place, status) => {
+                    if (status !== google.maps.places.PlacesServiceStatus.OK || !place?.photos?.length) {
+                        return;
+                    }
+
+                    const maxWidth = Number(image.dataset.photoMaxWidth || 900);
+                    image.src = place.photos[0].getUrl({ maxWidth });
+                    image.alt = image.dataset.photoAlt || image.alt;
+                }
+            );
+        });
+    };
+</script>
+<script
+    src="https://maps.googleapis.com/maps/api/js?key={{ google_maps_api_key }}&libraries=places&callback=loadGooglePlacePhotos"
+    onerror="showGoogleMapsError()"
+    async
+    defer
+></script>
+{% endif %}

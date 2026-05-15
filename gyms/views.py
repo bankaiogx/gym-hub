@@ -83,13 +83,27 @@ def user_can_view_gym(user, gym):
 @login_required
 def my_bookmarks(request):
     gyms = gym_card_queryset(request).filter(favourites__user=request.user)
-    return render(request, 'gyms/my_bookmarks.html', {'gyms': gyms})
+    return render(
+        request,
+        'gyms/my_bookmarks.html',
+        {
+            'gyms': gyms,
+            'google_maps_api_key': settings.GOOGLE_MAPS_API_KEY,
+        },
+    )
 
 
 @login_required
 def my_submitted_gyms(request):
     gyms = gym_card_queryset(request, public_only=False).filter(owner=request.user)
-    return render(request, 'gyms/my_submitted_gyms.html', {'gyms': gyms})
+    return render(
+        request,
+        'gyms/my_submitted_gyms.html',
+        {
+            'gyms': gyms,
+            'google_maps_api_key': settings.GOOGLE_MAPS_API_KEY,
+        },
+    )
 
 
 def gym_list(request):
@@ -145,6 +159,7 @@ def gym_list(request):
             ),
             'price_choices': Gym.PRICE_CHOICES,
             'sort_choices': sort_choices,
+            'google_maps_api_key': settings.GOOGLE_MAPS_API_KEY,
         },
     )
 

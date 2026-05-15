@@ -57,7 +57,16 @@
                     {% elif gym.image_url %}
                         <img src="{{ gym.image_url }}" alt="{{ gym.name }}">
                     {% else %}
-                        <img src="{% static 'gyms/images/gymxp-session-bg.jpg' %}" alt="">
+                        <img
+                            src="{% static 'gyms/images/gymxp-session-bg.jpg' %}"
+                            alt=""
+                            {% if gym.google_place_id %}
+                                class="google-place-photo"
+                                data-google-place-id="{{ gym.google_place_id }}"
+                                data-photo-max-width="1100"
+                                data-photo-alt="{{ gym.name }}"
+                            {% endif %}
+                        >
                     {% endif %}
                 </div>
 
@@ -245,7 +254,41 @@
 
     window.gm_authFailure = showGoogleMapsError;
 
-    window.initMap = function () {
+    function loadGooglePlacePhotos() {
+        if (!window.google || !google.maps || !google.maps.places) {
+            showGoogleMapsError();
+            return;
+        }
+
+        const photoTargets = document.querySelectorAll(".google-place-photo[data-google-place-id]");
+        if (!photoTargets.length) return;
+
+        const serviceHost = document.createElement("div");
+        const placesService = new google.maps.places.PlacesService(serviceHost);
+
+        photoTargets.forEach((image) => {
+            const placeId = image.dataset.googlePlaceId;
+            if (!placeId) return;
+
+            placesService.getDetails(
+                {
+                    placeId,
+                    fields: ["photos"],
+                },
+                (place, status) => {
+                    if (status !== google.maps.places.PlacesServiceStatus.OK || !place?.photos?.length) {
+                        return;
+                    }
+
+                    const maxWidth = Number(image.dataset.photoMaxWidth || 1100);
+                    image.src = place.photos[0].getUrl({ maxWidth });
+                    image.alt = image.dataset.photoAlt || image.alt;
+                }
+            );
+        });
+    }
+
+    function initMap() {
         if (!window.google || !google.maps) {
             showGoogleMapsError();
             return;
@@ -264,10 +307,15 @@
             position: location,
             map: map
         });
+    }
+
+    window.initGymDetailGoogle = function () {
+        initMap();
+        loadGooglePlacePhotos();
     };
 </script>
 <script
-    src="https://maps.googleapis.com/maps/api/js?key={{ google_maps_api_key }}&callback=initMap"
+    src="https://maps.googleapis.com/maps/api/js?key={{ google_maps_api_key }}&libraries=places&callback=initGymDetailGoogle"
     onerror="showGoogleMapsError()"
     async
     defer
