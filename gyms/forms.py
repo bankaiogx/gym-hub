@@ -104,6 +104,24 @@ class SignupForm(UserCreationForm):
 
 
 class GymForm(forms.ModelForm):
+    def __init__(self, *args, owner=None, **kwargs):
+        self.owner = owner
+        super().__init__(*args, **kwargs)
+        # Match Django form widgets to the existing Bootstrap/Gym Hub styling.
+        for field_name, field in self.fields.items():
+            if isinstance(field.widget, forms.CheckboxSelectMultiple):
+                continue
+
+            if isinstance(field.widget, forms.Select):
+                css_class = 'form-select'
+            elif isinstance(field.widget, forms.Textarea):
+                css_class = 'form-control'
+            else:
+                css_class = 'form-control'
+
+            existing_classes = field.widget.attrs.get('class', '')
+            field.widget.attrs['class'] = f"{existing_classes} {css_class}".strip()
+
     class Meta:
         model = Gym
         # Includes manual fields plus hidden fields filled by Google Places.
@@ -141,22 +159,26 @@ class GymForm(forms.ModelForm):
             'phone_number': forms.HiddenInput(),
         }
 
-    def __init__(self, *args, **kwargs):
-        super().__init__(*args, **kwargs)
-        # Match Django form widgets to the existing Bootstrap/Gym Hub styling.
-        for field_name, field in self.fields.items():
-            if isinstance(field.widget, forms.CheckboxSelectMultiple):
-                continue
+    def clean(self):
+        cleaned_data = super().clean()
+        name = cleaned_data.get('name')
+        address = cleaned_data.get('address')
 
-            if isinstance(field.widget, forms.Select):
-                css_class = 'form-select'
-            elif isinstance(field.widget, forms.Textarea):
-                css_class = 'form-control'
-            else:
-                css_class = 'form-control'
+        if self.owner and name and address:
+            duplicate_exists = Gym.objects.filter(
+                owner=self.owner,
+                name=name,
+                address=address,
+            )
+            if self.instance.pk:
+                duplicate_exists = duplicate_exists.exclude(pk=self.instance.pk)
 
-            existing_classes = field.widget.attrs.get('class', '')
-            field.widget.attrs['class'] = f"{existing_classes} {css_class}".strip()
+            if duplicate_exists.exists():
+                raise forms.ValidationError(
+                    'You have already submitted this gym. You can view it from your submitted gyms page.'
+                )
+
+        return cleaned_data
 
 
 class ReviewForm(forms.ModelForm):

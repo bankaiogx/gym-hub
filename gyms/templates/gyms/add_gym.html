@@ -51,6 +51,14 @@
                     </div>
 
                     <!-- Render normal form fields from GymForm. -->
+                    {% if form.non_field_errors %}
+                        <div class="bg-light rounded-4 p-3 mb-4">
+                            {% for error in form.non_field_errors %}
+                                <p class="text-danger mb-0">{{ error }}</p>
+                            {% endfor %}
+                        </div>
+                    {% endif %}
+
                     {% for field in form.visible_fields %}
                         <p>
                             <label for="{{ field.id_for_label }}">

@@ -2,6 +2,7 @@ from django.contrib.auth.decorators import login_required
 from django.contrib.auth import login, logout
 from django.conf import settings
 from django.contrib import messages
+from django.db import IntegrityError
 from django.db.models import Avg, BooleanField, Count, Exists, OuterRef, Q, Value
 from django.http import Http404, HttpResponseForbidden
 from django.shortcuts import get_object_or_404, redirect, render
@@ -208,20 +209,27 @@ def gym_detail(request, slug):
 @login_required
 def add_gym(request):
     if request.method == 'POST':
-        form = GymForm(request.POST, request.FILES)
+        form = GymForm(request.POST, request.FILES, owner=request.user)
         if form.is_valid():
             # New submissions are linked to the current user and await approval.
             gym = form.save(commit=False)
             gym.owner = request.user
-            gym.save()
-            form.save_m2m()
-            messages.success(
-                request,
-                'Your gym has been submitted and is awaiting approval.'
-            )
-            return redirect('gym_detail', slug=gym.slug)
+            try:
+                gym.save()
+                form.save_m2m()
+            except IntegrityError:
+                form.add_error(
+                    None,
+                    'You have already submitted this gym. You can view it from your submitted gyms page.',
+                )
+            else:
+                messages.success(
+                    request,
+                    'Your gym has been submitted and is awaiting approval.'
+                )
+                return redirect('gym_detail', slug=gym.slug)
     else:
-        form = GymForm()
+        form = GymForm(owner=request.user)
 
     return render(
         request,
