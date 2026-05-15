@@ -80,6 +80,9 @@
             {% endwith %}
         </div>
         <p class="text-secondary">{{ gym.description|default:'No description provided yet.' }}</p>
-        <p class="mb-0"><span class="price-pill">Price: {{ gym.get_price_range_display }}</span></p>
+        <div class="gym-card-footer">
+            <span class="price-pill">Price: {{ gym.get_price_range_display }}</span>
+            <a class="btn btn-light gym-open-button" href="{% url 'gym_detail' gym.slug %}">Open Gym</a>
+        </div>
     </div>
 </div>
